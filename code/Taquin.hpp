@@ -11,7 +11,7 @@ protected:
   int pos_vide_l;
   int pos_vide_h;
   virtual void afficher(ostream& o=cout) const;
-  virtual bool bienTriePartiel() const;
+  //virtual bool bienTriePartiel() const;
 public:
   Taquin(int, int);
   virtual ~Taquin();
