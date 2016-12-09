@@ -1,0 +1,24 @@
+Fait :
+------
+
+
+* Définition des classes Jeu et Taquin
+* Implémentation du Jeu Taquin
+
+
+À faire :
+---------
+
+* Réimplenter les classes avec la généricité
+* Jeu<T, int l, int h>
+* classe Case2048 : int val, enum action {NORMAL,TIMES,DIV,DESTROY}
+* ostream& operator<<(ostream&, Case&)
+* Jeux Sokoban et 2048 (+2 variantes minimum)
+
+
+Extensions possibles :
+----------------------
+* Rendre les robots plus intelligents
+* Ne plus générer de grille irrésolvables
+(...)
+* Interface graphique (en dernier)
