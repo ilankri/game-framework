@@ -3,7 +3,8 @@
 #include "Sokoban.hpp"
 
 int main() {
-  Jeu<CaseSok,10,10> *j=new Sokoban<10,10>();
+  const int l=10,h=10;
+  Jeu<CaseSok,l,h> *j=new Sokoban<l,h>();
   j -> jouerHumain();
   delete j;
   return 0;
