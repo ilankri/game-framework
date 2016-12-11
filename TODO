@@ -4,13 +4,12 @@ Fait :
 
 * Définition des classes Jeu et Taquin
 * Implémentation du Jeu Taquin
+* Classes Jeu et Taquin réimplémentées avec la généricité (11/12)
 
 
 À faire :
 ---------
 
-* Réimplenter les classes avec la généricité
-* Jeu<T, int l, int h>
 * classe Case2048 : int val, enum action {NORMAL,TIMES,DIV,DESTROY}
 * ostream& operator<<(ostream&, Case&)
 * Jeux Sokoban et 2048 (+2 variantes minimum)
@@ -19,6 +18,6 @@ Fait :
 Extensions possibles :
 ----------------------
 * Rendre les robots plus intelligents
-* Ne plus générer de grille irrésolvables
+* Ne plus générer de grilleS irrésolvables
 (...)
 * Interface graphique (en dernier)

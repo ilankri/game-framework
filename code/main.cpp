@@ -1,8 +1,9 @@
 #include "Jeu.hpp"
 #include "Taquin.hpp"
+#include "Sokoban.hpp"
 
 int main() {
-  Jeu *j=new Taquin(3,3);
+  Jeu<CaseSok,10,10> *j=new Sokoban<10,10>();
   j -> jouerHumain();
   delete j;
   return 0;
