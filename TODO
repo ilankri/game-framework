@@ -5,19 +5,20 @@ Fait :
 * Définition des classes Jeu et Taquin
 * Implémentation du Jeu Taquin
 * Classes Jeu et Taquin réimplémentées avec la généricité (11/12)
-
+* Sokoban presque terminé (12/12)
 
 À faire :
 ---------
 
+* Sokoban : détecter les éventuels blocages (empêcher ? stopper la partie ?)
 * classe Case2048 : int val, enum action {NORMAL,TIMES,DIV,DESTROY}
 * ostream& operator<<(ostream&, Case&)
-* Jeux Sokoban et 2048 (+2 variantes minimum)
+* Jeu 2048 (+2 variantes minimum)
 
 
 Extensions possibles :
 ----------------------
 * Rendre les robots plus intelligents
-* Ne plus générer de grilleS irrésolvables
+* Ne plus générer de grilles irrésolvables
 (...)
 * Interface graphique (en dernier)
