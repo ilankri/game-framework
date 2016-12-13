@@ -9,7 +9,7 @@ template<class T, int l, int h>
 class Jeu {
 protected:
   T plateau[h][l];
-  static const T caseVide=0;
+  static const T caseVide= (T) 0;
   long score;
   
   virtual void afficher(ostream& o=cout) const=0;

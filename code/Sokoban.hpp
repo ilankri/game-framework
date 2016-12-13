@@ -31,7 +31,7 @@ protected:
     o << CaseSok::pers << " : personnage" << endl;
     o << CaseSok::caisse << " : caisse" << endl;
     o << CaseSok::but << " : but" << endl;
-    o << CaseSok::caisse_but << " : caisse_but" << endl;
+    o << CaseSok::caisse_but << " : caisse placée sur un but" << endl;
   }
   virtual void initialiser() {
     //cout << "initialiser()" << endl;
@@ -233,12 +233,20 @@ protected:
 
   virtual void deplacerHaut() {
     long & score=this->score;
+    /* si la case juste au-dessus est vide, le personnage
+       peut s'y déplacer sans condition */
     if ((*this)[pos_h-1][pos_l]==CaseSok::vide) {
       (*this)[pos_h-1][pos_l]=CaseSok::pers;
       (*this)[pos_h--][pos_l]=CaseSok::vide;
       score++;
     }
+
+    /* si la case juste au-dessus contient une caisse,
+       elle ne peut être poussée que si la case située derrière
+       est vide ou contient un but */
     else if ((*this)[pos_h-1][pos_l]==CaseSok::caisse) {
+
+      /* déplacement d'une caisse sur une case vide */
       if ((*this)[pos_h-2][pos_l]==CaseSok::vide) {
 	(*this)[pos_h-2][pos_l]=CaseSok::caisse;
 	(*this)[pos_h-1][pos_l]=CaseSok::pers;
@@ -246,12 +254,36 @@ protected:
 	score++;
       }
       else if ((*this)[pos_h-2][pos_l]==CaseSok::but) {
+
+	/* déplacement d'une caisse sur un but */
 	(*this)[pos_h-2][pos_l]=CaseSok::caisse_but;
 	(*this)[pos_h-1][pos_l]=CaseSok::pers;
 	(*this)[pos_h--][pos_l]=CaseSok::vide;
-	score+=2;
+	score++;
       }
     }
+
+    /* si la case du dessus contient un but occupé
+       par une caisse, cette dernière peut être poussée
+       s'il y a un autre but ou une case vide derrière
+     */
+    else if ((*this)[pos_h-1][pos_l]==CaseSok::caisse_but) {
+
+      /* d'un but vers un autre */
+      if ((*this)[pos_h-2][pos_l]==CaseSok::but) {
+	(*this)[pos_h-2][pos_l]=CaseSok::caisse_but;
+	(*this)[pos_h-1][pos_l]=CaseSok::but;
+	score++;
+      }
+
+      /* d'un but vers une case vide */
+      if ((*this)[pos_h-2][pos_l]==CaseSok::vide) {
+	(*this)[pos_h-2][pos_l]=CaseSok::caisse;
+	(*this)[pos_h-1][pos_l]=CaseSok::but;
+	score++;
+      }
+    }
+
   }
   
   virtual void deplacerBas() {
@@ -272,9 +304,27 @@ protected:
 	(*this)[pos_h+2][pos_l]=CaseSok::caisse_but;
 	(*this)[pos_h+1][pos_l]=CaseSok::pers;
 	(*this)[pos_h++][pos_l]=CaseSok::vide;
-	score+=2;
+	score++;
       }
     }
+
+    else if ((*this)[pos_h+1][pos_l]==CaseSok::caisse_but) {
+
+      /* d'un but vers un autre */
+      if ((*this)[pos_h+2][pos_l]==CaseSok::but) {
+	(*this)[pos_h+2][pos_l]=CaseSok::caisse_but;
+	(*this)[pos_h+1][pos_l]=CaseSok::but;
+	score++;
+      }
+
+      /* d'un but vers une case vide */
+      if ((*this)[pos_h+2][pos_l]==CaseSok::vide) {
+	(*this)[pos_h+2][pos_l]=CaseSok::caisse;
+	(*this)[pos_h+1][pos_l]=CaseSok::but;
+	score++;
+      }
+    }
+
   }
   
   virtual void deplacerGauche() {
@@ -284,6 +334,7 @@ protected:
       (*this)[pos_h][pos_l--]=CaseSok::vide;
       score++;
     }
+    
     else if ((*this)[pos_h][pos_l-1]==CaseSok::caisse) {
       if ((*this)[pos_h][pos_l-2]==CaseSok::vide) {
 	(*this)[pos_h][pos_l-2]=CaseSok::caisse;
@@ -295,7 +346,24 @@ protected:
 	(*this)[pos_h][pos_l-2]=CaseSok::caisse_but;
 	(*this)[pos_h][pos_l-1]=CaseSok::pers;
 	(*this)[pos_h][pos_l--]=CaseSok::vide;
-	score+=2;
+	score++;
+      }
+    }
+    
+    else if ((*this)[pos_h][pos_l-1]==CaseSok::caisse_but) {
+
+      /* d'un but vers un autre */
+      if ((*this)[pos_h][pos_l-2]==CaseSok::but) {
+	(*this)[pos_h][pos_l-2]=CaseSok::caisse_but;
+	(*this)[pos_h][pos_l-1]=CaseSok::but;
+	score++;
+      }
+
+      /* d'un but vers une case vide */
+      if ((*this)[pos_h][pos_l-2]==CaseSok::vide) {
+	(*this)[pos_h][pos_l-2]=CaseSok::caisse;
+	(*this)[pos_h][pos_l-1]=CaseSok::but;
+	score++;
       }
     }
   }
@@ -318,7 +386,24 @@ protected:
 	(*this)[pos_h][pos_l+2]=CaseSok::caisse_but;
 	(*this)[pos_h][pos_l+1]=CaseSok::pers;
 	(*this)[pos_h][pos_l++]=CaseSok::vide;
-	score+=2;
+	score++;
+      }
+    }
+
+    else if ((*this)[pos_h][pos_l+1]==CaseSok::caisse_but) {
+
+      /* d'un but vers un autre */
+      if ((*this)[pos_h][pos_l+2]==CaseSok::but) {
+	(*this)[pos_h][pos_l+2]=CaseSok::caisse_but;
+	(*this)[pos_h][pos_l+2]=CaseSok::but;
+	score++;
+      }
+
+      /* d'un but vers une case vide */
+      if ((*this)[pos_h][pos_l+2]==CaseSok::vide) {
+	(*this)[pos_h][pos_l+2]=CaseSok::caisse;
+	(*this)[pos_h][pos_l+1]=CaseSok::but;
+	score++;
       }
     }
   }
@@ -337,7 +422,7 @@ protected:
 
   virtual bool jeuBloque() const {
     /* un bloquage peut survenir lorsqu'une caisse ne peut plus être
-       déplacée, c'est à dire lorsqu'il y a un mur devant et sur l'un
+       déplacée, c'est à dire lorsqu'il y a un mur derrière et sur l'un
        des côtés (gauche/droite)
     */
     for (int i(1); i<h-1; i++) {
