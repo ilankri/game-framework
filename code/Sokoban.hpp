@@ -28,7 +28,7 @@ protected:
     }
 
     o << CaseSok::mur << " : mur" << endl;
-    o << CaseSok::pers << " : personnage" << endl;
+    o << CaseSok::pers << " : personnage (" << pos_h << "," << pos_l << ")" << endl;
     o << CaseSok::caisse << " : caisse" << endl;
     o << CaseSok::but << " : but" << endl;
     o << CaseSok::caisse_but << " : caisse placée sur un but" << endl;
@@ -277,7 +277,7 @@ protected:
       }
 
       /* d'un but vers une case vide */
-      if ((*this)[pos_h-2][pos_l]==CaseSok::vide) {
+      else if ((*this)[pos_h-2][pos_l]==CaseSok::vide) {
 	(*this)[pos_h-2][pos_l]=CaseSok::caisse;
 	(*this)[pos_h-1][pos_l]=CaseSok::but;
 	score++;
@@ -318,7 +318,7 @@ protected:
       }
 
       /* d'un but vers une case vide */
-      if ((*this)[pos_h+2][pos_l]==CaseSok::vide) {
+      else if ((*this)[pos_h+2][pos_l]==CaseSok::vide) {
 	(*this)[pos_h+2][pos_l]=CaseSok::caisse;
 	(*this)[pos_h+1][pos_l]=CaseSok::but;
 	score++;
@@ -342,7 +342,7 @@ protected:
 	(*this)[pos_h][pos_l--]=CaseSok::vide;
 	score++;
       }
-      if ((*this)[pos_h][pos_l-2]==CaseSok::but) {
+      else if ((*this)[pos_h][pos_l-2]==CaseSok::but) {
 	(*this)[pos_h][pos_l-2]=CaseSok::caisse_but;
 	(*this)[pos_h][pos_l-1]=CaseSok::pers;
 	(*this)[pos_h][pos_l--]=CaseSok::vide;
@@ -360,7 +360,7 @@ protected:
       }
 
       /* d'un but vers une case vide */
-      if ((*this)[pos_h][pos_l-2]==CaseSok::vide) {
+      else if ((*this)[pos_h][pos_l-2]==CaseSok::vide) {
 	(*this)[pos_h][pos_l-2]=CaseSok::caisse;
 	(*this)[pos_h][pos_l-1]=CaseSok::but;
 	score++;
@@ -400,7 +400,7 @@ protected:
       }
 
       /* d'un but vers une case vide */
-      if ((*this)[pos_h][pos_l+2]==CaseSok::vide) {
+      else if ((*this)[pos_h][pos_l+2]==CaseSok::vide) {
 	(*this)[pos_h][pos_l+2]=CaseSok::caisse;
 	(*this)[pos_h][pos_l+1]=CaseSok::but;
 	score++;
