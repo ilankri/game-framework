@@ -24,7 +24,14 @@ protected:
 	o << (*this)[i][j] << " ";
       }
       o << endl;
+
     }
+
+    o << CaseSok::mur << " : mur" << endl;
+    o << CaseSok::pers << " : personnage" << endl;
+    o << CaseSok::caisse << " : caisse" << endl;
+    o << CaseSok::but << " : but" << endl;
+    o << CaseSok::caisse_but << " : caisse_but" << endl;
   }
   virtual void initialiser() {
     //cout << "initialiser()" << endl;
@@ -207,6 +214,11 @@ protected:
       pos_l=1+rand()%(l-2);
       pos_h=1+rand()%(h-2);
     }
+
+    /* pour que le personnage puisse effectuer au moins un
+       mouvement, on le place dans une case entourée uniquement
+       de case vide, toujours à l'intérieur de la zone délimitée
+       par les  murs externes */
     while ((pos_h <= i_haut_gauche && pos_l <=j_haut_gauche)
 	   ||(pos_h >= i_bas_gauche && pos_l <= j_bas_gauche)
 	   ||(pos_h <= i_haut_droite && pos_l >= j_haut_droite)
@@ -312,6 +324,7 @@ protected:
   }
   
   virtual bool jeuTermine() const {
+    if (jeuBloque()) return true;
     for (int i(0); i<h; i++) {
       for (int j(0); j<l; j++) {
 	if ((*this)[i][j]==CaseSok::but
@@ -320,6 +333,25 @@ protected:
       }
     }
     return true;
+  }
+
+  virtual bool jeuBloque() const {
+    /* un bloquage peut survenir lorsqu'une caisse ne peut plus être
+       déplacée, c'est à dire lorsqu'il y a un mur devant et sur l'un
+       des côtés (gauche/droite)
+    */
+    for (int i(1); i<h-1; i++) {
+      for (int j(1); j<l-1; j++) {
+	if ((*this)[i][j]==CaseSok::caisse
+	    && ((*this)[i-1][j]==CaseSok::mur
+		||(*this)[i+1][j]==CaseSok::mur)
+	    && ((*this)[i][j-1]==CaseSok::mur
+		||(*this)[i][j+1]==CaseSok::mur)) {
+	  return true;
+	}
+      }
+    }
+    return false;
   }
 public:
   Sokoban() :

@@ -19,6 +19,7 @@ protected:
   virtual void deplacerDroite()=0;
   virtual void initialiser()=0;
   virtual bool jeuTermine() const=0;
+  virtual bool jeuBloque() const {return false;}
 public:
   Jeu() : score(0) {}
   virtual void jouerHumain() {
@@ -88,6 +89,7 @@ template<class T, int l, int h>
 ostream& operator<<(ostream& o, const Jeu<T,l,h> &j) {
   j.afficher();
   o << "score : " << j.score << endl;
+  if (j.jeuBloque()) o << "Game blocked !" << endl;
   if (j.jeuTermine()) o << "Game Over" << endl;
   return o;
 }
