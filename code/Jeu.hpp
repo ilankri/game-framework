@@ -15,6 +15,7 @@ protected:
   long score;
   bool quitter;
   virtual void afficher(ostream& o=cout) const=0;
+  virtual void deplacer(Sens)=0;
   virtual void deplacerHaut()=0;
   virtual void deplacerBas()=0;
   virtual void deplacerGauche()=0;
@@ -23,7 +24,9 @@ protected:
   virtual bool jeuTermine() const=0;
   virtual bool jeuBloque() const {return false;}
 public:
-  Jeu(int l, int h) : longueur(l), hauteur(h), plateau(new T*[h]), score(0), quitter(false) { for (int i(0); i<h; i++) plateau[i]=new T[l];}
+  Jeu(int l, int h) : longueur(l), hauteur(h), plateau(new T*[h]), score(0), quitter(false) {
+    for (int i(0); i<h; i++) plateau[i]=new T[l];
+  }
   virtual void jouerHumain() {
     int rep;
     while (!jeuTermine() && !quitter) {

@@ -45,7 +45,7 @@ public:
     // (case vide paire + permutation impaire)
     // ou (case vide impaire + permutation paire)
     srand(time(nullptr));
-    int tmp=1;
+    C tmp=(C) 1;
     //on remplit les cases
     for (int i(0); i<h-1; i++) {
       for (int j(0); j<l; j++) {
@@ -119,19 +119,31 @@ public:
     if ((*this)[h-1][l-1] != Jeu<C>::caseVide) {
       return false;
     }
-    int tmp=1;
-    for (int i(0); i<h-1; i++) {
-      for (int j(0); j<l; j++) {
-	if ((*this)[i][j] != (tmp++)) {
-	  return false;
-	}
+    
+    for (int j(1); j<l; j++) {
+      //on teste si la première ligne est triée
+      if ((*this)[0][j] < (*this)[0][j-1]) return false;
+    }
+    for (int i(1); i<h-1; i++) {
+      /* à partir de la 2e ligne, on regarde d'abord si la
+	 1re case est supérieure à la dernière de la ligne
+	 précédente */
+      if ((*this)[i][0] < (*this)[i-1][l-1]) return false;
+      for (int j(1); j<l; j++) {
+
+	// on teste ensuite si la ligne i est triée
+	if ((*this)[i][j] < (*this)[i][j-1]) return false;
       }
     }
-    for (int j(0) ;j< l-1; j++) {
-      if ((*this)[h-1][j] != (tmp++)) {
-	return false;
-      }
+
+    if ((*this)[h-1][0] < (*this)[h-2][l-1]) return false;
+    for (int j(1); j<l-1; j++) {
+      /* on teste si la dernière ligne est triée (sans tenir
+	 compte de la dernière case, qui doit être vide */
+      if ((*this)[h-1][j] < (*this)[h-1][j-1]) return false;
     }
+
+    
     return true;
   }
 
