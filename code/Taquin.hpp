@@ -6,34 +6,41 @@
 #include <ctime>
 
 
-template<int l, int h>
-class Taquin : public Jeu<int,l,h> {
+template<class C>
+class Taquin : public Jeu<C> {
+
 protected:
   //coordonnées de la case vide
   int pos_vide_l;
   int pos_vide_h;
   
   virtual void afficher(ostream& o) const {
-    for (int j(0); j<9*l-(l-2); j++) o << "-"; //longueur d'une ligne, en tenant compte des tabulations
+
+    const int &l=this->longueur, &h=this->hauteur;
+    
+    for (int j(0); j<8*l+2; j++) o << "-";
+    //longueur d'une ligne, en tenant compte des tabulations
     o << endl;
     for (int i(0); i<h; i++) {
       for (int j(0); j<l; j++) {
 	o << "| ";
-	if (this->plateau[i][j]==Jeu<int,l,h>::caseVide) o << " ";
+	if (this->plateau[i][j]==Jeu<C>::caseVide) o << " ";
 	else o<< this->plateau[i][j];
 	o << "\t";
       }
       o << " |" << endl;
-      for (int j(0); j<9*l-(l-2); j++) o << "-";
+      for (int j(0); j<8*l+2; j++) o << "-";
       o <<endl;
     }
   }
 
   //virtual bool bienTriePartiel() const;
 public:
-  Taquin() : Jeu<int, l, h>() {initialiser();}
+  Taquin(int l, int h) : Jeu<C>(l,h) {initialiser();}
   virtual ~Taquin() {}
   virtual void initialiser() {
+    const int &h = this->hauteur;
+    const int &l = this->longueur;
     //reste à gérer les grilles impossibles à réordonner :
     // (case vide paire + permutation impaire)
     // ou (case vide impaire + permutation paire)
@@ -73,11 +80,11 @@ public:
     perm_paire=!perm_paire;
     
     //on met à jour les coordonnées de la case vide
-    if ((*this)[i1][j1]==Jeu<int,l,h>::caseVide) {
+    if ((*this)[i1][j1]==Jeu<C>::caseVide) {
       pos_vide_h=i1;
       pos_vide_l=j1;
     }
-    else if ((*this)[i2][j2]==Jeu<int,l,h>::caseVide) {
+    else if ((*this)[i2][j2]==Jeu<C>::caseVide) {
       pos_vide_h=i2;
       pos_vide_l=j2;
     }
@@ -106,7 +113,10 @@ public:
   }
 
   virtual bool jeuTermine() const {
-    if ((*this)[h-1][l-1] != Jeu<int,l,h>::caseVide) {
+
+    const int &l=this->longueur, &h=this->hauteur;
+
+    if ((*this)[h-1][l-1] != Jeu<C>::caseVide) {
       return false;
     }
     int tmp=1;
@@ -125,40 +135,53 @@ public:
     return true;
   }
 
-  virtual void deplacerHaut() {
-    if (pos_vide_h >0) {
+  virtual void deplacer(Sens s) {
+    int sens_l= 0;
+    int sens_h=0;
+
+    const int &h=this->hauteur, &l=this->longueur;
+    
+    switch(s) {
+    case Sens::Haut:
+      sens_h= pos_vide_h> 0 ? -1 :0;
+      break;
+    case Sens::Bas:
+      sens_h= pos_vide_h < h-1 ? 1 : 0;
+      break;
+    case Sens::Gauche:
+      sens_l= pos_vide_l > 0 ? -1 : 0;
+      break;
+    case Sens::Droite:
+      sens_l= pos_vide_l < l-1 ? 1 : 0;
+      break;
+    default:
+      break;
+    }
+
+    if (sens_h !=0 || sens_l !=0) {
       int tmp=(*this)[pos_vide_h][pos_vide_l];
-      (*this)[pos_vide_h][pos_vide_l]=(*this)[pos_vide_h-1][pos_vide_l];
-      (*this)[--pos_vide_h][pos_vide_l]=tmp; //mettre à jour les coordonnées de la case vide
+      (*this)[pos_vide_h][pos_vide_l]=(*this)[pos_vide_h+sens_h][pos_vide_l+sens_l];
+      (*this)[pos_vide_h+sens_h][pos_vide_l+sens_l]=tmp;
+      pos_vide_h+=sens_h;
+      pos_vide_l+=sens_l;
       this->score++;
     }
+  }
+
+  virtual void deplacerHaut() {
+    deplacer(Sens::Haut);
   }
   
   virtual void deplacerBas() {
-    if (pos_vide_h < h-1) {
-      int tmp=(*this)[pos_vide_h][pos_vide_l];
-      (*this)[pos_vide_h][pos_vide_l]=(*this)[pos_vide_h+1][pos_vide_l];
-      (*this)[++pos_vide_h][pos_vide_l]=tmp; //mettre à jour les coordonnées de la case vide
-      this->score++;
-    }
+    deplacer(Sens::Bas);
   }
 
   virtual void deplacerGauche() {
-    if (pos_vide_l >0) {
-      int tmp=(*this)[pos_vide_h][pos_vide_l];
-      (*this)[pos_vide_h][pos_vide_l]=(*this)[pos_vide_h][pos_vide_l-1];
-      (*this)[pos_vide_h][--pos_vide_l]=tmp; // mettre à jour les coordonnées de la case vide
-      this->score++;
-    }
+    deplacer(Sens::Gauche);
   }
 
   virtual void deplacerDroite() {
-    if (pos_vide_l <l-1) {
-      int tmp=(*this)[pos_vide_h][pos_vide_l];
-      (*this)[pos_vide_h][pos_vide_l]=(*this)[pos_vide_h][pos_vide_l+1];
-      (*this)[pos_vide_h][++pos_vide_l]=tmp; // mettre à jour les coordonnées de la case vide
-      this->score++;
-    }
+    deplacer(Sens::Droite);
   }
 
 };

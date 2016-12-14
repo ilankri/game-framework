@@ -4,14 +4,16 @@
 #include <iostream>
 using namespace std;
 
+enum class Sens{Haut,Bas,Gauche,Droite};
 
-template<class T, int l, int h>
+template<class T>
 class Jeu {
 protected:
-  T plateau[h][l];
+  const int longueur,hauteur;
+  T** plateau;
   static const T caseVide= (T) 0;
   long score;
-  
+  bool quitter;
   virtual void afficher(ostream& o=cout) const=0;
   virtual void deplacerHaut()=0;
   virtual void deplacerBas()=0;
@@ -21,13 +23,14 @@ protected:
   virtual bool jeuTermine() const=0;
   virtual bool jeuBloque() const {return false;}
 public:
-  Jeu() : score(0) {}
+  Jeu(int l, int h) : longueur(l), hauteur(h), plateau(new T*[h]), score(0), quitter(false) { for (int i(0); i<h; i++) plateau[i]=new T[l];}
   virtual void jouerHumain() {
     int rep;
-    while (!jeuTermine()) {
+    while (!jeuTermine() && !quitter) {
       cout << *this;
       cout << "Entrer (2, 4, 8 ou 6) pour effectuer ";
-      cout << "un déplacement (resp. bas, gauche, haut, droite) : ";
+      cout << "un déplacement (resp. bas, gauche, haut, droite) ";
+      cout << "ou 0 pour quitter le jeu : ";
       cin >> rep;
       cin.ignore();
       switch (rep) {
@@ -42,6 +45,9 @@ public:
 	break;
       case 8:
 	deplacerHaut();
+	break;
+      case 0:
+	quitter=true;
 	break;
       default:
 	break;
@@ -77,16 +83,19 @@ public:
     cout << *this;
   }
 
-  template<class C, int i, int j>
-  friend ostream& operator<<(ostream &o, const Jeu<C,i,j> &jeu);
+  template<class C>
+  friend ostream& operator<<(ostream &o, const Jeu<C> &jeu);
   const T* operator[](int i) const {return plateau[i];}
   T* operator[](int i) {return plateau[i];}
-  virtual ~Jeu() {}
+  virtual ~Jeu() {
+    for (int i(0); i<hauteur; i++) delete[] plateau[i];
+    delete[] plateau;
+  }
 };
 
 
-template<class T, int l, int h>
-ostream& operator<<(ostream& o, const Jeu<T,l,h> &j) {
+template<class T>
+ostream& operator<<(ostream& o, const Jeu<T> &j) {
   j.afficher();
   o << "score : " << j.score << endl;
   if (j.jeuBloque()) o << "Game blocked !" << endl;
