@@ -16,10 +16,10 @@ protected:
   bool quitter;
   virtual void afficher(ostream& o=cout) const=0;
   virtual void deplacer(Sens)=0;
-  virtual void deplacerHaut()=0;
-  virtual void deplacerBas()=0;
-  virtual void deplacerGauche()=0;
-  virtual void deplacerDroite()=0;
+  virtual void deplacerHaut() {deplacer(Sens::Haut);}
+  virtual void deplacerBas() {deplacer(Sens::Bas);}
+  virtual void deplacerGauche() {deplacer(Sens::Gauche);}
+  virtual void deplacerDroite() {deplacer(Sens::Droite);}
   virtual void initialiser()=0;
   virtual bool jeuTermine() const=0;
   virtual bool jeuBloque() const {return false;}

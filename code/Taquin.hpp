@@ -170,30 +170,17 @@ public:
       break;
     }
 
+    C & source=(*this)[pos_vide_h][pos_vide_l];
+    C & dest=(*this)[pos_vide_h+sens_h][pos_vide_l+sens_l];
+
     if (sens_h !=0 || sens_l !=0) {
-      int tmp=(*this)[pos_vide_h][pos_vide_l];
-      (*this)[pos_vide_h][pos_vide_l]=(*this)[pos_vide_h+sens_h][pos_vide_l+sens_l];
-      (*this)[pos_vide_h+sens_h][pos_vide_l+sens_l]=tmp;
+      C tmp=source;
+      source=dest;
+      dest=tmp;
       pos_vide_h+=sens_h;
       pos_vide_l+=sens_l;
       this->score++;
     }
-  }
-
-  virtual void deplacerHaut() {
-    deplacer(Sens::Haut);
-  }
-  
-  virtual void deplacerBas() {
-    deplacer(Sens::Bas);
-  }
-
-  virtual void deplacerGauche() {
-    deplacer(Sens::Gauche);
-  }
-
-  virtual void deplacerDroite() {
-    deplacer(Sens::Droite);
   }
 
 };

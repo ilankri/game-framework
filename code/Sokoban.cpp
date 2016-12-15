@@ -21,6 +21,9 @@ ostream& operator<<(ostream& o, CaseSok const& c) {
   case CaseSok::caisse_but:
     o << "ø";
     break;
+  case CaseSok::pers_but:
+    o << "@";
+    break;
   }
   return o;
 }

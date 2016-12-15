@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 
-enum class CaseSok{vide,mur,pers,caisse,but,caisse_but};
+enum class CaseSok{vide,mur,pers,caisse,but,caisse_but,pers_but};
 
 ostream& operator<<(ostream&, CaseSok const&);
 
@@ -25,7 +25,7 @@ protected:
   static const C caisse=(C) 3;
   static const C but=(C) 4;
   static const C caisse_but=(C) 5;
-
+  static const C pers_but=(C) 6;
   
   virtual void afficher(ostream& o=cout) const {
     
@@ -246,104 +246,127 @@ protected:
   }
 
   virtual void deplacer(Sens s) {
+    
     int new_pos_h=pos_h, new_pos_l=pos_l;
-    int sens_vertical=0, sens_horizontal=0;
+    int sens_h=0, sens_l=0;
+    
+    C & source=(*this)[pos_h][pos_l];
     switch(s) {
     case Sens::Haut:
       new_pos_h-=1;
-      sens_vertical=-1;
+      sens_h=-1;
       break;
     case Sens::Bas:
       new_pos_h+=1;
-      sens_vertical=1;
+      sens_h=1;
       break;
     case Sens::Gauche:
       new_pos_l-=1;
-      sens_horizontal=-1;
+      sens_l=-1;
       break;
     case Sens::Droite:
       new_pos_l+=1;
-      sens_horizontal=1;
+      sens_l=1;
       break;
     default:
       break;      
     }
 
+    C & dest=(*this)[new_pos_h][new_pos_l];
+    C & derriere=(*this)[new_pos_h+sens_h][new_pos_l+sens_l];
+    
     long & score=this -> score;
-
+    
         /* si la case juste au-dessus est vide, le personnage
        peut s'y déplacer sans condition */
-    if ((*this)[new_pos_h][new_pos_l]==caseVide) {
-      (*this)[new_pos_h][new_pos_l]=pers;
-      (*this)[pos_h][pos_l]=caseVide;
+
+    
+    if (dest==caseVide||dest==but) {
+      dest= dest==caseVide ? pers : pers_but;
+      if (source==pers)
+	source=caseVide;
+      else if (source==pers_but)
+	source=but;
       pos_h=new_pos_h;
       pos_l=new_pos_l;
       score++;
     }
 
+    
     /* si la case juste au-dessus contient une caisse,
        elle ne peut être poussée que si la case située derrière
        est vide ou contient un but */
-    else if ((*this)[new_pos_h][new_pos_l]==caisse) {
+
+    
+    else if (dest==caisse) {
 
       /* déplacement d'une caisse sur une case caseVide */
-      if ((*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]==caseVide) {
-	(*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]=caisse;
-	(*this)[new_pos_h][new_pos_l]=pers;
-	(*this)[pos_h][pos_l]=caseVide;
+
+    
+      if (derriere==caseVide) {
+	derriere=caisse;
+	dest=pers;
+	if (source==pers)
+	  source=caseVide;
+	else if (source==pers_but)
+	  source=but;
 	pos_h=new_pos_h;
 	pos_l=new_pos_l;
 	score++;
       }
-      else if ((*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]==but) {
-
+      else if (derriere==but) {
+    
 	/* déplacement d'une caisse sur un but */
-	(*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]=caisse_but;
-	(*this)[new_pos_h][new_pos_l]=pers;
-	(*this)[pos_h][pos_l]=caseVide;
+    
+	derriere=caisse_but;
+	dest=pers;
+	if (source==pers)
+	  source=caseVide;
+	else if (source==pers_but)
+	  source=but;
 	pos_h=new_pos_h;
 	pos_l=new_pos_l;
-	score++;
-      }
-    }
-
-    /* si la case du dessus contient un but occupé
-       par une caisse, cette dernière peut être poussée
-       s'il y a un autre but ou une case vide derrière
-     */
-    else if ((*this)[new_pos_h][new_pos_l]==caisse_but) {
-
-      /* d'un but vers un autre */
-      if ((*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]==but) {
-	(*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]=caisse_but;
-	(*this)[new_pos_h][new_pos_l]=but;
-	score++;
-      }
-
-      /* d'un but vers une case caseVide */
-      else if ((*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]==caseVide) {
-	(*this)[new_pos_h+sens_vertical][new_pos_l+sens_horizontal]=caisse;
-	(*this)[new_pos_h][new_pos_l]=but;
 	score++;
       }
     }
     
-  }
+    /* si la case du dessus contient un but occupé
+       par une caisse, cette dernière peut être poussée
+       s'il y a un autre but ou une case vide derrière
+     */
+    
+    else if (dest==caisse_but) {
+    
+      /* d'un but vers un autre */
 
-  virtual void deplacerHaut() {
-    deplacer(Sens::Haut);
-  }
-  
-  virtual void deplacerBas() {
-    deplacer(Sens::Bas);
-  }
-  
-  virtual void deplacerGauche() {
-    deplacer(Sens::Gauche);
-  }
-  
-  virtual void deplacerDroite(){
-    deplacer(Sens::Droite);
+    
+      if (derriere==but) {
+	derriere=caisse_but;
+	dest=pers_but;
+	if (source==pers)
+	  source=caseVide;
+	else if (source==pers_but)
+	  source=but;
+	pos_h=new_pos_h;
+	pos_l=new_pos_l;
+	score++;
+      }
+    
+      /* d'un but vers une case caseVide */
+    
+      else if (derriere==caseVide) {
+	derriere=caisse;
+	dest=pers_but;
+	if (source==pers)
+	  source=caseVide;
+	else if (source==pers_but)
+	  source=but;
+	pos_h=new_pos_h;
+	pos_l=new_pos_l;
+	score++;
+      }
+    }
+    
   }
   
   virtual bool jeuTermine() const {
@@ -376,6 +399,7 @@ protected:
     }
     return false;
   }
+  
 public:
   Sokoban(int longueur, int hauteur) :
     Jeu<CaseSok>(longueur,hauteur)
