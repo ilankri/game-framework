@@ -1,7 +1,7 @@
 EXEC=Jeu
 CPP=g++
 OPT=-W -Wall -Wextra -std=c++11
-SRC= main.cpp Jeu.cpp Jeu.hpp Taquin.cpp Taquin.hpp Sokoban.cpp Sokoban.hpp
+SRC= main.cpp Jeu.cpp Jeu.hpp Taquin.cpp Taquin.hpp Jeu2048.cpp Jeu2048.hpp Sokoban.cpp Sokoban.hpp
 OBJ= $(SRC:.cpp=.o)
 
 

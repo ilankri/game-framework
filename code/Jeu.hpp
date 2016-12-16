@@ -14,7 +14,26 @@ protected:
   static const T caseVide= (T) 0;
   long score;
   bool quitter;
-  virtual void afficher(ostream& o=cout) const=0;
+  virtual void afficher(ostream &o=cout) const {
+    const int &l =this->longueur;
+    const int &h = this->hauteur;
+        
+    for (int j(0); j<8*l+2; j++) o << "-";
+    //longueur d'une ligne, en tenant compte des tabulations
+    o << endl;
+    for (int i(0); i<h; i++) {
+      for (int j(0); j<l; j++) {
+	const T & case_cur=(*this)[i][j];
+	o << "| ";
+	if (case_cur==caseVide) o << " ";
+	else o<< case_cur;
+	o << "\t";
+      }
+      o << " |" << endl;
+      for (int j(0); j<8*l+2; j++) o << "-";
+      o <<endl;
+    }
+  }
   virtual void deplacer(Sens)=0;
   virtual void deplacerHaut() {deplacer(Sens::Haut);}
   virtual void deplacerBas() {deplacer(Sens::Bas);}
@@ -51,7 +70,7 @@ public:
 	break;
       case 0:
 	quitter=true;
-	break;
+	return;
       default:
 	break;
       }

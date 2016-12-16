@@ -13,26 +13,6 @@ protected:
   //coordonnées de la case vide
   int pos_vide_l;
   int pos_vide_h;
-  
-  virtual void afficher(ostream& o) const {
-
-    const int &l=this->longueur, &h=this->hauteur;
-    
-    for (int j(0); j<8*l+2; j++) o << "-";
-    //longueur d'une ligne, en tenant compte des tabulations
-    o << endl;
-    for (int i(0); i<h; i++) {
-      for (int j(0); j<l; j++) {
-	o << "| ";
-	if (this->plateau[i][j]==Jeu<C>::caseVide) o << " ";
-	else o<< this->plateau[i][j];
-	o << "\t";
-      }
-      o << " |" << endl;
-      for (int j(0); j<8*l+2; j++) o << "-";
-      o <<endl;
-    }
-  }
 
   //virtual bool bienTriePartiel() const;
 public:

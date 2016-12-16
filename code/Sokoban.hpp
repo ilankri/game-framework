@@ -4,6 +4,7 @@
 #include "Jeu.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 
 enum class CaseSok{vide,mur,pers,caisse,but,caisse_but,pers_but};
 
@@ -14,6 +15,7 @@ class Sokoban : public Jeu<CaseSok> {
 private:
   const int &l=longueur, &h=hauteur;
 protected:
+  int nb_caisses;
   int pos_h;
   int pos_l;
   int i_haut_gauche, j_haut_gauche;
@@ -181,7 +183,7 @@ protected:
   
   virtual void placer_buts_caisses() {
     //cout << "placer_buts_caisses()" << endl;
-    for (int k(0); k<4; k++) {
+    for (int k(0); k<nb_caisses; k++) {
       int l_c,h_c;
       /* on place les buts aléatoirement sur le plateau, en
 	 vérifiant qu'ils ne soient jamais en dehors des murs */
@@ -401,9 +403,13 @@ protected:
   }
   
 public:
-  Sokoban(int longueur, int hauteur) :
+  Sokoban(int longueur, int hauteur, int nb_caisses=-1) :
     Jeu<CaseSok>(longueur,hauteur)
-  { initialiser();}
+  { if (nb_caisses==-1) this->nb_caisses=sqrt(longueur*hauteur)/2;
+    else this->nb_caisses=nb_caisses;
+    initialiser();
+  }
+  virtual ~Sokoban() {}
 };
 
 #endif
