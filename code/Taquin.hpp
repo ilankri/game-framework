@@ -19,11 +19,13 @@ public:
   Taquin(int l, int h) : Jeu<C>(l,h) {initialiser();}
   virtual ~Taquin() {}
   virtual void initialiser() {
+    remplir();
+    melanger();
+  }
+  virtual void remplir() {
     const int &h = this->hauteur;
     const int &l = this->longueur;
-    //reste à gérer les grilles impossibles à réordonner :
-    // (case vide paire + permutation impaire)
-    // ou (case vide impaire + permutation paire)
+
     srand(time(nullptr));
     C tmp=(C) 1;
     //on remplit les cases
@@ -39,41 +41,56 @@ public:
     this->pos_vide_h=h-1;
     this->pos_vide_l=l-1;
     
-    bool perm_paire=true; // la parité d'une permutation est celle du nombre d'échanges successifs qu'il faut faire pour obtenir la grille finale
-    bool case_vide_paire=false; // la parité de la case vide est celle du nombre de déplacements à effectuer pour la mettre en bas à droite
+  }
+  
+  virtual void melanger() {
+    
+    bool perm_paire=true;
+    /* la parité d'une permutation est celle du nombre 
+       d'échanges successifs qu'il faut faire pour 
+       obtenir la grille finale */
+    
+    bool case_vide_paire=true;
+    /* la parité de la case vide est celle du nombre de 
+       déplacements à effectuer pour la mettre en bas 
+       à droite */
+    
+    const int &h = this->hauteur;
+    const int &l = this->longueur;
     
     // on mélange les cases
     int i1(0), j1(0), i2(0), j2(0);
     
-    
     for (int k(0); k<l*h; k++) {
       i1=rand()%h;
       j1=rand()%l;
-    do {
-      i2=rand()%h;
-      j2=rand()%l;
-    }
-    while (i1==i2 && j1==j2);
-    int tmp=(*this)[i1][j1];
-    (*this)[i1][j1]=(*this)[i2][j2];
-    (*this)[i2][j2]=tmp;
-    perm_paire=!perm_paire;
+      
+      do {
+	i2=rand()%h;
+	j2=rand()%l;
+      }
+      while (i1==i2 && j1==j2);
+      
+      C tmp=(*this)[i1][j1];
+      (*this)[i1][j1]=(*this)[i2][j2];
+      (*this)[i2][j2]=tmp;
+      perm_paire=!perm_paire;
     
-    //on met à jour les coordonnées de la case vide
-    if ((*this)[i1][j1]==Jeu<C>::caseVide) {
-      pos_vide_h=i1;
-      pos_vide_l=j1;
-    }
-    else if ((*this)[i2][j2]==Jeu<C>::caseVide) {
-      pos_vide_h=i2;
-      pos_vide_l=j2;
-    }
-    case_vide_paire=((l-1-pos_vide_l)+(h-1-pos_vide_h))%2==0;
+      //on met à jour les coordonnées de la case vide
+      if ((*this)[i1][j1]==Jeu<C>::caseVide) {
+	pos_vide_h=i1;
+	pos_vide_l=j1;
+      }
+      else if ((*this)[i2][j2]==Jeu<C>::caseVide) {
+	pos_vide_h=i2;
+	pos_vide_l=j2;
+      }
+      case_vide_paire=((l-1-pos_vide_l)+(h-1-pos_vide_h))%2==0;
     }
     
     /*pour que la grille soit résolvable, il faut que 
       la permutation soit de même parité que la case vide */
-      if (case_vide_paire ^ perm_paire) {
+    if (case_vide_paire ^ perm_paire) {
       do {
 	i1=rand()%h;
 	j1=rand()%l;
@@ -85,13 +102,13 @@ public:
       }
       while ((i2==this->pos_vide_h && j2==this->pos_vide_l)
 	     ||(i2==i1 && j2==j1));
-      tmp=(*this)[i1][j1];
+      C tmp=(*this)[i1][j1];
       (*this)[i1][j1]=(*this)[i2][j2];
       (*this)[i2][j2]=tmp;
       
     }
   }
-
+  
   virtual bool jeuTermine() const {
 
     const int &l=this->longueur, &h=this->hauteur;
