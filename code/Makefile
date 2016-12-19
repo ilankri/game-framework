@@ -1,24 +1,35 @@
-EXEC=Jeu
-CPP=g++
-OPT=-W -Wall -Wextra -std=c++11
-SRC= main.cpp Jeu.cpp Jeu.hpp Taquin.cpp Taquin.hpp Jeu2048.cpp Jeu2048.hpp Sokoban.cpp Sokoban.hpp
-OBJ= $(SRC:.cpp=.o)
+SHELL = /bin/sh
+RM = rm -f
+CXX = g++
+CPPFLAGS = -MMD -MP # To generate automatically dependencies for make.
+DEBUGFLAG = -g3
+CXXFLAGS = $(DEBUGFLAG) -Wall -Wextra -Wpedantic -std=c++11
+LDFLAGS = $(DEBUGFLAG)
 
+SRC = main.cpp Jeu.cpp Taquin.cpp Jeu2048.cpp Sokoban.cpp
+OBJ = $(SRC:.cpp=.o)
+DEP = $(SRC:.cpp=.d)
+EXEC = Jeu
+
+compile = $(CXX) -c $(CPPFLAGS) $(CXXFLAGS)
+link = $(CXX) $(LDFLAGS)
+
+.SUFFIXES:
+.SUFFIXES: .o .cpp
+.PHONY: all clean mrproper
 
 all: $(EXEC)
 
-$(EXEC) : $(OBJ)
-	$(CPP) $(OPT) -o $(EXEC) $^
+$(EXEC): $(OBJ)
+	$(link) $^ -o $@
 
-main.o: main.cpp
-	$(CPP) $(OPT) -c $^
+%.o: %.cpp
+	$(compile) $<
 
-%.o: %.cpp %.hpp
-	$(CPP) $(OPT) -c $^
-
+-include $(DEP)
 
 clean:
-	@rm *.o
+	$(RM) $(OBJ) $(DEP)
 
 mrproper: clean
-	@rm -rf *.gch
+	$(RM) $(EXEC)
