@@ -145,7 +145,7 @@ public:
   }
 
   virtual void deplacer(Sens s) {
-    int sens_l= 0;
+    int sens_l=0;
     int sens_h=0;
 
     const int &h=this->hauteur, &l=this->longueur;

@@ -41,11 +41,11 @@ protected:
 
     // enlever les ""
     /*
-    o << mur << " : mur" << endl;
-    o << pers << " : personnage (" << pos_h << "," << pos_l << ")" << endl;
-    o << caisse << " : caisse" << endl;
-    o << but << " : but" << endl;
-    o << caisse_but << " : caisse placée sur un but" << endl;
+      o << mur << " : mur" << endl;
+      o << pers << " : personnage (" << pos_h << "," << pos_l << ")" << endl;
+      o << caisse << " : caisse" << endl;
+      o << but << " : but" << endl;
+      o << caisse_but << " : caisse placée sur un but" << endl;
     */
   }
   
@@ -58,7 +58,6 @@ protected:
   virtual void placer_murs() {
     //cout <<"placer_murs()" << endl;
     srand(time(nullptr));
-
 
     /* Les coins des murs externes ne seront pas forcément au bord 
        du plateau, afin d'obtenir la disposition la plus aléatoire 
@@ -107,6 +106,11 @@ protected:
     for (int j(j_bas_droite); j<l; j++) {
       (*this)[i_bas_droite][j]=mur;
     }
+    placerMursExternes();
+    placerMursInternes();
+  }
+  
+  virtual void placerMursExternes() {
 
     /* On termine de placer les murs externes */
     for (int i(i_haut_gauche); i<i_bas_gauche; i++) {
@@ -125,60 +129,30 @@ protected:
       (*this)[i][l-1]=mur;
     }
 
+  }
+  virtual void placerMursInternes() {
 
-    /* On décide aléatoirement si on prolonge chaque coin vers
-       l'intérieur ou pas */
-    if (i_haut_gauche >1) {
-      int r=1+rand()%(l/3);
-      for (int j(j_haut_gauche); j<j_haut_gauche+r; j++) {
-	(*this)[i_haut_gauche][j]=mur;
-      }
-    }
-    if (j_haut_gauche > 1) {
-      int r=rand()%(h/3);
-      for (int i(i_haut_gauche); i<i_haut_gauche+r; i++) {
-	(*this)[i][j_haut_gauche]=mur;
-      }
-    }
+    /* On décide aléatoirement si on place des murs internes
+       ou pas*/
+    int j_h_mil=(j_haut_gauche+j_haut_droite)/2;
+    int j_b_mil=(j_bas_gauche+j_bas_droite)/2;
+    int i_mil_g=(i_haut_gauche+i_haut_droite)/2;
+    int i_mil_d=(i_haut_droite+i_bas_droite)/2;
 
-    if (i_haut_droite >1) {
-      int r=rand()%(l/3);
-      for (int j(j_haut_droite); j<j_haut_droite-r; j--) {
-	(*this)[i_haut_droite][j]=mur;
-      }
-    }
-    if (j_haut_droite < l-2) {
-      int r=rand()%(h/3);
-      for (int i(i_haut_droite); i<i_haut_droite+r; i++) {
-	(*this)[i][j_haut_droite]=mur;
-      }
-    }
+    int lim_h_mil=1+rand()%(h/4), lim_b_mil=1+rand()%(h/4);
+    int lim_mil_g=1+rand()%(l/4), lim_mil_d=1+rand()%(l/4);
 
-    if (i_bas_gauche <h-2) {
-      int r=rand()%(l/3);
-      for (int j(j_bas_gauche); j<j_bas_gauche+r; j++) {
-	(*this)[i_bas_gauche][j]=mur;
-      }
-    }
-    if (j_bas_gauche >1) {
-      int r=rand()%(h/3);
-      for (int i(i_bas_gauche); i>i_bas_gauche-r; i--) {
-	(*this)[i][j_bas_gauche]=mur;
-      }
-    }
+    for (int i(0); i<lim_h_mil; i++)
+      (*this)[i][j_h_mil]=mur;
+    
+    for (int i(h-1); i>h-1-lim_b_mil; i--)
+      (*this)[i][j_b_mil]=mur;
+    
+    for (int j(0); j<lim_mil_g; j++)
+      (*this)[i_mil_g][j]=mur;
 
-    if (i_bas_droite <h-2) {
-      int r=rand()%(l/3);
-      for (int j(j_bas_droite); j>j_bas_droite-r; j--) {
-	(*this)[i_bas_droite][j]=mur;
-      }
-    }
-    if (j_bas_droite <l-2) {
-      int r=rand()%(h/3);
-      for (int i(i_bas_droite); i>i_bas_droite-r; i--) {
-	(*this)[i][j_bas_droite]=mur;
-      }
-    }
+    for(int j(l-1); j>l-1-lim_mil_d; j--) 
+      (*this)[i_mil_d][j]=mur;
   }
   
   virtual void placer_buts_caisses() {
@@ -191,14 +165,9 @@ protected:
 	l_c=rand()%l;
 	h_c=rand()%h;
       }
-      while ((*this)[h_c][l_c] != caseVide ||
-	     (h_c <= i_haut_gauche && l_c <= j_haut_gauche)
-	     ||(h_c >= i_bas_gauche && l_c <= j_bas_gauche)
-	     ||(h_c <= i_haut_droite && l_c >= j_haut_droite)
-	     ||(h_c >= i_bas_droite && l_c >= j_bas_droite));
+      while ((*this)[h_c][l_c] != caseVide || horsZoneMurs(h_c,l_c));
       (*this)[h_c][l_c]=but;
-      
-      
+            
       /* on place autant de caisses que de buts, en vérifiant
 	 toujours qu'elles ne soient jamais en dehors des murs.
 	 De plus, pour que la grille soit résolvable, les caisses
@@ -210,18 +179,36 @@ protected:
 	l_c=rand()%l;
 	h_c=rand()%h;
       }
-      while ((*this)[h_c][l_c] != caseVide||
-	     (h_c >=h-2 || h_c <=1 || l_c >=l-2 || l_c<=1)
-	     ||(h_c <= i_haut_gauche && l_c <= j_haut_gauche)
-	     ||(h_c >= i_bas_gauche && l_c <= j_bas_gauche)
-	     ||(h_c <= i_haut_droite && l_c >= j_haut_droite)
-	     ||(h_c >= i_bas_droite && l_c >= j_bas_droite)
-	     ||(*this)[h_c-1][l_c] != caseVide
-	     ||(*this)[h_c][l_c-1] != caseVide
-	     ||(*this)[h_c][l_c+1] != caseVide
-	     ||(*this)[h_c+1][l_c] != caseVide);
+      while (!zoneLibre(h_c,l_c));
       (*this)[h_c][l_c]=caisse;
     }
+  }
+
+  virtual bool zoneLibre(int h_c, int l_c) {
+
+    if (horsZoneMurs(h_c,l_c)) return false;
+    if ((*this)[h_c][l_c]!=caseVide) return false;
+    if ((*this)[h_c+1][l_c] !=caseVide) return false;
+    if ((*this)[h_c-1][l_c] !=caseVide) return false;
+    if ((*this)[h_c][l_c-1] != caseVide) return false;
+    if ((*this)[h_c][l_c+1] != caseVide) return false;
+
+    return true;
+  }
+
+  virtual bool horsZoneMurs(int h_c, int l_c) {
+    const int &h=this->hauteur;
+    const int &l=this->longueur;
+    
+    if (h_c>=h-2||h_c<=1) return true;
+    if (l_c>=l-2||l_c<=1) return true;
+
+    if (h_c <= i_haut_gauche && l_c <= j_haut_gauche) return true; 
+    if (h_c >= i_bas_gauche && l_c <= j_bas_gauche) return true;
+    if (h_c <= i_haut_droite && l_c >= j_haut_droite) return true;
+    if (h_c >= i_bas_droite && l_c >= j_bas_droite) return true;
+
+    return false;
   }
 
   virtual void placer_pers() {
@@ -233,17 +220,9 @@ protected:
 
     /* pour que le personnage puisse effectuer au moins un
        mouvement, on le place dans une case entourée uniquement
-       de case vide, toujours à l'intérieur de la zone délimitée
-       par les  murs externes */
-    while ((pos_h <= i_haut_gauche && pos_l <=j_haut_gauche)
-	   ||(pos_h >= i_bas_gauche && pos_l <= j_bas_gauche)
-	   ||(pos_h <= i_haut_droite && pos_l >= j_haut_droite)
-	   ||(pos_h >= i_bas_droite && pos_l >= j_bas_droite)
-	   ||(*this)[pos_h-1][pos_l] != caseVide
-	   ||(*this)[pos_h][pos_l-1] !=caseVide
-	   ||(*this)[pos_h][pos_l] != caseVide
-	   ||(*this)[pos_h][pos_l+1] != caseVide
-	   ||(*this)[pos_h+1][pos_l] != caseVide);
+       de cases vides, toujours à l'intérieur de la zone délimitée
+       par les murs externes */
+    while (!zoneLibre(pos_h,pos_l));
     (*this)[pos_h][pos_l]=pers;
   }
 
@@ -282,7 +261,6 @@ protected:
         /* si la case juste au-dessus est vide, le personnage
        peut s'y déplacer sans condition */
 
-    
     if (dest==caseVide||dest==but) {
       dest= dest==caseVide ? pers : pers_but;
       if (source==pers)
@@ -293,18 +271,15 @@ protected:
       pos_l=new_pos_l;
       score++;
     }
-
     
     /* si la case juste au-dessus contient une caisse,
        elle ne peut être poussée que si la case située derrière
        est vide ou contient un but */
-
     
     else if (dest==caisse) {
 
       /* déplacement d'une caisse sur une case caseVide */
 
-    
       if (derriere==caseVide) {
 	derriere=caisse;
 	dest=pers;
@@ -340,7 +315,6 @@ protected:
     else if (dest==caisse_but) {
     
       /* d'un but vers un autre */
-
     
       if (derriere==but) {
 	derriere=caisse_but;

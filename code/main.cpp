@@ -4,8 +4,8 @@
 #include "Jeu2048.hpp"
 
 int main() {
-  const int l=4,h=4;
-  Jeu<int> *j=new Taquin<int>(l,h);
+  const int l=10,h=10;
+  Jeu<CaseSok> *j=new Sokoban<CaseSok>(l,h);
   j -> jouerHumain();
   delete j;
   return 0;
