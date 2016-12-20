@@ -45,7 +45,7 @@ private:
 
 	virtual void deplacer(Sens) = 0;
 
-	void afficher(ostream& o = cout) const;
+	virtual void afficher(ostream& o = cout) const;
 
 	void deplacerHaut();
 
@@ -55,7 +55,7 @@ private:
 
 	void deplacerDroite();
 
-	bool jeuBloque() const;
+	virtual bool jeuBloque() const;
 };
 
 template<class T>

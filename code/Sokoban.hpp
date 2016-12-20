@@ -39,7 +39,7 @@ private:
 
 	int j_bas_droite;
 
-	/* virtual void afficher(ostream& o = cout) const; */
+	virtual void afficher(ostream& o = cout) const;
 
 	virtual void initialiser();
 

@@ -31,35 +31,35 @@ Sokoban::Sokoban(int longueur, int hauteur, int nb_caisses) :
 	Jeu<CaseSok>(longueur, hauteur)
 {
 	if (nb_caisses == -1)
-		nb_caisses = sqrt(longueur * hauteur) / 2;
+		this->nb_caisses = sqrt(longueur * hauteur) / 2;
 	else
-		nb_caisses = nb_caisses;
+		this->nb_caisses = nb_caisses;
 	initialiser();
 }
 
 Sokoban::~Sokoban() {}
 
-/* void Sokoban::afficher(ostream& o) const */
-/* { */
+void Sokoban::afficher(ostream& o) const
+{
 
-/*	for (int i = 0; i < hauteur; i++) { */
-/*		for (int j = 0; j < longueur; j++) { */
-/*			o << plateau[i][j] << " "; */
-/*		} */
-/*		o << endl; */
+	for (int i = 0; i < hauteur; i++) {
+		for (int j = 0; j < longueur; j++) {
+			o << plateau[i][j] << " ";
+		}
+		o << endl;
 
-/*	} */
+	}
 
-/*	// enlever les "" */
-/*	/\* */
-/*	  o << mur << " : mur" << endl; */
-/*	  o << pers << " : personnage (" << pos_h << "," << */
-/*	  pos_l << ")" << endl; */
-/*	  o << caisse << " : caisse" << endl; */
-/*	  o << but << " : but" << endl; */
-/*	  o << caisse_but << " : caisse placée sur un but" << endl; */
-/*	*\/ */
-/* } */
+	// enlever les ""
+	/*
+	  o << mur << " : mur" << endl;
+	  o << pers << " : personnage (" << pos_h << "," <<
+	  pos_l << ")" << endl;
+	  o << caisse << " : caisse" << endl;
+	  o << but << " : but" << endl;
+	  o << caisse_but << " : caisse placée sur un but" << endl;
+	*/
+}
 
 void Sokoban::initialiser()
 {
