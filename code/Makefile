@@ -6,7 +6,7 @@ DEBUGFLAG = -g3
 CXXFLAGS = $(DEBUGFLAG) -Wall -Wextra -Wpedantic -std=c++11
 LDFLAGS = $(DEBUGFLAG)
 
-SRC = main.cpp Jeu.cpp Taquin.cpp
+SRC = main.cpp Jeu.cpp Taquin.cpp Sokoban.cpp
 OBJ = $(SRC:.cpp=.o)
 DEP = $(SRC:.cpp=.d)
 EXEC = jeu
