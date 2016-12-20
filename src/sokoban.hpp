@@ -1,7 +1,7 @@
 #ifndef SOKOBAN
 #define SOKOBAN
 
-#include "Jeu.hpp"
+#include "game.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -10,7 +10,7 @@ enum class CaseSok {vide, mur, pers, caisse, but, caisse_but, pers_but};
 
 ostream& operator<<(ostream&, CaseSok const&);
 
-class Sokoban : public Jeu<CaseSok> {
+class Sokoban : public Game<CaseSok> {
 public:
 	Sokoban(int longueur, int hauteur, int nb_caisses = -1);
 

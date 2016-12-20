@@ -1,6 +1,6 @@
-#include "Taquin.hpp"
+#include "taquin.hpp"
 
-Taquin::Taquin(int l, int h) : Jeu<int>(l, h)
+Taquin::Taquin(int l, int h) : Game<int>(l, h)
 {
 	initialiser();
 }
@@ -18,7 +18,7 @@ void Taquin::remplir()
 	int tmp = 1;
 
 	srand(time(nullptr));
-	//on remplit les cases
+	// On remplit les cases.
 	for (int i = 0; i < hauteur; i++) {
 		for (int j = 0; j < longueur; j++) {
 			plateau[i][j] = tmp++;
@@ -32,17 +32,19 @@ void Taquin::remplir()
 
 void Taquin::melanger()
 {
+	/*
+	 * La parité d'une permutation est celle du nombre d'échanges
+	 * successifs qu'il faut faire pour obtenir la grille finale.
+	 */
 	bool perm_paire = true;
-	/* la parité d'une permutation est celle du nombre
-	   d'échanges successifs qu'il faut faire pour
-	   obtenir la grille finale */
 
+	/*
+	 * La parité de la case vide est celle du nombre de déplacements
+	 * à effectuer pour la mettre en bas à droite.
+	 */
 	bool case_vide_paire = true;
-	/* la parité de la case vide est celle du nombre de
-	   déplacements à effectuer pour la mettre en bas
-	   à droite */
 
-	// on mélange les cases
+	// On mélange les cases.
 	int i1 = 0;
 	int j1 = 0;
 	int i2 = 0;
@@ -64,7 +66,7 @@ void Taquin::melanger()
 		plateau[i2][j2] = tmp;
 		perm_paire = !perm_paire;
 
-		//on met à jour les coordonnées de la case vide
+		// On met à jour les coordonnées de la case vide.
 		if (plateau[i1][j1] == caseVide) {
 			pos_vide_h = i1;
 			pos_vide_l = j1;
@@ -76,8 +78,10 @@ void Taquin::melanger()
 				   (hauteur - 1 - pos_vide_h)) % 2 == 0;
 	}
 
-	/*pour que la grille soit résolvable, il faut que
-	  la permutation soit de même parité que la case vide */
+	/*
+	 * Pour que la grille soit résolvable, il faut que la
+	 * permutation soit de même parité que la case vide.
+	 */
 	if (case_vide_paire ^ perm_paire) {
 		do {
 			i1 = rand() % hauteur;
@@ -101,18 +105,20 @@ bool Taquin::jeuTermine() const
 	}
 
 	for (int j = 1; j < longueur; j++) {
-		//on teste si la première ligne est triée
+		// On teste si la première ligne est triée.
 		if (plateau[0][j] < plateau[0][j-1])
 			return false;
 	}
 	for (int i = 1; i < hauteur - 1; i++) {
-		/* à partir de la 2e ligne, on regarde d'abord si la
-		   1re case est supérieure à la dernière de la ligne
-		   précédente */
+		/*
+		 * À partir de la 2e ligne, on regarde d'abord si la 1re
+		 * case est supérieure à la dernière de la ligne
+		 * précédente.
+		 */
 		if (plateau[i][0] < plateau[i - 1][longueur - 1])
 			return false;
 		for (int j = 1; j < longueur; j++) {
-			// on teste ensuite si la ligne i est triée
+			// On teste ensuite si la ligne i est triée.
 			if (plateau[i][j] < plateau[i][j - 1])
 				return false;
 		}
@@ -121,8 +127,10 @@ bool Taquin::jeuTermine() const
 	if (plateau[hauteur - 1][0] < plateau[hauteur - 2][longueur - 1])
 		return false;
 	for (int j = 1; j < longueur - 1; j++) {
-		/* on teste si la dernière ligne est triée (sans tenir
-		   compte de la dernière case, qui doit être vide */
+		/*
+		 * On teste si la dernière ligne est triée (sans tenir
+		 * compte de la dernière case, qui doit être vide.
+		 */
 		if (plateau[hauteur - 1][j] < plateau[hauteur - 1][j - 1])
 			return false;
 	}

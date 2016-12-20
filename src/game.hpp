@@ -1,5 +1,5 @@
-#ifndef JEU
-#define JEU
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #include <iostream>
 
@@ -8,22 +8,22 @@ using namespace std;
 enum class Sens {Haut, Bas, Gauche, Droite};
 
 template<class T>
-class Jeu {
+class Game {
 public:
-	Jeu(int l, int h);
+	Game(int l, int h);
 
 	void jouerHumain();
 
 	void jouerRobot();
 
 	template<class C>
-	friend ostream& operator<<(ostream& o, const Jeu<C>& jeu);
+	friend ostream& operator<<(ostream& o, const Game<C>& game);
 
 	/* const T* operator[](int i) const; */
 
 	/* T* operator[](int i); */
 
-	virtual ~Jeu();
+	virtual ~Game();
 
 protected:
 	const int longueur;
@@ -59,7 +59,7 @@ private:
 };
 
 template<class T>
-Jeu<T>::Jeu(int l, int h) : longueur(l), hauteur(h), plateau(new T*[h]),
+Game<T>::Game(int l, int h) : longueur(l), hauteur(h), plateau(new T*[h]),
 			    score(0), quitter(false)
 {
 	for (int i = 0; i < h; i++)
@@ -67,7 +67,7 @@ Jeu<T>::Jeu(int l, int h) : longueur(l), hauteur(h), plateau(new T*[h]),
 }
 
 template<class T>
-void Jeu<T>::jouerHumain() {
+void Game<T>::jouerHumain() {
 	int rep;
 
 	while (!jeuTermine() && !quitter) {
@@ -101,9 +101,11 @@ void Jeu<T>::jouerHumain() {
 }
 
 template<class T>
-void Jeu<T>::jouerRobot() {
-	/*ceci est une version naïve : essayer si possible
-	  de rendre le robot plus intelligent */
+void Game<T>::jouerRobot() {
+	/*
+	 * Ceci est une version naïve : essayer si possible de rendre le
+	 * robot plus intelligent.
+	 */
 	srand(time(nullptr));
 	while (!jeuTermine()) {
 		cout << *this;
@@ -129,7 +131,7 @@ void Jeu<T>::jouerRobot() {
 }
 
 template<class T>
-ostream& operator<<(ostream& o, const Jeu<T>& j)
+ostream& operator<<(ostream& o, const Game<T>& j)
 {
 	j.afficher();
 	o << "score : " << j.score << endl;
@@ -153,7 +155,7 @@ ostream& operator<<(ostream& o, const Jeu<T>& j)
 /* } */
 
 template<class T>
-Jeu<T>::~Jeu()
+Game<T>::~Game()
 {
 	for (int i = 0; i < hauteur; i++)
 		delete[] plateau[i];
@@ -161,7 +163,7 @@ Jeu<T>::~Jeu()
 }
 
 template<class T>
-void Jeu<T>::afficher(ostream& o) const
+void Game<T>::afficher(ostream& o) const
 {
 	// longueur d'une ligne, en tenant compte des tabulations
 	int line_len_with_tabs = 8 * longueur + 2;
@@ -177,7 +179,7 @@ void Jeu<T>::afficher(ostream& o) const
 			/* if (case_cur == caseVide) */
 			/*	o << " "; */
 			/* else */
-				o << case_cur;
+			o << case_cur;
 			o << "\t";
 		}
 		o << " |" << endl;
@@ -188,34 +190,34 @@ void Jeu<T>::afficher(ostream& o) const
 }
 
 template<class T>
-void Jeu<T>::deplacerHaut()
+void Game<T>::deplacerHaut()
 {
 	deplacer(Sens::Haut);
 }
 
 template<class T>
-void Jeu<T>::deplacerBas()
+void Game<T>::deplacerBas()
 {
 	deplacer(Sens::Bas);
 }
 
 template<class T>
-void Jeu<T>::deplacerGauche()
+void Game<T>::deplacerGauche()
 {
 	deplacer(Sens::Gauche);
 }
 
 template<class T>
-void Jeu<T>::deplacerDroite()
+void Game<T>::deplacerDroite()
 {
 	deplacer(Sens::Droite);
 }
 
 
 template<class T>
-bool Jeu<T>::jeuBloque() const
+bool Game<T>::jeuBloque() const
 {
 	return false;
 }
 
-#endif
+#endif	/* not GAME_HPP */

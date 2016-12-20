@@ -1,4 +1,4 @@
-#include "Sokoban.hpp"
+#include "sokoban.hpp"
 
 ostream& operator<<(ostream& o, CaseSok const& c) {
 	switch (c) {
@@ -28,7 +28,7 @@ ostream& operator<<(ostream& o, CaseSok const& c) {
 }
 
 Sokoban::Sokoban(int longueur, int hauteur, int nb_caisses) :
-	Jeu<CaseSok>(longueur, hauteur)
+	Game<CaseSok>(longueur, hauteur)
 {
 	if (nb_caisses == -1)
 		this->nb_caisses = sqrt(longueur * hauteur) / 2;
@@ -74,9 +74,11 @@ void Sokoban::placer_murs()
 	//cout <<"placer_murs()" << endl;
 	srand(time(nullptr));
 
-	/* Les coins des murs externes ne seront pas forcément au bord
-	   du plateau, afin d'obtenir la disposition la plus aléatoire
-	   possible */
+	/*
+	 * Les coins des murs externes ne seront pas forcément au bord
+	 * du plateau, afin d'obtenir la disposition la plus aléatoire
+	 * possible.
+	 */
 	i_haut_gauche = rand() % (hauteur / 3);
 	j_haut_gauche = rand() % (longueur / 3);
 
@@ -89,8 +91,10 @@ void Sokoban::placer_murs()
 	i_bas_droite = hauteur - 1 - rand() % (hauteur / 3);
 	j_bas_droite = longueur - 1 - rand() % (hauteur / 3);
 
-	/* Coin haut-gauche : on prolonge le mur jusqu'au bord du
-	   plateau */
+	/*
+	 * Coin haut-gauche : on prolonge le mur jusqu'au bord du
+	 * plateau.
+	 */
 	for (int i = i_haut_gauche; i >= 0; i--) {
 		plateau[i][j_haut_gauche] = CaseSok::mur;
 	}
@@ -128,7 +132,7 @@ void Sokoban::placer_murs()
 void Sokoban::placerMursExternes()
 {
 
-	/* On termine de placer les murs externes */
+	/* On termine de placer les murs externes.  */
 	for (int i = i_haut_gauche; i < i_bas_gauche; i++) {
 		plateau[i][0] = CaseSok::mur;
 	}
@@ -150,8 +154,9 @@ void Sokoban::placerMursExternes()
 void Sokoban::placerMursInternes()
 {
 
-	/* On décide aléatoirement si on place des murs internes
-	   ou pas*/
+	/*
+	 * On décide aléatoirement si on place des murs internes ou pas.
+	 */
 	int j_h_mil = (j_haut_gauche + j_haut_droite) / 2;
 	int j_b_mil = (j_bas_gauche + j_bas_droite) / 2;
 	int i_mil_g = (i_haut_gauche + i_haut_droite) / 2;
@@ -181,9 +186,11 @@ void Sokoban::placer_buts_caisses()
 	for (int k = 0; k < nb_caisses; k++) {
 		int l_c;
 		int h_c;
-		/* on place les buts aléatoirement sur le
-		   plateau, en vérifiant qu'ils ne soient jamais
-		   en dehors des murs */
+
+		/*
+		 * On place les buts aléatoirement sur le plateau, en
+		 * vérifiant qu'ils ne soient jamais en dehors des murs.
+		 */
 		do {
 			l_c = rand() % longueur;
 			h_c = rand() % hauteur;
@@ -191,15 +198,15 @@ void Sokoban::placer_buts_caisses()
 			 horsZoneMurs(h_c, l_c));
 		plateau[h_c][l_c] = CaseSok::but;
 
-		/* on place autant de caisses que de buts, en
-		   vérifiant toujours qu'elles ne soient jamais
-		   en dehors des murs.  De plus, pour que la
-		   grille soit résolvable, les caisses ne
-		   doivent jamais être placées dans une zone
-		   entourée de murs. S'il y a un mur
-		   devant/derrière et à gauche/à droite, la
-		   caisse ne pourra pas être déplacée, et donc
-		   le jeu sera bloqué. */
+		/*
+		 * On place autant de caisses que de buts, en vérifiant
+		 * toujours qu'elles ne soient jamais en dehors des
+		 * murs.  De plus, pour que la grille soit résolvable,
+		 * les caisses ne doivent jamais être placées dans une
+		 * zone entourée de murs.  S'il y a un mur
+		 * devant/derrière et à gauche/à droite, la caisse ne
+		 * pourra pas être déplacée, et donc le jeu sera bloqué.
+		 */
 		do {
 			l_c = rand() % longueur;
 			h_c = rand() % hauteur;
@@ -254,10 +261,12 @@ void Sokoban::placer_pers()
 		pos_h = 1 + rand() % (hauteur - 2);
 	}
 
-	/* pour que le personnage puisse effectuer au moins un
-	   mouvement, on le place dans une case entourée
-	   uniquement de cases vides, toujours à l'intérieur de
-	   la zone délimitée par les murs externes */
+	/*
+	 * Pour que le personnage puisse effectuer au moins un
+	 * mouvement, on le place dans une case entourée uniquement de
+	 * cases vides, toujours à l'intérieur de la zone délimitée par
+	 * les murs externes.
+	 */
 	while (!zoneLibre(pos_h, pos_l));
 	plateau[pos_h][pos_l] = CaseSok::pers;
 }
@@ -296,9 +305,10 @@ void Sokoban::deplacer(Sens s)
 	CaseSok& derriere =
 		plateau[new_pos_h + sens_h][new_pos_l + sens_l];
 
-	/* si la case juste au-dessus est vide, le personnage
-	   peut s'y déplacer sans condition */
-
+	/*
+	 * Si la case juste au-dessus est vide, le personnage peut s'y
+	 * déplacer sans condition.
+	 */
 	if (dest == CaseSok::vide || dest == CaseSok::but) {
 		dest = (dest == CaseSok::vide) ?
 			CaseSok::pers : CaseSok::pers_but;
@@ -311,14 +321,13 @@ void Sokoban::deplacer(Sens s)
 		score++;
 	}
 
-	/* si la case juste au-dessus contient une caisse,
-	   elle ne peut être poussée que si la case située derrière
-	   est vide ou contient un but */
-
+	/*
+	 * Si la case juste au-dessus contient une caisse, elle ne peut
+	 * être poussée que si la case située derrière est vide ou
+	 * contient un but.
+	 */
 	else if (dest == CaseSok::caisse) {
-
-		/* déplacement d'une caisse sur une case caseVide */
-
+		/* déplacement d'une caisse sur une case vide */
 		if (derriere == CaseSok::vide) {
 			derriere = CaseSok::caisse;
 			dest = CaseSok::pers;
@@ -330,9 +339,7 @@ void Sokoban::deplacer(Sens s)
 			pos_l = new_pos_l;
 			score++;
 		} else if (derriere == CaseSok::but) {
-
 			/* déplacement d'une caisse sur un but */
-
 			derriere = CaseSok::caisse_but;
 			dest = CaseSok::pers;
 			if (source == CaseSok::pers)
@@ -345,15 +352,14 @@ void Sokoban::deplacer(Sens s)
 		}
 	}
 
-	/* si la case du dessus contient un but occupé
-	   par une caisse, cette dernière peut être poussée
-	   s'il y a un autre but ou une case vide derrière
-	*/
-
+	/*
+	 * Si la case du dessus contient un but occupé par une caisse,
+	 * cette dernière peut être poussée s'il y a un autre but ou une
+	 * case vide derrière.
+	 */
 	else if (dest == CaseSok::caisse_but) {
 
 		/* d'un but vers un autre */
-
 		if (derriere == CaseSok::but) {
 			derriere = CaseSok::caisse_but;
 			dest = CaseSok::pers_but;
@@ -367,7 +373,6 @@ void Sokoban::deplacer(Sens s)
 		}
 
 		/* d'un but vers une case vide */
-
 		else if (derriere == CaseSok::vide) {
 			derriere = CaseSok::caisse;
 			dest = CaseSok::pers_but;
@@ -399,10 +404,11 @@ bool Sokoban::jeuTermine() const
 
 bool Sokoban::jeuBloque() const
 {
-	/* un bloquage peut survenir lorsqu'une caisse ne peut
-	   plus être déplacée, c'est à dire lorsqu'il y a un mur
-	   derrière et sur l'un des côtés (gauche/droite)
-	*/
+	/*
+	 * Un bloquage peut survenir lorsqu'une caisse ne peut plus être
+	 * déplacée, c'est à dire lorsqu'il y a un mur derrière et sur
+	 * l'un des côtés (gauche/droite).
+	 */
 	for (int i = 1; i < hauteur - 1; i++) {
 		for (int j = 1; j < longueur - 1; j++) {
 			if (plateau[i][j] == CaseSok::caisse &&

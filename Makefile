@@ -6,11 +6,12 @@ DEBUGFLAG = -g3
 CXXFLAGS = $(DEBUGFLAG) -Wall -Wextra -Wpedantic -std=c++11
 LDFLAGS = $(DEBUGFLAG)
 
-SRC = main.cpp Jeu.cpp Taquin.cpp Sokoban.cpp
+SRC = main.cpp square.cpp game.cpp taquin.cpp sokoban.cpp game_2048.cpp
 OBJ = $(SRC:.cpp=.o)
 DEP = $(SRC:.cpp=.d)
-EXEC = jeu
+EXEC = game
 
+srcdir = src
 compile = $(CXX) -c $(CPPFLAGS) $(CXXFLAGS)
 link = $(CXX) $(LDFLAGS)
 
@@ -23,7 +24,7 @@ all: $(EXEC)
 $(EXEC): $(OBJ)
 	$(link) $^ -o $@
 
-%.o: %.cpp
+%.o: $(srcdir)/%.cpp
 	$(compile) $<
 
 -include $(DEP)

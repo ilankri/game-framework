@@ -1,12 +1,12 @@
 #ifndef TAQUIN
 #define TAQUIN
 
-#include "Jeu.hpp"
+#include "game.hpp"
 #include <cstdlib>
 #include <ctime>
 
 
-class Taquin : public Jeu<int> {
+class Taquin : public Game<int> {
 public:
 	Taquin(int l, int h);
 
@@ -15,7 +15,7 @@ public:
 private:
 	static const int caseVide = 0;
 
-	//coordonnées de la case vide
+	// coordonnées de la case vide
 	int pos_vide_l;
 
 	int pos_vide_h;
