@@ -1,5 +1,5 @@
-#ifndef SOKOBAN
-#define SOKOBAN
+#ifndef SOKOBAN_HPP
+#define SOKOBAN_HPP
 
 #include "game.hpp"
 #include <cstdlib>
@@ -39,7 +39,7 @@ private:
 
 	int j_bas_droite;
 
-	virtual void print(ostream& o = cout) const;
+	/* virtual void print(ostream& o = cout) const; */
 
 	virtual void init();
 
@@ -64,4 +64,4 @@ private:
 	virtual bool is_stuck() const;
 };
 
-#endif
+#endif	/* not SOKOBAN_HPP */

@@ -39,27 +39,27 @@ Sokoban::Sokoban(int width, int height, int nb_caisses) :
 
 Sokoban::~Sokoban() {}
 
-void Sokoban::print(ostream& o) const
-{
+/* void Sokoban::print(ostream& o) const */
+/* { */
 
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
-			o << board[i][j] << " ";
-		}
-		o << endl;
+/*	for (int i = 0; i < height; i++) { */
+/*		for (int j = 0; j < width; j++) { */
+/*			o << board[i][j] << " "; */
+/*		} */
+/*		o << endl; */
 
-	}
+/*	} */
 
-	// enlever les ""
-	/*
-	  o << mur << " : mur" << endl;
-	  o << pers << " : personnage (" << pos_h << "," <<
-	  pos_l << ")" << endl;
-	  o << caisse << " : caisse" << endl;
-	  o << but << " : but" << endl;
-	  o << caisse_but << " : caisse placée sur un but" << endl;
-	*/
-}
+/*	// enlever les "" */
+/*	/\* */
+/*	  o << mur << " : mur" << endl; */
+/*	  o << pers << " : personnage (" << pos_h << "," << */
+/*	  pos_l << ")" << endl; */
+/*	  o << caisse << " : caisse" << endl; */
+/*	  o << but << " : but" << endl; */
+/*	  o << caisse_but << " : caisse placée sur un but" << endl; */
+/*	*\/ */
+/* } */
 
 void Sokoban::init()
 {

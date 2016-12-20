@@ -1,6 +1,6 @@
 #include "taquin.hpp"
 
-Taquin::Taquin(int l, int h) : Game<int>(l, h)
+Taquin::Taquin(int w, int h) : Game<int>(w, h)
 {
 	init();
 }

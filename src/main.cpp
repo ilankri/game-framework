@@ -5,10 +5,10 @@
 
 int main()
 {
-	const int l = 10;
-	const int h = 10;
-	Game<CaseSok>* j = new Sokoban(l, h);
-	j->jouerHumain();
+	const int l = 4;
+	const int h = 4;
+	Game<int>* j = new Taquin(l, h);
+	j->play();
 	delete j;
 	return 0;
 }

@@ -1,5 +1,5 @@
-#ifndef TAQUIN
-#define TAQUIN
+#ifndef TAQUIN_HPP
+#define TAQUIN_HPP
 
 #include "game.hpp"
 #include <cstdlib>
@@ -8,7 +8,7 @@
 
 class Taquin : public Game<int> {
 public:
-	Taquin(int l, int h);
+	Taquin(int w, int h);
 
 	virtual ~Taquin();
 
@@ -31,4 +31,4 @@ private:
 	void melanger();
 };
 
-#endif
+#endif	/* not TAQUIN_HPP */

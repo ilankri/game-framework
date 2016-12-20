@@ -7,17 +7,14 @@ using namespace std;
 
 enum class Direction {up, down, left, right};
 
-template<class T>
+template<class Sq>
 class Game {
 public:
 	Game(int w, int h);
 
-	void jouerHumain();
+	void play();
 
-	void jouerRobot();
-
-	template<class C>
-	friend ostream& operator<<(ostream& o, const Game<C>& game);
+	void demo();
 
 	virtual ~Game();
 
@@ -26,7 +23,7 @@ protected:
 
 	const int height;
 
-	T** board;
+	Sq** board;
 
 	long score;
 
@@ -39,7 +36,10 @@ private:
 
 	virtual void move(Direction) = 0;
 
-	virtual void print(ostream& o = cout) const;
+	void print(ostream& o = cout) const;
+
+	template<class S>
+	friend ostream& operator<<(ostream& o, const Game<S>& game);
 
 	void move_up();
 
@@ -52,16 +52,16 @@ private:
 	virtual bool is_stuck() const;
 };
 
-template<class T>
-Game<T>::Game(int w, int h) : width(w), height(h), board(new T*[h]),
-			      score(0), quit(false)
+template<class Sq>
+Game<Sq>::Game(int w, int h) : width(w), height(h), board(new Sq*[h]),
+			       score(0), quit(false)
 {
 	for (int i = 0; i < h; i++)
-		board[i] = new T[w];
+		board[i] = new Sq[w];
 }
 
-template<class T>
-void Game<T>::jouerHumain() {
+template<class Sq>
+void Game<Sq>::play() {
 	int rep;
 
 	while (!is_over() && !quit) {
@@ -94,8 +94,8 @@ void Game<T>::jouerHumain() {
 	cout << *this;
 }
 
-template<class T>
-void Game<T>::jouerRobot() {
+template<class Sq>
+void Game<Sq>::demo() {
 	/*
 	 * Ceci est une version naïve : essayer si possible de rendre le
 	 * robot plus intelligent.
@@ -124,8 +124,8 @@ void Game<T>::jouerRobot() {
 	cout << *this;
 }
 
-template<class T>
-ostream& operator<<(ostream& o, const Game<T>& j)
+template<class S>
+ostream& operator<<(ostream& o, const Game<S>& j)
 {
 	j.print();
 	o << "score : " << j.score << endl;
@@ -136,16 +136,16 @@ ostream& operator<<(ostream& o, const Game<T>& j)
 	return o;
 }
 
-template<class T>
-Game<T>::~Game()
+template<class Sq>
+Game<Sq>::~Game()
 {
 	for (int i = 0; i < height; i++)
 		delete[] board[i];
 	delete[] board;
 }
 
-template<class T>
-void Game<T>::print(ostream& o) const
+template<class Sq>
+void Game<Sq>::print(ostream& o) const
 {
 	// longueur d'une ligne, en tenant compte des tabulations
 	int line_len_with_tabs = 8 * width + 2;
@@ -155,7 +155,7 @@ void Game<T>::print(ostream& o) const
 	o << endl;
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			const T& case_cur = board[i][j];
+			const Sq& case_cur = board[i][j];
 
 			o << "| ";
 			/* if (case_cur == caseVide) */
@@ -171,33 +171,33 @@ void Game<T>::print(ostream& o) const
 	}
 }
 
-template<class T>
-void Game<T>::move_up()
+template<class Sq>
+void Game<Sq>::move_up()
 {
 	move(Direction::up);
 }
 
-template<class T>
-void Game<T>::move_down()
+template<class Sq>
+void Game<Sq>::move_down()
 {
 	move(Direction::down);
 }
 
-template<class T>
-void Game<T>::move_left()
+template<class Sq>
+void Game<Sq>::move_left()
 {
 	move(Direction::left);
 }
 
-template<class T>
-void Game<T>::move_right()
+template<class Sq>
+void Game<Sq>::move_right()
 {
 	move(Direction::right);
 }
 
 
-template<class T>
-bool Game<T>::is_stuck() const
+template<class Sq>
+bool Game<Sq>::is_stuck() const
 {
 	return false;
 }
