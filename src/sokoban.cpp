@@ -27,24 +27,24 @@ ostream& operator<<(ostream& o, CaseSok const& c) {
 	return o;
 }
 
-Sokoban::Sokoban(int longueur, int hauteur, int nb_caisses) :
-	Game<CaseSok>(longueur, hauteur)
+Sokoban::Sokoban(int width, int height, int nb_caisses) :
+	Game<CaseSok>(width, height)
 {
 	if (nb_caisses == -1)
-		this->nb_caisses = sqrt(longueur * hauteur) / 2;
+		this->nb_caisses = sqrt(width * height) / 2;
 	else
 		this->nb_caisses = nb_caisses;
-	initialiser();
+	init();
 }
 
 Sokoban::~Sokoban() {}
 
-void Sokoban::afficher(ostream& o) const
+void Sokoban::print(ostream& o) const
 {
 
-	for (int i = 0; i < hauteur; i++) {
-		for (int j = 0; j < longueur; j++) {
-			o << plateau[i][j] << " ";
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			o << board[i][j] << " ";
 		}
 		o << endl;
 
@@ -61,7 +61,7 @@ void Sokoban::afficher(ostream& o) const
 	*/
 }
 
-void Sokoban::initialiser()
+void Sokoban::init()
 {
 	//cout << "initialiser()" << endl;
 	placer_murs();
@@ -79,51 +79,51 @@ void Sokoban::placer_murs()
 	 * du plateau, afin d'obtenir la disposition la plus aléatoire
 	 * possible.
 	 */
-	i_haut_gauche = rand() % (hauteur / 3);
-	j_haut_gauche = rand() % (longueur / 3);
+	i_haut_gauche = rand() % (height / 3);
+	j_haut_gauche = rand() % (width / 3);
 
-	i_haut_droite = rand() % (hauteur / 3);
-	j_haut_droite = longueur - 1 - rand() % (longueur / 3);
+	i_haut_droite = rand() % (height / 3);
+	j_haut_droite = width - 1 - rand() % (width / 3);
 
-	i_bas_gauche = hauteur - 1 - rand() % (hauteur / 3);
-	j_bas_gauche = rand() % (hauteur / 3);
+	i_bas_gauche = height - 1 - rand() % (height / 3);
+	j_bas_gauche = rand() % (height / 3);
 
-	i_bas_droite = hauteur - 1 - rand() % (hauteur / 3);
-	j_bas_droite = longueur - 1 - rand() % (hauteur / 3);
+	i_bas_droite = height - 1 - rand() % (height / 3);
+	j_bas_droite = width - 1 - rand() % (height / 3);
 
 	/*
 	 * Coin haut-gauche : on prolonge le mur jusqu'au bord du
 	 * plateau.
 	 */
 	for (int i = i_haut_gauche; i >= 0; i--) {
-		plateau[i][j_haut_gauche] = CaseSok::mur;
+		board[i][j_haut_gauche] = CaseSok::mur;
 	}
 	for (int j = j_haut_gauche; j >= 0; j--) {
-		plateau[i_haut_gauche][j] = CaseSok::mur;
+		board[i_haut_gauche][j] = CaseSok::mur;
 	}
 
 	/* Coin haut-droite */
 	for (int i = i_haut_droite; i >= 0; i--) {
-		plateau[i][j_haut_droite] = CaseSok::mur;
+		board[i][j_haut_droite] = CaseSok::mur;
 	}
-	for (int j = j_haut_droite; j < longueur; j++) {
-		plateau[i_haut_droite][j] = CaseSok::mur;
+	for (int j = j_haut_droite; j < width; j++) {
+		board[i_haut_droite][j] = CaseSok::mur;
 	}
 
 	/* Coin bas-gauche */
-	for (int i = i_bas_gauche; i < hauteur; i++) {
-		plateau[i][j_bas_gauche] = CaseSok::mur;
+	for (int i = i_bas_gauche; i < height; i++) {
+		board[i][j_bas_gauche] = CaseSok::mur;
 	}
 	for (int j = j_bas_gauche; j >= 0; j--) {
-		plateau[i_bas_gauche][j] = CaseSok::mur;
+		board[i_bas_gauche][j] = CaseSok::mur;
 	}
 
 	/* Coin bas-droite */
-	for (int i = i_bas_droite; i < hauteur; i++) {
-		plateau[i][j_bas_droite] = CaseSok::mur;
+	for (int i = i_bas_droite; i < height; i++) {
+		board[i][j_bas_droite] = CaseSok::mur;
 	}
-	for (int j = j_bas_droite; j < longueur; j++) {
-		plateau[i_bas_droite][j] = CaseSok::mur;
+	for (int j = j_bas_droite; j < width; j++) {
+		board[i_bas_droite][j] = CaseSok::mur;
 	}
 	placerMursExternes();
 	placerMursInternes();
@@ -134,19 +134,19 @@ void Sokoban::placerMursExternes()
 
 	/* On termine de placer les murs externes.  */
 	for (int i = i_haut_gauche; i < i_bas_gauche; i++) {
-		plateau[i][0] = CaseSok::mur;
+		board[i][0] = CaseSok::mur;
 	}
 
 	for (int j = j_haut_gauche; j < j_haut_droite; j++) {
-		plateau[0][j] = CaseSok::mur;
+		board[0][j] = CaseSok::mur;
 	}
 
 	for (int j = j_bas_gauche; j < j_bas_droite; j++) {
-		plateau[hauteur - 1][j] = CaseSok::mur;
+		board[height - 1][j] = CaseSok::mur;
 	}
 
 	for (int i = i_haut_droite; i < i_bas_droite; i++) {
-		plateau[i][longueur - 1] = CaseSok::mur;
+		board[i][width - 1] = CaseSok::mur;
 	}
 
 }
@@ -162,22 +162,22 @@ void Sokoban::placerMursInternes()
 	int i_mil_g = (i_haut_gauche + i_haut_droite) / 2;
 	int i_mil_d = (i_haut_droite + i_bas_droite) / 2;
 
-	int lim_h_mil = 1 + rand() % (hauteur / 4);
-	int lim_b_mil = 1 + rand() % (hauteur / 4);
-	int lim_mil_g = 1 + rand() % (longueur / 4);
-	int lim_mil_d = 1 + rand() % (longueur / 4);
+	int lim_h_mil = 1 + rand() % (height / 4);
+	int lim_b_mil = 1 + rand() % (height / 4);
+	int lim_mil_g = 1 + rand() % (width / 4);
+	int lim_mil_d = 1 + rand() % (width / 4);
 
 	for (int i = 0; i < lim_h_mil; i++)
-		plateau[i][j_h_mil] = CaseSok::mur;
+		board[i][j_h_mil] = CaseSok::mur;
 
-	for (int i = hauteur - 1; i > hauteur - 1 - lim_b_mil; i--)
-		plateau[i][j_b_mil] = CaseSok::mur;
+	for (int i = height - 1; i > height - 1 - lim_b_mil; i--)
+		board[i][j_b_mil] = CaseSok::mur;
 
 	for (int j = 0; j < lim_mil_g; j++)
-		plateau[i_mil_g][j] = CaseSok::mur;
+		board[i_mil_g][j] = CaseSok::mur;
 
-	for(int j = longueur - 1; j > longueur - 1 -lim_mil_d; j--)
-		plateau[i_mil_d][j] = CaseSok::mur;
+	for(int j = width - 1; j > width - 1 -lim_mil_d; j--)
+		board[i_mil_d][j] = CaseSok::mur;
 }
 
 void Sokoban::placer_buts_caisses()
@@ -192,11 +192,11 @@ void Sokoban::placer_buts_caisses()
 		 * vérifiant qu'ils ne soient jamais en dehors des murs.
 		 */
 		do {
-			l_c = rand() % longueur;
-			h_c = rand() % hauteur;
-		} while (plateau[h_c][l_c] != CaseSok::vide ||
+			l_c = rand() % width;
+			h_c = rand() % height;
+		} while (board[h_c][l_c] != CaseSok::vide ||
 			 horsZoneMurs(h_c, l_c));
-		plateau[h_c][l_c] = CaseSok::but;
+		board[h_c][l_c] = CaseSok::but;
 
 		/*
 		 * On place autant de caisses que de buts, en vérifiant
@@ -208,10 +208,10 @@ void Sokoban::placer_buts_caisses()
 		 * pourra pas être déplacée, et donc le jeu sera bloqué.
 		 */
 		do {
-			l_c = rand() % longueur;
-			h_c = rand() % hauteur;
+			l_c = rand() % width;
+			h_c = rand() % height;
 		} while (!zoneLibre(h_c, l_c));
-		plateau[h_c][l_c] = CaseSok::caisse;
+		board[h_c][l_c] = CaseSok::caisse;
 	}
 }
 
@@ -220,15 +220,15 @@ bool Sokoban::zoneLibre(int h_c, int l_c)
 
 	if (horsZoneMurs(h_c,l_c))
 		return false;
-	if (plateau[h_c][l_c] != CaseSok::vide)
+	if (board[h_c][l_c] != CaseSok::vide)
 		return false;
-	if (plateau[h_c + 1][l_c] != CaseSok::vide)
+	if (board[h_c + 1][l_c] != CaseSok::vide)
 		return false;
-	if (plateau[h_c - 1][l_c] != CaseSok::vide)
+	if (board[h_c - 1][l_c] != CaseSok::vide)
 		return false;
-	if (plateau[h_c][l_c - 1] != CaseSok::vide)
+	if (board[h_c][l_c - 1] != CaseSok::vide)
 		return false;
-	if (plateau[h_c][l_c + 1] != CaseSok::vide)
+	if (board[h_c][l_c + 1] != CaseSok::vide)
 		return false;
 
 	return true;
@@ -236,9 +236,9 @@ bool Sokoban::zoneLibre(int h_c, int l_c)
 
 bool Sokoban::horsZoneMurs(int h_c, int l_c)
 {
-	if (h_c >= hauteur - 2 || h_c <= 1)
+	if (h_c >= height - 2 || h_c <= 1)
 		return true;
-	if (l_c >= longueur - 2 || l_c <= 1)
+	if (l_c >= width - 2 || l_c <= 1)
 		return true;
 
 	if (h_c <= i_haut_gauche && l_c <= j_haut_gauche)
@@ -257,8 +257,8 @@ void Sokoban::placer_pers()
 {
 	//cout << "placer_pers()" << endl;
 	do {
-		pos_l = 1 + rand() % (longueur - 2);
-		pos_h = 1 + rand() % (hauteur - 2);
+		pos_l = 1 + rand() % (width - 2);
+		pos_h = 1 + rand() % (height - 2);
 	}
 
 	/*
@@ -268,10 +268,10 @@ void Sokoban::placer_pers()
 	 * les murs externes.
 	 */
 	while (!zoneLibre(pos_h, pos_l));
-	plateau[pos_h][pos_l] = CaseSok::pers;
+	board[pos_h][pos_l] = CaseSok::pers;
 }
 
-void Sokoban::deplacer(Sens s)
+void Sokoban::move(Direction s)
 {
 
 	int new_pos_h = pos_h;
@@ -279,21 +279,21 @@ void Sokoban::deplacer(Sens s)
 	int sens_h = 0;
 	int sens_l = 0;
 
-	CaseSok& source = plateau[pos_h][pos_l];
+	CaseSok& source = board[pos_h][pos_l];
 	switch(s) {
-	case Sens::Haut:
+	case Direction::up:
 		new_pos_h -= 1;
 		sens_h = -1;
 		break;
-	case Sens::Bas:
+	case Direction::down:
 		new_pos_h += 1;
 		sens_h = 1;
 		break;
-	case Sens::Gauche:
+	case Direction::left:
 		new_pos_l -= 1;
 		sens_l = -1;
 		break;
-	case Sens::Droite:
+	case Direction::right:
 		new_pos_l += 1;
 		sens_l = 1;
 		break;
@@ -301,9 +301,9 @@ void Sokoban::deplacer(Sens s)
 		break;
 	}
 
-	CaseSok& dest = plateau[new_pos_h][new_pos_l];
+	CaseSok& dest = board[new_pos_h][new_pos_l];
 	CaseSok& derriere =
-		plateau[new_pos_h + sens_h][new_pos_l + sens_l];
+		board[new_pos_h + sens_h][new_pos_l + sens_l];
 
 	/*
 	 * Si la case juste au-dessus est vide, le personnage peut s'y
@@ -388,34 +388,34 @@ void Sokoban::deplacer(Sens s)
 
 }
 
-bool Sokoban::jeuTermine() const
+bool Sokoban::is_over() const
 {
-	if (jeuBloque())
+	if (is_stuck())
 		return true;
-	for (int i = 0; i < hauteur; i++) {
-		for (int j = 0; j < longueur; j++) {
-			if (plateau[i][j] == CaseSok::but ||
-			    plateau[i][j] == CaseSok::caisse)
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			if (board[i][j] == CaseSok::but ||
+			    board[i][j] == CaseSok::caisse)
 				return false;
 		}
 	}
 	return true;
 }
 
-bool Sokoban::jeuBloque() const
+bool Sokoban::is_stuck() const
 {
 	/*
 	 * Un bloquage peut survenir lorsqu'une caisse ne peut plus être
 	 * déplacée, c'est à dire lorsqu'il y a un mur derrière et sur
 	 * l'un des côtés (gauche/droite).
 	 */
-	for (int i = 1; i < hauteur - 1; i++) {
-		for (int j = 1; j < longueur - 1; j++) {
-			if (plateau[i][j] == CaseSok::caisse &&
-			    (plateau[i - 1][j] == CaseSok::mur ||
-			     plateau[i + 1][j] == CaseSok::mur) &&
-			    (plateau[i][j - 1] == CaseSok::mur ||
-			     plateau[i][j + 1] == CaseSok::mur)) {
+	for (int i = 1; i < height - 1; i++) {
+		for (int j = 1; j < width - 1; j++) {
+			if (board[i][j] == CaseSok::caisse &&
+			    (board[i - 1][j] == CaseSok::mur ||
+			     board[i + 1][j] == CaseSok::mur) &&
+			    (board[i][j - 1] == CaseSok::mur ||
+			     board[i][j + 1] == CaseSok::mur)) {
 				return true;
 			}
 		}

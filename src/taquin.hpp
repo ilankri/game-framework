@@ -20,13 +20,11 @@ private:
 
 	int pos_vide_h;
 
-	//virtual bool bienTriePartiel() const;
+	virtual void init();
 
-	virtual void initialiser();
+	virtual bool is_over() const;
 
-	virtual bool jeuTermine() const;
-
-	virtual void deplacer(Sens s);
+	virtual void move(Direction s);
 
 	void remplir();
 

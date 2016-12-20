@@ -5,12 +5,12 @@
 
 using namespace std;
 
-enum class Sens {Haut, Bas, Gauche, Droite};
+enum class Direction {up, down, left, right};
 
 template<class T>
 class Game {
 public:
-	Game(int l, int h);
+	Game(int w, int h);
 
 	void jouerHumain();
 
@@ -19,58 +19,52 @@ public:
 	template<class C>
 	friend ostream& operator<<(ostream& o, const Game<C>& game);
 
-	/* const T* operator[](int i) const; */
-
-	/* T* operator[](int i); */
-
 	virtual ~Game();
 
 protected:
-	const int longueur;
+	const int width;
 
-	const int hauteur;
+	const int height;
 
-	T** plateau;
-
-	/* static const T caseVide = (T) 0; */
+	T** board;
 
 	long score;
 
 private:
-	bool quitter;
+	bool quit;
 
-	virtual void initialiser() = 0;
+	virtual void init() = 0;
 
-	virtual bool jeuTermine() const = 0;
+	virtual bool is_over() const = 0;
 
-	virtual void deplacer(Sens) = 0;
+	virtual void move(Direction) = 0;
 
-	virtual void afficher(ostream& o = cout) const;
+	virtual void print(ostream& o = cout) const;
 
-	void deplacerHaut();
+	void move_up();
 
-	void deplacerBas();
+	void move_down();
 
-	void deplacerGauche();
+	void move_left();
 
-	void deplacerDroite();
+	void move_right();
 
-	virtual bool jeuBloque() const;
+	virtual bool is_stuck() const;
 };
 
 template<class T>
-Game<T>::Game(int l, int h) : longueur(l), hauteur(h), plateau(new T*[h]),
-			    score(0), quitter(false)
+Game<T>::Game(int w, int h) : width(w), height(h), board(new T*[h]),
+			      score(0), quit(false)
 {
 	for (int i = 0; i < h; i++)
-		plateau[i] = new T[l];
+		board[i] = new T[w];
 }
 
 template<class T>
 void Game<T>::jouerHumain() {
 	int rep;
 
-	while (!jeuTermine() && !quitter) {
+	while (!is_over() && !quit) {
 		cout << *this;
 		cout << "Entrer (2, 4, 8 ou 6) pour effectuer ";
 		cout << "un déplacement (resp. bas, gauche, haut, droite) ";
@@ -79,19 +73,19 @@ void Game<T>::jouerHumain() {
 		cin.ignore();
 		switch (rep) {
 		case 6:
-			deplacerDroite();
+			move_right();
 			break;
 		case 2:
-			deplacerBas();
+			move_down();
 			break;
 		case 4:
-			deplacerGauche();
+			move_left();
 			break;
 		case 8:
-			deplacerHaut();
+			move_up();
 			break;
 		case 0:
-			quitter = true;
+			quit = true;
 			return;
 		default:
 			break;
@@ -107,21 +101,21 @@ void Game<T>::jouerRobot() {
 	 * robot plus intelligent.
 	 */
 	srand(time(nullptr));
-	while (!jeuTermine()) {
+	while (!is_over()) {
 		cout << *this;
 		int sens = rand() % 4;
 		switch(sens) {
 		case 0:
-			deplacerDroite();
+			move_right();
 			break;
 		case 1:
-			deplacerBas();
+			move_down();
 			break;
 		case 2:
-			deplacerGauche();
+			move_left();
 			break;
 		case 3:
-			deplacerHaut();
+			move_up();
 			break;
 		default:
 			break;
@@ -133,47 +127,35 @@ void Game<T>::jouerRobot() {
 template<class T>
 ostream& operator<<(ostream& o, const Game<T>& j)
 {
-	j.afficher();
+	j.print();
 	o << "score : " << j.score << endl;
-	if (j.jeuBloque())
+	if (j.is_stuck())
 		o << "Game blocked !" << endl;
-	if (j.jeuTermine())
+	if (j.is_over())
 		o << "Game Over" << endl;
 	return o;
 }
 
-/* template<class T> */
-/* const T* Jeu<T>::operator[](int i) const */
-/* { */
-/*	return plateau[i]; */
-/* } */
-
-/* template<class T> */
-/* T* Jeu<T>::operator[](int i) */
-/* { */
-/*	return plateau[i]; */
-/* } */
-
 template<class T>
 Game<T>::~Game()
 {
-	for (int i = 0; i < hauteur; i++)
-		delete[] plateau[i];
-	delete[] plateau;
+	for (int i = 0; i < height; i++)
+		delete[] board[i];
+	delete[] board;
 }
 
 template<class T>
-void Game<T>::afficher(ostream& o) const
+void Game<T>::print(ostream& o) const
 {
 	// longueur d'une ligne, en tenant compte des tabulations
-	int line_len_with_tabs = 8 * longueur + 2;
+	int line_len_with_tabs = 8 * width + 2;
 
 	for (int j = 0; j < line_len_with_tabs; j++)
 		o << "-";
 	o << endl;
-	for (int i = 0; i < hauteur; i++) {
-		for (int j = 0; j < longueur; j++) {
-			const T& case_cur = plateau[i][j];
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			const T& case_cur = board[i][j];
 
 			o << "| ";
 			/* if (case_cur == caseVide) */
@@ -190,32 +172,32 @@ void Game<T>::afficher(ostream& o) const
 }
 
 template<class T>
-void Game<T>::deplacerHaut()
+void Game<T>::move_up()
 {
-	deplacer(Sens::Haut);
+	move(Direction::up);
 }
 
 template<class T>
-void Game<T>::deplacerBas()
+void Game<T>::move_down()
 {
-	deplacer(Sens::Bas);
+	move(Direction::down);
 }
 
 template<class T>
-void Game<T>::deplacerGauche()
+void Game<T>::move_left()
 {
-	deplacer(Sens::Gauche);
+	move(Direction::left);
 }
 
 template<class T>
-void Game<T>::deplacerDroite()
+void Game<T>::move_right()
 {
-	deplacer(Sens::Droite);
+	move(Direction::right);
 }
 
 
 template<class T>
-bool Game<T>::jeuBloque() const
+bool Game<T>::is_stuck() const
 {
 	return false;
 }

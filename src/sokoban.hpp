@@ -39,9 +39,9 @@ private:
 
 	int j_bas_droite;
 
-	virtual void afficher(ostream& o = cout) const;
+	virtual void print(ostream& o = cout) const;
 
-	virtual void initialiser();
+	virtual void init();
 
 	virtual void placer_murs();
 
@@ -55,13 +55,13 @@ private:
 
 	virtual bool horsZoneMurs(int h_c, int l_c);
 
-	virtual void deplacer(Sens s);
+	virtual void move(Direction s);
 
 	virtual void placer_pers();
 
-	virtual bool jeuTermine() const;
+	virtual bool is_over() const;
 
-	virtual bool jeuBloque() const;
+	virtual bool is_stuck() const;
 };
 
 #endif
