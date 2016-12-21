@@ -6,6 +6,11 @@
 using namespace std;
 
 class Square {
+public:
+	virtual bool operator==(const Square& s) const = 0;
+
+	bool operator!=(const Square& s) const;
+
 	friend ostream& operator<<(ostream& out, const Square& sq);
 
 private:
