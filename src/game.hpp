@@ -10,7 +10,7 @@ enum class Direction { up, down, left, right };
 template<class Sq>
 class Game {
 public:
-	Game(int w, int h);
+	Game(int h, int w);
 
 	void play();
 
@@ -19,9 +19,9 @@ public:
 	virtual ~Game();
 
 protected:
-	const int width;
-
 	const int height;
+
+	const int width;
 
 	Sq** board;
 
@@ -53,7 +53,7 @@ private:
 };
 
 template<class Sq>
-Game<Sq>::Game(int w, int h) : width(w), height(h), board(new Sq*[h]),
+Game<Sq>::Game(int h, int w) : height(h), width(w), board(new Sq*[h]),
 			       score(0), quit(false)
 {
 	for (int i = 0; i < h; i++)

@@ -9,5 +9,5 @@ bool Square_2048::operator==(const Square_2048& s) const
 
 void Square_2048::print(ostream& out) const
 {
-	out << to_string(action);
+	out << to_string(action) << val;
 }

@@ -12,7 +12,7 @@ ostream& operator<<(ostream&, CaseSok const&);
 
 class Sokoban : public Game<CaseSok> {
 public:
-	Sokoban(int longueur, int hauteur, int nb_caisses = -1);
+	Sokoban(int h, int w, int nb_caisses = -1);
 
 	virtual ~Sokoban();
 

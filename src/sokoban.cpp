@@ -27,8 +27,8 @@ ostream& operator<<(ostream& o, CaseSok const& c) {
 	return o;
 }
 
-Sokoban::Sokoban(int width, int height, int nb_caisses) :
-	Game<CaseSok>(width, height)
+Sokoban::Sokoban(int height, int width, int nb_caisses) :
+	Game<CaseSok>(height, width)
 {
 	if (nb_caisses == -1)
 		this->nb_caisses = sqrt(width * height) / 2;

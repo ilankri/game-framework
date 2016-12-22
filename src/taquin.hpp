@@ -8,7 +8,7 @@
 
 class Taquin : public Game<int> {
 public:
-	Taquin(int w, int h);
+	Taquin(int h, int w);
 
 	virtual ~Taquin();
 

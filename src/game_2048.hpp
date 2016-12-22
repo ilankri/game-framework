@@ -11,7 +11,7 @@
 
 class Game_2048 : public Jeu<Square_2048> {
 public:
-	Game_2048(int l, int h);
+	Game_2048(int h, int h);
 
 	virtual ~Game_2048() {}
 
