@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum class Direction {up, down, left, right};
+enum class Direction { up, down, left, right };
 
 template<class Sq>
 class Game {
