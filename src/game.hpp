@@ -36,7 +36,7 @@ private:
 
 	virtual void move(Direction) = 0;
 
-	void print(ostream& o = cout) const;
+	virtual void print(ostream& o = cout) const;
 
 	template<class S>
 	friend ostream& operator<<(ostream& o, const Game<S>& game);
