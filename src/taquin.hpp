@@ -13,12 +13,12 @@ public:
 	virtual ~Taquin();
 
 private:
-	static const int caseVide = 0;
+	static const int emptyCase = 0;
 
 	// coordonnées de la case vide
-	int pos_vide_l;
+	int pos_empty_w;
 
-	int pos_vide_h;
+	int pos_empty_h;
 
 	virtual void init();
 
@@ -26,9 +26,9 @@ private:
 
 	virtual void move(Direction s);
 
-	void remplir();
+	void fill();
 
-	void melanger();
+	void mix();
 };
 
 #endif	/* not TAQUIN_HPP */

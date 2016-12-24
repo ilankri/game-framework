@@ -9,11 +9,11 @@ Taquin::~Taquin() {}
 
 void Taquin::init()
 {
-	remplir();
-	melanger();
+	fill();
+	mix();
 }
 
-void Taquin::remplir()
+void Taquin::fill()
 {
 	int tmp = 1;
 
@@ -25,12 +25,12 @@ void Taquin::remplir()
 		}
 	}
 	board[height - 1][width - 1] = 0;
-	pos_vide_h = height - 1;
-	pos_vide_l = width - 1;
+	pos_empty_h = height - 1;
+	pos_empty_w = width - 1;
 
 }
 
-void Taquin::melanger()
+void Taquin::mix()
 {
 	/*
 	 * La parité d'une permutation est celle du nombre d'échanges
@@ -67,15 +67,15 @@ void Taquin::melanger()
 		perm_paire = !perm_paire;
 
 		// On met à jour les coordonnées de la case vide.
-		if (board[i1][j1] == caseVide) {
-			pos_vide_h = i1;
-			pos_vide_l = j1;
-		} else if (board[i2][j2] == caseVide) {
-			pos_vide_h = i2;
-			pos_vide_l = j2;
+		if (board[i1][j1] == emptyCase) {
+			pos_empty_h = i1;
+			pos_empty_w = j1;
+		} else if (board[i2][j2] == emptyCase) {
+			pos_empty_h = i2;
+			pos_empty_w = j2;
 		}
-		case_vide_paire = ((width - 1 - pos_vide_l) +
-				   (height - 1 - pos_vide_h)) % 2 == 0;
+		case_vide_paire = ((width - 1 - pos_empty_w) +
+				   (height - 1 - pos_empty_h)) % 2 == 0;
 	}
 
 	/*
@@ -86,11 +86,11 @@ void Taquin::melanger()
 		do {
 			i1 = rand() % height;
 			j1 = rand() % width;
-		} while (i1 == pos_vide_h && j1 == pos_vide_l);
+		} while (i1 == pos_empty_h && j1 == pos_empty_w);
 		do {
 			i2 = rand() % height;
 			j2 = rand() % width;
-		} while ((i2 == pos_vide_h && j2 == pos_vide_l) ||
+		} while ((i2 == pos_empty_h && j2 == pos_empty_w) ||
 			 (i2 == i1 && j2 == j1));
 		int tmp = board[i1][j1];
 		board[i1][j1] = board[i2][j2];
@@ -100,7 +100,7 @@ void Taquin::melanger()
 
 bool Taquin::is_over() const
 {
-	if (board[height - 1][width - 1] != caseVide) {
+	if (board[height - 1][width - 1] != emptyCase) {
 		return false;
 	}
 
@@ -140,35 +140,35 @@ bool Taquin::is_over() const
 
 void Taquin::move(Direction s)
 {
-	int sens_l = 0;
-	int sens_h = 0;
+	int dir_w = 0;
+	int dir_h = 0;
 
 	switch (s) {
 	case Direction::up:
-		sens_h = (pos_vide_h > 0) ? -1 : 0;
+		dir_h = (pos_empty_h > 0) ? -1 : 0;
 		break;
 	case Direction::down:
-		sens_h = (pos_vide_h < height - 1) ? 1 : 0;
+		dir_h = (pos_empty_h < height - 1) ? 1 : 0;
 		break;
 	case Direction::left:
-		sens_l = (pos_vide_l > 0) ? -1 : 0;
+		dir_w = (pos_empty_w > 0) ? -1 : 0;
 		break;
 	case Direction::right:
-		sens_l = (pos_vide_l < width - 1) ? 1 : 0;
+		dir_w = (pos_empty_w < width - 1) ? 1 : 0;
 		break;
 	default:
 		break;
 	}
 
-	int& source = board[pos_vide_h][pos_vide_l];
-	int& dest = board[pos_vide_h + sens_h][pos_vide_l + sens_l];
+	int& source = board[pos_empty_h][pos_empty_w];
+	int& dest = board[pos_empty_h + dir_h][pos_empty_w + dir_w];
 
-	if (sens_h != 0 || sens_l != 0) {
+	if (dir_h != 0 || dir_w != 0) {
 		int tmp = source;
 		source = dest;
 		dest = tmp;
-		pos_vide_h += sens_h;
-		pos_vide_l += sens_l;
+		pos_empty_h += dir_h;
+		pos_empty_w += dir_w;
 		score++;
 	}
 }

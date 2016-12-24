@@ -6,58 +6,59 @@
 #include <ctime>
 #include <cmath>
 
-enum class CaseSok {vide, mur, pers, caisse, but, caisse_but, pers_but};
+enum class CaseSok {empty, wall, pers, crate,
+		target, crate_target, pers_target};
 
 ostream& operator<<(ostream&, CaseSok const&);
 
 class Sokoban : public Game<CaseSok> {
 public:
-	Sokoban(int h, int w, int nb_caisses = -1);
+	Sokoban(int h, int w, int nb_crates = -1);
 
 	virtual ~Sokoban();
 
 private:
-	int nb_caisses;
+	int nb_crates;
 
 	int pos_h;
 
-	int pos_l;
+	int pos_w;
 
-	int i_haut_gauche;
+	int i_top_left;
 
-	int j_haut_gauche;
+	int j_top_left;
 
-	int i_haut_droite;
+	int i_top_right;
 
-	int j_haut_droite;
+	int j_top_right;
 
-	int i_bas_gauche;
+	int i_bottom_left;
 
-	int j_bas_gauche;
+	int j_bottom_left;
 
-	int i_bas_droite;
+	int i_bottom_right;
 
-	int j_bas_droite;
+	int j_bottom_right;
 
-	/* virtual void print(ostream& o = cout) const; */
+	virtual void print(ostream& o = cout) const;
 
 	virtual void init();
 
-	virtual void placer_murs();
+	virtual void set_walls();
 
-	virtual void placerMursExternes();
+	virtual void setExternalWalls();
 
-	virtual void placerMursInternes();
+	virtual void setInternalWalls();
 
-	virtual void placer_buts_caisses();
+	virtual void set_targets_crates();
 
-	virtual bool zoneLibre(int h_c, int l_c);
+	virtual bool freeZone(int h_c, int l_c);
 
-	virtual bool horsZoneMurs(int h_c, int l_c);
+	virtual bool outsideOfWalls(int h_c, int l_c);
 
 	virtual void move(Direction s);
 
-	virtual void placer_pers();
+	virtual void set_pers();
 
 	virtual bool is_over() const;
 
