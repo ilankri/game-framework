@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum class Square_2048_action { none, neg, mult, div, destroy };
+enum class Square_2048_action { empty, none, neg, mult, div, destroy };
 
 std::string to_string(Square_2048_action action);
 

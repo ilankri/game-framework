@@ -3,24 +3,39 @@
 
 #include "game.hpp"
 #include "square_2048.hpp"
-/* #include <cstdlib> */
-/* #include <ctime> */
-/* #include <iostream> */
 
-/* using namespace std; */
-
-class Game_2048 : public Jeu<Square_2048> {
+class Game_2048 : public Game<Square_2048> {
 public:
-	Game_2048(int h, int h);
+	Game_2048(int height, int width);
 
-	virtual ~Game_2048() {}
+private:
+	int first_empty_old_index;
 
-/* protected: */
-/*	virtual void initialiser(); */
+	int first_empty_new_index;
 
-	/* virtual bool jeuTermine() const; */
+	bool board_change;
 
-	/* virtual void deplacer(Sens sens); */
+	virtual void init();
+
+	virtual void move(Direction dir);
+
+	virtual bool is_over() const;
+
+	void transpose_board();
+
+	void slide_line(int i, Direction dir);
+
+	void merge_line(int i, Direction dir);
+
+	bool fill_first_empty_square();
+
+	template<class It>
+	void slide_line_aux(It begin, It end);
+	void slide_board(Direction dir, bool need_transpose);
+
+	template<class It>
+void merge_line_aux(It begin, It end);
+
 };
 
 #endif /* not GAME_2048_HPP */
