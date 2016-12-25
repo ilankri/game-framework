@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ enum class Direction { up, down, left, right };
 template<class Sq>
 class Game {
 public:
-	Game(int h, int w);
+	Game(int height, int width);
 
 	void play();
 
@@ -23,7 +24,7 @@ protected:
 
 	const int width;
 
-	Sq** board;
+	vector<Sq>* board;
 
 	long score;
 
@@ -53,17 +54,19 @@ private:
 };
 
 template<class Sq>
-Game<Sq>::Game(int h, int w) : height(h), width(w), board(new Sq*[h]),
-			       score(0), quit(false)
+Game<Sq>::Game(int h, int w) : height(h), width(w), board(new vector<Sq>[h]),
+				 score(0), quit(false)
 {
 	for (int i = 0; i < h; i++)
-		board[i] = new Sq[w];
+		board[i] = vector<Sq>(w);
 }
 
 template<class Sq>
-void Game<Sq>::play() {
+void Game<Sq>::play()
+{
 	int rep;
 
+	init();
 	while (!is_over() && !quit) {
 		cout << *this;
 		cout << "Entrer (2, 4, 8 ou 6) pour effectuer ";
@@ -100,6 +103,8 @@ void Game<Sq>::demo() {
 	 * Ceci est une version naïve : essayer si possible de rendre le
 	 * robot plus intelligent.
 	 */
+
+	init();
 	srand(time(nullptr));
 	while (!is_over()) {
 		cout << *this;
@@ -124,8 +129,8 @@ void Game<Sq>::demo() {
 	cout << *this;
 }
 
-template<class S>
-ostream& operator<<(ostream& o, const Game<S>& j)
+template<class Sq>
+ostream& operator<<(ostream& o, const Game<Sq>& j)
 {
 	j.print();
 	o << "score : " << j.score << endl;
@@ -139,8 +144,8 @@ ostream& operator<<(ostream& o, const Game<S>& j)
 template<class Sq>
 Game<Sq>::~Game()
 {
-	for (int i = 0; i < height; i++)
-		delete[] board[i];
+	/* for (int i = 0; i < height; i++) */
+	/*	delete[] board[i]; */
 	delete[] board;
 }
 
@@ -155,13 +160,8 @@ void Game<Sq>::print(ostream& o) const
 	o << endl;
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			const Sq& case_cur = board[i][j];
-
 			o << "| ";
-			/* if (case_cur == caseVide) */
-			/*	o << " "; */
-			/* else */
-			o << case_cur;
+			o << board[i][j];
 			o << "\t";
 		}
 		o << " |" << endl;
@@ -194,7 +194,6 @@ void Game<Sq>::move_right()
 {
 	move(Direction::right);
 }
-
 
 template<class Sq>
 bool Game<Sq>::is_stuck() const
