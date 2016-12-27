@@ -64,7 +64,13 @@ bool Square_2048::operator==(const Square_2048& sq) const
 	return same_action(sq) && same_value(sq);
 }
 
+bool Square_2048::operator!=(const Square_2048& sq) const
+{
+	return !(*this == sq);
+}
+
 void Square_2048::print(ostream& out) const
 {
-	out << to_string(action) << value;
+	if (*this != empty)
+		out << to_string(action) << value;
 }

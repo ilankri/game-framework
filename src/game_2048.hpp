@@ -15,6 +15,10 @@ private:
 
 	bool board_change;
 
+	virtual int random_value();
+
+	virtual Square_2048 random_square();
+
 	virtual void init();
 
 	virtual void move(Direction dir);
@@ -27,7 +31,7 @@ private:
 
 	void merge_line(int i, Direction dir);
 
-	bool fill_first_empty_square();
+	virtual bool fill_first_empty_square();
 
 	template<class It>
 	void slide_line_aux(It begin, It end);

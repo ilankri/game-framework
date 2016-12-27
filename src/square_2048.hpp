@@ -17,6 +17,8 @@ public:
 
 	bool operator==(const Square_2048& sq) const;
 
+	bool operator!=(const Square_2048& sq) const;
+
 	bool same_action(const Square_2048& sq) const;
 
 	bool same_value(const Square_2048& sq) const;
