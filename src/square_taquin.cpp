@@ -48,7 +48,7 @@ Square_Taquin& Square_Taquin::operator++()
 	return *this;
 }
 
-Square_Taquin Square_Taquin::operator++(int i)
+Square_Taquin Square_Taquin::operator++(int)
 {
 	Square_Taquin tmp(*this);
 	++value;
@@ -61,7 +61,7 @@ Square_Taquin& Square_Taquin::operator--()
 	return *this;
 }
 
-Square_Taquin Square_Taquin::operator--(int i)
+Square_Taquin Square_Taquin::operator--(int)
 {
 	Square_Taquin tmp(*this);
 	--value;
