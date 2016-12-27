@@ -96,6 +96,7 @@ void Game_2048::merge_line_aux(It begin, It end)
 			j[1] = j[0].merge(tmp);
 			j[0] = Square_2048::empty;
 			already_merged = true;
+			score += j[1].get_value();
 			/* board_change = true; */
 		} else {
 			if (j[1].is_empty())

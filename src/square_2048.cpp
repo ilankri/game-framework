@@ -18,9 +18,14 @@ Square_2048& Square_2048::operator=(const Square_2048& sq)
 	return *this;
 }
 
-void Square_2048::set_value(int v)
+void Square_2048::set_value(long v)
 {
 	value = v;
+}
+
+long Square_2048::get_value()
+{
+	return value;
 }
 
 void Square_2048::swap(Square_2048& sq)

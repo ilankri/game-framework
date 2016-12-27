@@ -25,7 +25,9 @@ public:
 
 	Square_2048& operator=(const Square_2048& sq);
 
-	void set_value(int value);
+	void set_value(long value);
+
+	long get_value();
 
 	void swap(Square_2048& sq);
 
@@ -38,7 +40,7 @@ public:
 private:
 	Square_2048_action action;
 
-	int value;
+	long value;
 
 	virtual void print(ostream& out) const;
 };
