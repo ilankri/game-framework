@@ -1,6 +1,8 @@
 #include "taquin.hpp"
 
-Taquin::Taquin(int h, int w) : Game<int>(h, w)
+Square_Taquin Taquin::empty(0);
+
+Taquin::Taquin(int h, int w) : Game<Square_Taquin>(h, w)
 {
 	init();
 }
@@ -15,7 +17,7 @@ void Taquin::init()
 
 void Taquin::fill()
 {
-	int tmp = 1;
+	Square_Taquin tmp = 1;
 
 	srand(time(nullptr));
 	// On remplit les cases.
@@ -61,16 +63,16 @@ void Taquin::mix()
 			j2 = rand() % width;
 		} while (i1 == i2 && j1 == j2);
 
-		int tmp = board[i1][j1];
+		Square_Taquin tmp = board[i1][j1];
 		board[i1][j1] = board[i2][j2];
 		board[i2][j2] = tmp;
 		perm_paire = !perm_paire;
 
 		// On met à jour les coordonnées de la case vide.
-		if (board[i1][j1] == emptyCase) {
+		if (board[i1][j1] == empty) {
 			pos_empty_h = i1;
 			pos_empty_w = j1;
-		} else if (board[i2][j2] == emptyCase) {
+		} else if (board[i2][j2] == empty) {
 			pos_empty_h = i2;
 			pos_empty_w = j2;
 		}
@@ -92,7 +94,7 @@ void Taquin::mix()
 			j2 = rand() % width;
 		} while ((i2 == pos_empty_h && j2 == pos_empty_w) ||
 			 (i2 == i1 && j2 == j1));
-		int tmp = board[i1][j1];
+		Square_Taquin tmp = board[i1][j1];
 		board[i1][j1] = board[i2][j2];
 		board[i2][j2] = tmp;
 	}
@@ -100,7 +102,7 @@ void Taquin::mix()
 
 bool Taquin::is_over() const
 {
-	if (board[height - 1][width - 1] != emptyCase) {
+	if (board[height - 1][width - 1] != empty) {
 		return false;
 	}
 
@@ -160,11 +162,11 @@ void Taquin::move(Direction s)
 		break;
 	}
 
-	int& source = board[pos_empty_h][pos_empty_w];
-	int& dest = board[pos_empty_h + dir_h][pos_empty_w + dir_w];
+	Square_Taquin& source = board[pos_empty_h][pos_empty_w];
+	Square_Taquin& dest = board[pos_empty_h + dir_h][pos_empty_w + dir_w];
 
 	if (dir_h != 0 || dir_w != 0) {
-		int tmp = source;
+		Square_Taquin tmp = source;
 		source = dest;
 		dest = tmp;
 		pos_empty_h += dir_h;

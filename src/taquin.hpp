@@ -2,19 +2,20 @@
 #define TAQUIN_HPP
 
 #include "game.hpp"
+#include "square_taquin.hpp"
 #include <cstdlib>
 #include <ctime>
 
 
-class Taquin : public Game<int> {
+class Taquin : public Game<Square_Taquin> {
 public:
 	Taquin(int h, int w);
 
 	virtual ~Taquin();
 
 private:
-	static const int emptyCase = 0;
-
+	static Square_Taquin empty;
+	
 	// coordonnées de la case vide
 	int pos_empty_w;
 
