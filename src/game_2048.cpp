@@ -1,11 +1,7 @@
 #include "game_2048.hpp"
 
-Game_2048::Game_2048(int height, int width) :
-	Game<Square_2048>(height, width), first_empty_old_index(0),
-	first_empty_new_index(0), board_change(false)
-{
-
-}
+Game_2048::Game_2048(int height) :
+	Game<Square_2048>(height, height), board_change(false) {}
 
 void Game_2048::transpose_board()
 {
@@ -27,23 +23,25 @@ Square_2048 Game_2048::random_square()
 
 void Game_2048::init()
 {
-	srand(time(nullptr));
-	int pos_h1 = rand() % height;
-	int pos_l1 = rand() % width;
+	int pos_h1;
+	int pos_l1;
 	int pos_h2;
 	int pos_l2;
 
+	srand(time(nullptr));
+	pos_h1 = rand() % height;
+	pos_l1 = rand() % height;
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < height; j++)
+			board[i][j] = Square_2048::empty;
 	do {
 		pos_h2 = rand() % height;
-		pos_l2 = rand() % width;
+		pos_l2 = rand() % height;
 	} while (pos_h2 == pos_h1 && pos_l2 == pos_l1);
-	board[pos_h1][pos_l1]=random_square();
-	board[pos_h2][pos_l2]=random_square();
-	/* board[0][0].set_value(2); */
-	/* board[0][1].set_value(2); */
-	/* board[0][2].set_value(4); */
-	/* board[0][3].set_value(4); */
-	/* board[0][4].set_value(4); */
+	board[pos_h1][pos_l1] = Square_2048(Square_2048_action::none,
+					    (1 + rand() % 2) * 2);
+	board[pos_h2][pos_l2] = Square_2048(Square_2048_action::none,
+					    (1 + rand() % 2) * 2);
 }
 
 bool Game_2048::is_over() const
@@ -51,32 +49,45 @@ bool Game_2048::is_over() const
 	return false;
 }
 
-/* pas de changement de board si la pos de la 1ere case vide n'a pas change */
 template<class It>
-void Game_2048::slide_line_aux(It begin, It end)
+int Game_2048::slide_line_template(It begin, It end)
 {
-	It it_bis(begin);
+	It new_begin(begin);
+	int first_empty_index = 0;
 
 	for (It it = begin; it != end; ++it)
 		if (!it->is_empty()) {
-			*it_bis = *it;
-			++it_bis;
-			first_empty_new_index++;
+			*new_begin = *it;
+			++new_begin;
+			first_empty_index++;
 		}
-	for (It it = it_bis; it != end; ++it)
+	for (It it = new_begin; it != end; ++it)
 		*it = Square_2048::empty;
-	//cout << "old " << first_empty_old_index << endl;
-	//cout << "new " << first_empty_new_index << endl;
+	return first_empty_index;
+}
+
+void Game_2048::add_empty_square(int i, int j)
+{
+	empty_squares.push_back(Ordered_pair<int, int>(i, j));
 }
 
 void Game_2048::slide_line(int i, Direction dir)
 {
+	int bound;
+
+	merge_line(i, dir);
+
 	switch (dir) {
 	case Direction::left:
-		slide_line_aux(board[i].begin(), board[i].end());
+		bound = slide_line_template(board[i].begin(), board[i].end());
+		for (int j = bound; j < height; j++)
+			add_empty_square(i, j);
 		break;
 	case Direction::right:
-		slide_line_aux(board[i].rbegin(), board[i].rend());
+		bound = height -
+			slide_line_template(board[i].rbegin(), board[i].rend());
+		for (int j = 0; j < bound; j++)
+			add_empty_square(i, j);
 		break;
 	default:
 		break;
@@ -84,99 +95,89 @@ void Game_2048::slide_line(int i, Direction dir)
 }
 
 template<class It>
-void Game_2048::merge_line_aux(It begin, It end)
+void Game_2048::merge_line_template(It begin, It end)
 {
 	bool already_merged = false;
 
-	for (It j = begin; j != end; ++j)
-		if (!already_merged && j[0].is_mergeable(j[1])) {
-			Square_2048 tmp(j[1]);
-
-			j[1] = j[0].merge(tmp);
-			j[0] = Square_2048::empty;
+	for (It it = begin; it != end; ++it) {
+		if (!already_merged && it[0].is_mergeable(it[1])) {
+			it[1] = it[0].merge(it[1]);
+			it[0] = Square_2048::empty;
 			already_merged = true;
 			score += j[1].get_value();
-			/* board_change = true; */
 		} else {
-			if (j[1].is_empty())
-				j[0].swap(j[1]);
-			already_merged = false;
+			if (it[1].is_empty())
+				it[0].swap(it[1]);
+			else
+				already_merged = false;
 		}
+	}
 }
 
 void Game_2048::merge_line(int i, Direction dir)
 {
 	switch (dir) {
 	case Direction::left:
-		merge_line_aux(board[i].begin(), board[i].end() - 1);
+		merge_line_template(board[i].begin(), board[i].end() - 1);
 		break;
 	case Direction::right:
-		merge_line_aux(board[i].rbegin(), board[i].rend() - 1);
+		merge_line_template(board[i].rbegin(), board[i].rend() - 1);
 		break;
 	default:
 		break;
 	}
 }
 
-void Game_2048::slide_board(Direction dir, bool need_transpose)
+void Game_2048::pop_up_new_square()
 {
-	if (need_transpose)
-		transpose_board();
-	/* calculer ici le first_empty_old_index */
-	for (int i = 0; i < width; i++) {
-		for (vector<Square_2048>::iterator it = board[i].begin();
-		     it != board[i].end() && !it->is_empty(); ++it)
-			first_empty_old_index++;
-		merge_line(i, dir);
-		slide_line(i, dir);
-		if (first_empty_new_index != first_empty_old_index)
-			board_change = true;
-		first_empty_old_index = 0;
-		first_empty_new_index = 0;
-	}
-	if (need_transpose)
+	int k = rand() % empty_squares.size();
+	Ordered_pair<int, int> pos(empty_squares[k]);
+	int i = pos.get_first();
+	int j = pos.get_second();
+
+	board[i][j] = Square_2048(Square_2048_action::none, 2);
+}
+
+void Game_2048::slide_board(Direction dir, bool transpose)
+{
+	if (transpose)
 		transpose_board();
 
+	for (int i = 0; i < height; i++) {
+		vector<Square_2048> old_line(board[i]);
+
+		slide_line(i, dir);
+		for (int j = 0; j < height; j++)
+			if (old_line[j] != board[i][j]) {
+				board_change = true;
+				break;
+			}
+	}
+
+	if (board_change && !empty_squares.empty())
+		pop_up_new_square();
+
+	board_change = false;
+	empty_squares.clear();
+
+	if (transpose)
+		transpose_board();
 }
+
 void Game_2048::move(Direction dir)
 {
 	switch (dir) {
-	case Direction::down:
-		slide_board(Direction::right, true);
-		/* transpose_board(); */
-		/* merge_line(4, Direction::right); */
-		/* slide_line(4, Direction::right); */
-		/* transpose_board(); */
-		break;
-	case Direction::up:
-		/* transpose_board(); */
-		/* merge_line(4, Direction::left); */
-		/* slide_line(4, Direction::left); */
-		/* transpose_board(); */
-		slide_board(Direction::left, true);
-		break;
 	case Direction::left:
 	case Direction::right:
 		slide_board(dir, false);
-		/* merge_line(0, dir); */
-		/* slide_line(0, dir); */
+		break;
+	case Direction::up:
+		slide_board(Direction::left, true);
+		break;
+	case Direction::down:
+		slide_board(Direction::right, true);
 		break;
 	default:
 		break;
 	}
-	/* a appeler seulement si la grille a change! */
-	if (board_change)
-		fill_first_empty_square();
-	board_change = false;
-}
-
-bool Game_2048::fill_first_empty_square()
-{
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
-			if (board[i][j].is_empty()) {
-				board[i][j] = random_square();
-				return true;
-			}
-	return false;
 }

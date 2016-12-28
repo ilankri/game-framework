@@ -4,8 +4,6 @@
 #include "printable.hpp"
 #include "square_2048_action.hpp"
 
-class Not_mergeable {};
-
 class Square_2048 : public Printable {
 public:
 	static Square_2048 empty;
@@ -33,7 +31,7 @@ public:
 
 	void swap(Square_2048& sq);
 
-	bool is_empty();
+	bool is_empty() const;
 
 	virtual bool is_mergeable(Square_2048& sq);
 
