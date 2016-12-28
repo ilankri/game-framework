@@ -18,7 +18,6 @@ Square_2048& Square_2048::operator=(const Square_2048& sq)
 	return *this;
 }
 
-<<<<<<< HEAD
 void Square_2048::set_value(long v)
 {
 	value = v;
@@ -29,8 +28,6 @@ long Square_2048::get_value()
 	return value;
 }
 
-=======
->>>>>>> Game 2048: Improve the randomness of the game
 void Square_2048::swap(Square_2048& sq)
 {
 	Square_2048 tmp(*this);
@@ -46,31 +43,12 @@ bool Square_2048::is_empty() const
 
 bool Square_2048::is_mergeable(Square_2048& sq)
 {
-<<<<<<< HEAD
-	if (!this->is_empty() && !sq.is_empty() && *this == sq) return true;
-	if (this -> is_opposite(sq)) return true;
-	return false;
-=======
 	return sq.action == Square_2048_action::none && *this == sq;
->>>>>>> Game 2048: Improve the randomness of the game
 }
 
 Square_2048 Square_2048::merge(Square_2048& sq)
 {
-<<<<<<< HEAD
-	if (is_mergeable(sq))
-		if (is_opposite(sq))
-			return Square_2048(empty); /* (1) */
-		else
-			return Square_2048(action, sq.value << 1);
-	else
-		throw Not_mergeable();
-
-	/* (1) : les nombres négatifs détruisent les opposés, le résultat
-	   de la fusion est donc une case vide */
-=======
 	return Square_2048(Square_2048_action::none, sq.value << 1);
->>>>>>> Game 2048: Improve the randomness of the game
 }
 
 bool Square_2048::same_action(const Square_2048& sq) const
@@ -93,7 +71,6 @@ bool Square_2048::operator!=(const Square_2048& sq) const
 	return !(*this == sq);
 }
 
-<<<<<<< HEAD
 bool Square_2048::is_opposite(const Square_2048& sq) const
 {
 	/* Deux cases ayant des valeurs différentes ne peuvent être opposés */
@@ -111,11 +88,6 @@ bool Square_2048::is_opposite(const Square_2048& sq) const
 
 void Square_2048::print(ostream& out) const
 {
-	if (*this != empty)
-=======
-void Square_2048::print(ostream& out) const
-{
 	if (!is_empty())
->>>>>>> Game 2048: Improve the randomness of the game
 		out << to_string(action) << value;
 }
