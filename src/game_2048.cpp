@@ -104,7 +104,7 @@ void Game_2048::merge_line_template(It begin, It end)
 			it[1] = it[0].merge(it[1]);
 			it[0] = Square_2048::empty;
 			already_merged = true;
-			score += j[1].get_value();
+			score += it[1].get_value();
 		} else {
 			if (it[1].is_empty())
 				it[0].swap(it[1]);
