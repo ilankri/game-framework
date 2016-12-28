@@ -10,7 +10,7 @@ int main()
 {
 	const int l = 4;
 	const int h = 4;
-	Game<Square_2048>* j = new Game_2048_Num(l, h);
+	Game<Square_2048>* j = new Game_2048(l, h);
 	j->play();
 	delete j;
 	return 0;

@@ -66,8 +66,8 @@ void Game_2048::slide_line_aux(It begin, It end)
 		}
 	for (It it = it_bis; it != end; ++it)
 		*it = Square_2048::empty;
-	cout << "old " << first_empty_old_index << endl;
-	cout << "new " << first_empty_new_index << endl;
+	//cout << "old " << first_empty_old_index << endl;
+	//cout << "new " << first_empty_new_index << endl;
 }
 
 void Game_2048::slide_line(int i, Direction dir)
