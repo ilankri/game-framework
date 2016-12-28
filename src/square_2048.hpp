@@ -37,12 +37,16 @@ public:
 
 	virtual Square_2048 merge(Square_2048& sq);
 
+	static Square_2048 random_square();
+
 private:
 	Square_2048_action action;
 
 	long value;
 
 	virtual void print(ostream& out) const;
+
+	static int random_value();
 };
 
 #endif /* not SQUARE_2048_HPP */

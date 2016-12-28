@@ -9,11 +9,6 @@ class Game_2048 : public Game<Square_2048> {
 public:
 	Game_2048(int height);
 
-protected:
-	virtual int random_value();
-
-	virtual Square_2048 random_square();
-
 private:
 	bool board_change;
 

@@ -10,17 +10,6 @@ void Game_2048::transpose_board()
 			board[i][j].swap(board[j][i]);
 }
 
-int Game_2048::random_value()
-{
-	return (1 + rand() % 2) *2;
-}
-
-Square_2048 Game_2048::random_square()
-{
-	Square_2048 res(Square_2048_action::none, random_value());
-	return res;
-}
-
 void Game_2048::init()
 {
 	int pos_h1;
@@ -38,10 +27,8 @@ void Game_2048::init()
 		pos_h2 = rand() % height;
 		pos_l2 = rand() % height;
 	} while (pos_h2 == pos_h1 && pos_l2 == pos_l1);
-	board[pos_h1][pos_l1] = Square_2048(Square_2048_action::none,
-					    (1 + rand() % 2) * 2);
-	board[pos_h2][pos_l2] = Square_2048(Square_2048_action::none,
-					    (1 + rand() % 2) * 2);
+	board[pos_h1][pos_l1] = Square_2048::random_square();
+	board[pos_h2][pos_l2] = Square_2048::random_square();
 }
 
 bool Game_2048::is_over() const
@@ -135,7 +122,7 @@ void Game_2048::pop_up_new_square()
 	int i = pos.get_first();
 	int j = pos.get_second();
 
-	board[i][j] = Square_2048(Square_2048_action::none, 2);
+	board[i][j] = Square_2048::random_square();
 }
 
 void Game_2048::slide_board(Direction dir, bool transpose)
