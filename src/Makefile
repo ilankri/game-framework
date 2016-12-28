@@ -8,7 +8,7 @@ LDFLAGS = $(DEBUGFLAG)
 
 SRC = main.cpp printable.cpp game.cpp taquin.cpp		\
 	square_2048_action.cpp square_2048.cpp game_2048.cpp	\
-	square_taquin.cpp game_2048_num.cpp
+	square_taquin.cpp game_2048_num.cpp game_2048_neg.cpp
 OBJ = $(SRC:.cpp=.o)
 DEP = $(SRC:.cpp=.d)
 EXEC = game

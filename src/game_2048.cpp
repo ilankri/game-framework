@@ -16,7 +16,6 @@ void Game_2048::transpose_board()
 
 int Game_2048::random_value()
 {
-	srand(time(nullptr));
 	return (1 + rand() % 2) *2;
 }
 
@@ -38,8 +37,8 @@ void Game_2048::init()
 		pos_h2 = rand() % height;
 		pos_l2 = rand() % width;
 	} while (pos_h2 == pos_h1 && pos_l2 == pos_l1);
-	board[pos_h1][pos_l1].set_value(random_value());
-	board[pos_h2][pos_l2].set_value(random_value());
+	board[pos_h1][pos_l1]=random_square();
+	board[pos_h2][pos_l2]=random_square();
 	/* board[0][0].set_value(2); */
 	/* board[0][1].set_value(2); */
 	/* board[0][2].set_value(4); */
