@@ -91,14 +91,3 @@ void Square_2048::print(ostream& out) const
 	if (!is_empty())
 		out << to_string(action) << value;
 }
-
-int Square_2048::random_value()
-{
-	return (1 + rand() % 2) *2;
-}
-
-Square_2048 Square_2048::random_square()
-{
-	Square_2048 res(Square_2048_action::none, random_value());
-	return res;
-}

@@ -6,10 +6,10 @@
 class Game_2048_Num : public Game_2048 {
 	/* Variant with other numbers than powers of 2 */
 public:
-	Game_2048_Num(int height, int width);
+	Game_2048_Num(int height);
 
 private:
-	virtual int random_value();
+	virtual long random_value();
 };
 
 #endif
