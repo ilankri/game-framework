@@ -1,5 +1,8 @@
 #include "sokoban.hpp"
 
+const int Sokoban::min_width = 10;
+const int Sokoban::min_height = 10;
+
 ostream& operator<<(ostream& o, CaseSok const& c) {
 	switch (c) {
 	case CaseSok::empty:
@@ -28,13 +31,15 @@ ostream& operator<<(ostream& o, CaseSok const& c) {
 }
 
 Sokoban::Sokoban(int height, int width, int nb_crates) :
-	Game<CaseSok>(height, width)
+	Game<CaseSok>(max(Sokoban::min_height,height),
+		      max(Sokoban::min_width,width))
 {
+	
 	if (nb_crates == -1)
-		this->nb_crates = sqrt(width * height) / 2;
+		this->nb_crates = sqrt(this -> width * this -> height) / 2;
 	else
 		this->nb_crates = nb_crates;
-	init();
+
 }
 
 Sokoban::~Sokoban() {}
@@ -65,10 +70,11 @@ void Sokoban::print(ostream& o) const
 
 void Sokoban::init()
 {
-	//cout << "initialiser()" << endl;
+	//cout << "init()" << endl;
 	set_walls();
 	set_targets_crates();
 	set_pers();
+	
 }
 
 void Sokoban::set_walls()
@@ -217,7 +223,7 @@ void Sokoban::set_targets_crates()
 	}
 }
 
-bool Sokoban::freeZone(int h_c, int l_c)
+bool Sokoban::freeZone(int h_c, int l_c) const
 {
 
 	if (outsideOfWalls(h_c,l_c))
@@ -236,7 +242,7 @@ bool Sokoban::freeZone(int h_c, int l_c)
 	return true;
 }
 
-bool Sokoban::outsideOfWalls(int h_c, int l_c)
+bool Sokoban::outsideOfWalls(int h_c, int l_c) const
 {
 	if (h_c >= height - 2 || h_c <= 1)
 		return true;

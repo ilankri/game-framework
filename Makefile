@@ -52,4 +52,4 @@ clean:
 	$(RM) $(OBJ) $(DEP)
 
 mrproper: clean
-	$(RM) game-2048 taquin
+	$(RM) game-2048 taquin sokoban

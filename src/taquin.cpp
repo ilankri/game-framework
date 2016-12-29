@@ -4,7 +4,6 @@ Square_Taquin Taquin::empty(0);
 
 Taquin::Taquin(int h, int w) : Game<Square_Taquin>(h, w)
 {
-	init();
 }
 
 Taquin::~Taquin() {}

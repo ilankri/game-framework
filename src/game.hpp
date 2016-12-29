@@ -13,11 +13,12 @@ class Game {
 public:
 	Game(int height, int width);
 
-	void play();
+	virtual void play();
 
-	void demo();
+	virtual void demo();
 
 	virtual ~Game();
+
 
 protected:
 	const int height;
@@ -51,6 +52,8 @@ private:
 	void move_right();
 
 	virtual bool is_stuck() const;
+
+
 };
 
 template<class Sq>
@@ -64,6 +67,7 @@ Game<Sq>::Game(int h, int w) : height(h), width(w), board(new vector<Sq>[h]),
 template<class Sq>
 void Game<Sq>::play()
 {
+
 	int rep;
 
 	init();

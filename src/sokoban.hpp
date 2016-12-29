@@ -18,6 +18,10 @@ public:
 	virtual ~Sokoban();
 
 private:
+	static const int min_height;
+
+	static const int min_width;
+	
 	int nb_crates;
 
 	int pos_h;
@@ -52,9 +56,9 @@ private:
 
 	virtual void set_targets_crates();
 
-	virtual bool freeZone(int h_c, int l_c);
+	virtual bool freeZone(int h_c, int l_c) const;
 
-	virtual bool outsideOfWalls(int h_c, int l_c);
+	virtual bool outsideOfWalls(int h_c, int l_c) const;
 
 	virtual void move(Direction s);
 
@@ -64,5 +68,7 @@ private:
 
 	virtual bool is_stuck() const;
 };
+
+
 
 #endif	/* not SOKOBAN_HPP */
