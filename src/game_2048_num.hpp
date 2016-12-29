@@ -4,12 +4,15 @@
 #include "game_2048.hpp"
 #include <cmath>
 
-class Game_2048_Num : public Game_2048 {
-	/* Variant with other numbers than powers of 2 */
+class Game_2048_Num : virtual public Game_2048 {
+	/* Variant with other numbers than powers of 2
+	   The user can choose his base, and the board 
+	   contains only numbers of this base
+	 */
 public:
 	Game_2048_Num(int height, int base = 2);
 
-private:
+protected:
 	const long base;
 	
 	virtual long random_value();
