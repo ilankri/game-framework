@@ -2,7 +2,7 @@
 
 int main()
 {
-	Game_2048_Num game(4);
+	Game_2048_Num game(10,7);
 
 	game.play();
 	return 0;
