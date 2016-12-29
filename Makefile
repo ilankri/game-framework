@@ -10,16 +10,19 @@ SRC_COMMON = printable.cpp game.cpp
 SRC_2048 = ordered_pair.cpp square_2048_action.cpp square_2048.cpp	\
 	game_2048.cpp game_2048_main.cpp
 SRC_TAQUIN = square_taquin.cpp taquin.cpp taquin_main.cpp
+SRC_SOKOBAN = sokoban.cpp sokoban_main.cpp
 
 OBJ_COMMON = $(SRC_COMMON:.cpp=.o)
 OBJ_2048 = $(SRC_2048:.cpp=.o)
 OBJ_TAQUIN = $(SRC_TAQUIN:.cpp=.o)
-OBJ = $(OBJ_COMMON) $(OBJ_2048) $(OBJ_TAQUIN)
+OBJ_SOKOBAN = $(SRC_SOKOBAN:.cpp=.o)
+OBJ = $(OBJ_COMMON) $(OBJ_2048) $(OBJ_TAQUIN) $(OBJ_SOKOBAN)
 
 DEP_COMMON = $(SRC_COMMON:.cpp=.d)
 DEP_2048 = $(SRC_2048:.cpp=.d)
 DEP_TAQUIN = $(SRC_TAQUIN:.cpp=.d)
-DEP = $(DEP_COMMON) $(DEP_2048) $(DEP_TAQUIN)
+DEP_SOKOBAN = $(SRC_SOKOBAN:.cpp=.d)
+DEP = $(DEP_COMMON) $(DEP_2048) $(DEP_TAQUIN) $(DEP_SOKOBAN)
 
 srcdir = src
 compile = $(CXX) -c $(CPPFLAGS) $(CXXFLAGS)
@@ -29,12 +32,15 @@ link = $(CXX) $(LDFLAGS)
 .SUFFIXES: .o .cpp
 .PHONY: all clean mrproper
 
-all: game-2048 taquin
+all: game-2048 taquin sokoban
 
 game-2048: $(OBJ_COMMON) $(OBJ_2048)
 	$(link) $^ -o $@
 
 taquin: $(OBJ_COMMON) $(OBJ_TAQUIN)
+	$(link) $^ -o $@
+
+sokoban: $(OBJ_COMMON) $(OBJ_SOKOBAN)
 	$(link) $^ -o $@
 
 %.o: $(srcdir)/%.cpp

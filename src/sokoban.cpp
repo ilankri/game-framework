@@ -257,11 +257,16 @@ bool Sokoban::outsideOfWalls(int h_c, int l_c)
 
 void Sokoban::set_pers()
 {
-	//cout << "placer_pers()" << endl;
-	do {
-		pos_w = 1 + rand() % (width - 2);
-		pos_h = 1 + rand() % (height - 2);
+
+	/* on vérifie s'il n'y a pas déjà un pesonnage sur le plateau */
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			if (board[i][j] == CaseSok::pers)
+				return;
+		}
 	}
+	//cout << "set_pers()" << endl;
+
 
 	/*
 	 * Pour que le personnage puisse effectuer au moins un
@@ -269,6 +274,11 @@ void Sokoban::set_pers()
 	 * cases vides, toujours à l'intérieur de la zone délimitée par
 	 * les murs externes.
 	 */
+
+	do {
+		pos_w = 1 + rand() % (width - 2);
+		pos_h = 1 + rand() % (height - 2);
+	}
 	while (!freeZone(pos_h, pos_w));
 	board[pos_h][pos_w] = CaseSok::pers;
 }
