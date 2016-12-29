@@ -33,7 +33,39 @@ void Game_2048::init()
 
 bool Game_2048::is_over() const
 {
-	return false;
+	/* La partie est terminée lorsque la grille est pleine et
+	   qu'il n'y a plus aucune fusion possible */
+
+	/* on cherche s'il y a une case vide */
+	for (int i = 0; i < height; i++) {
+		for (int j=0; j < width; j++) {
+			if (board[i][j].is_empty())
+				return false;
+		}
+	}
+
+	const int &lim_w = width - 1;
+	const int &lim_h = height -1;
+
+	/* on regarde sur chaque ligne s'il y a une case pouvant
+	   fusionner avec la suivante */
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < lim_w; j++) {
+			if (board[i][j].is_mergeable(board[i][j+1]))
+				return false;
+		}
+	}
+
+	/* pareil pour les colonnes */
+	for (int j = 0; j < width; j++) {
+		for (int i = 0; i < lim_h; i++) {
+			if (board[i][j].is_mergeable(board[i+1][j]))
+				return false;
+		}
+	}
+
+
+	return true;
 }
 
 template<class It>
