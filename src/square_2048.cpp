@@ -1,6 +1,7 @@
 #include "square_2048.hpp"
 
-Square_2048::Square_2048(Square_2048_action a, int v) : action(a), value(v) {}
+Square_2048::Square_2048(Square_2048_action a,
+			 unsigned long long v) : action(a), value(v) {}
 
 Square_2048::Square_2048(const Square_2048& sq)
 {
@@ -18,12 +19,12 @@ Square_2048& Square_2048::operator=(const Square_2048& sq)
 	return *this;
 }
 
-void Square_2048::set_value(long v)
+void Square_2048::set_value(unsigned long long v)
 {
 	value = v;
 }
 
-long Square_2048::get_value()
+unsigned long long Square_2048::get_value()
 {
 	return value;
 }
@@ -43,12 +44,16 @@ bool Square_2048::is_empty() const
 
 bool Square_2048::is_mergeable(Square_2048& sq)
 {
-	return sq.action == Square_2048_action::none && *this == sq;
+	if (sq.action == Square_2048_action::none && *this == sq) return true;
+	if (sq.action == Square_2048_action::neg && *this == sq) return true;
+	if (this -> is_opposite(sq)) return true;
+	return false;
 }
 
 Square_2048 Square_2048::merge(Square_2048& sq)
 {
-	return Square_2048(Square_2048_action::none, sq.value << 1);
+	if (this -> is_opposite(sq)) return empty;
+	return Square_2048(sq.action, sq.value << 1);
 }
 
 bool Square_2048::same_action(const Square_2048& sq) const

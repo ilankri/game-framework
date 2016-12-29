@@ -12,7 +12,7 @@ public:
 protected:
 	virtual Square_2048 random_square();
 
-	virtual long random_value();
+	virtual unsigned long long random_value();
 
 private:
 	bool board_change;

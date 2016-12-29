@@ -9,7 +9,7 @@ public:
 	static Square_2048 empty;
 
 	Square_2048(Square_2048_action action = Square_2048_action::empty,
-		    int value = 0);
+		    unsigned long long value = 0);
 
 	Square_2048(const Square_2048& sq);
 
@@ -25,9 +25,9 @@ public:
 
 	Square_2048& operator=(const Square_2048& sq);
 
-	void set_value(long value);
+	void set_value(unsigned long long value);
 
-	long get_value();
+	unsigned long long get_value();
 
 	void swap(Square_2048& sq);
 
@@ -40,7 +40,7 @@ public:
 private:
 	Square_2048_action action;
 
-	long value;
+	unsigned long long value;
 
 	virtual void print(ostream& out) const;
 

@@ -11,7 +11,7 @@ void Game_2048::transpose_board()
 }
 
 
-long Game_2048::random_value()
+unsigned long long Game_2048::random_value()
 {
 	return (1 + rand() % 2) *2;
 }

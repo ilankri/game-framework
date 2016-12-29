@@ -6,7 +6,7 @@ Game_2048_Num::Game_2048_Num(int height, int base) :
 	
 }
 
-long Game_2048_Num::random_value()
+unsigned long long Game_2048_Num::random_value()
 {
 	return (1 + rand() % 2) * base;
 }

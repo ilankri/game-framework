@@ -7,26 +7,37 @@ CXXFLAGS = $(DEBUGFLAG) -Wall -Wextra -Wpedantic -std=c++11
 LDFLAGS = $(DEBUGFLAG)
 
 SRC_COMMON = printable.cpp game.cpp
-SRC_2048 = ordered_pair.cpp square_2048_action.cpp square_2048.cpp	\
-	game_2048.cpp game_2048_main.cpp
-SRC_2048_NUM = ordered_pair.cpp square_2048_action.cpp square_2048.cpp	\
-	game_2048.cpp game_2048_num.cpp game_2048_num_main.cpp
+SRC_2048_COMMON = ordered_pair.cpp square_2048_action.cpp square_2048.cpp \
+	game_2048.cpp
+SRC_2048 = game_2048_main.cpp
+SRC_2048_NUM = game_2048_num.cpp game_2048_num_main.cpp
+SRC_2048_NEG = game_2048_neg.cpp game_2048_neg_main.cpp
+SRC_2048_MIX = game_2048_num.cpp game_2048_neg.cpp game_2048_mix.cpp \
+	game_2048_mix_main.cpp
 SRC_TAQUIN = square_taquin.cpp taquin.cpp taquin_main.cpp
 SRC_SOKOBAN = sokoban.cpp sokoban_main.cpp
 
 OBJ_COMMON = $(SRC_COMMON:.cpp=.o)
+OBJ_2048_COMMON = $(SRC_2048_COMMON:.cpp=.o)
 OBJ_2048 = $(SRC_2048:.cpp=.o)
 OBJ_2048_NUM = $(SRC_2048_NUM:.cpp=.o)
+OBJ_2048_NEG = $(SRC_2048_NEG:.cpp=.o)
+OBJ_2048_MIX = $(SRC_2048_MIX:.cpp=.o)
 OBJ_TAQUIN = $(SRC_TAQUIN:.cpp=.o)
 OBJ_SOKOBAN = $(SRC_SOKOBAN:.cpp=.o)
-OBJ = $(OBJ_COMMON) $(OBJ_2048) $(OBJ_2048_NUM) $(OBJ_TAQUIN) $(OBJ_SOKOBAN)
+OBJ = $(OBJ_COMMON) $(OBJ_2048_COMMON) $(OBJ_2048) $(OBJ_2048_NUM) \
+	$(OBJ_2048_NEG) $(OBJ_2048_MIX) $(OBJ_TAQUIN) $(OBJ_SOKOBAN)
 
 DEP_COMMON = $(SRC_COMMON:.cpp=.d)
+DEP_2048_COMMON= $(SRC_2048_COMMON:.cpp=.d)
 DEP_2048 = $(SRC_2048:.cpp=.d)
 DEP_2048_NUM = $(SRC_2048_NUM:.cpp=.d)
+DEP_2048_NEG = $(SRC_2048_NEG:.cpp=.d)
+DEP_2048_MIX = $(SRC_2048_MIX:.cpp=.d)
 DEP_TAQUIN = $(SRC_TAQUIN:.cpp=.d)
 DEP_SOKOBAN = $(SRC_SOKOBAN:.cpp=.d)
-DEP = $(DEP_COMMON) $(DEP_2048) $(DEP_2048_NUM) $(DEP_TAQUIN) $(DEP_SOKOBAN)
+DEP = $(DEP_COMMON) $(DEP_2048_COMMON) $(DEP_2048) $(DEP_2048_NUM) \
+	$(DEP_2048_NEG) $(DEP_2048_MIX) $(DEP_TAQUIN) $(DEP_SOKOBAN)
 
 srcdir = src
 compile = $(CXX) -c $(CPPFLAGS) $(CXXFLAGS)
@@ -36,12 +47,18 @@ link = $(CXX) $(LDFLAGS)
 .SUFFIXES: .o .cpp
 .PHONY: all clean mrproper
 
-all: game-2048 game-2048-num taquin sokoban
+all: game-2048 game-2048-num game-2048-neg game-2048-mix taquin sokoban
 
-game-2048: $(OBJ_COMMON) $(OBJ_2048)
+game-2048: $(OBJ_COMMON) $(OBJ_2048_COMMON) $(OBJ_2048)
 	$(link) $^ -o $@
 
-game-2048-num: $(OBJ_COMMON) $(OBJ_2048_NUM)
+game-2048-num: $(OBJ_COMMON) $(OBJ_2048_COMMON) $(OBJ_2048_NUM)
+	$(link) $^ -o $@
+
+game-2048-neg: $(OBJ_COMMON) $(OBJ_2048_COMMON) $(OBJ_2048_NEG)
+	$(link) $^ -o $@
+
+game-2048-mix: $(OBJ_COMMON) $(OBJ_2048_COMMON) $(OBJ_2048_MIX)
 	$(link) $^ -o $@
 
 taquin: $(OBJ_COMMON) $(OBJ_TAQUIN)
@@ -59,4 +76,4 @@ clean:
 	$(RM) $(OBJ) $(DEP)
 
 mrproper: clean
-	$(RM) game-2048 game-2048-num taquin sokoban
+	$(RM) game-2048 game-2048-num game-2048-neg game-2048-mix taquin sokoban

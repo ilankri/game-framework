@@ -1,7 +1,7 @@
 #include "game_2048_neg.hpp"
 
-Game_2048_Neg::Game_2048_Neg(int height, int width) :
-	Game_2048(height, width)
+Game_2048_Neg::Game_2048_Neg(int height) :
+	Game_2048(height)
 {
 	
 }

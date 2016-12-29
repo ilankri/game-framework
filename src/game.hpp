@@ -27,7 +27,7 @@ protected:
 
 	vector<Sq>* board;
 
-	long score;
+	long long score;
 
 private:
 	bool quit;
