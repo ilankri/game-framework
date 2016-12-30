@@ -3,23 +3,23 @@
 Game_2048_Dest::Game_2048_Dest(int height) :
 	Game_2048(height)
 {
-	
+
 }
 
 
 Square_2048 Game_2048_Dest::random_square() const
 {
-	Square_2048_action action;
+	Action_2048 action;
 	unsigned long long val;
-	
+
 	int random_action = rand() % 4;
 
 	if (random_action == 0) {
-		action = Square_2048_action::destroy;
+		action = Action_2048::destroy;
 		val = 0;
 	}
 	else {
-		action = Square_2048_action::none;
+		action = Action_2048::none;
 		val = random_value();
 	}
 

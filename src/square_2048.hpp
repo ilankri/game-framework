@@ -2,13 +2,13 @@
 #define SQUARE_2048_HPP
 
 #include "printable.hpp"
-#include "square_2048_action.hpp"
+#include "action_2048.hpp"
 
 class Square_2048 : public Printable {
 public:
 	static Square_2048 empty;
 
-	Square_2048(Square_2048_action action = Square_2048_action::empty,
+	Square_2048(Action_2048 action = Action_2048::empty,
 		    unsigned long long value = 0);
 
 	Square_2048(const Square_2048& sq);
@@ -42,7 +42,7 @@ public:
 	virtual Square_2048 merge(Square_2048& sq);
 
 private:
-	Square_2048_action action;
+	Action_2048 action;
 
 	unsigned long long value;
 
