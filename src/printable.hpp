@@ -1,7 +1,7 @@
 #ifndef PRINTABLE_HPP
 #define PRINTABLE_HPP
 
-#include <iostream>
+#include <ostream>
 
 using namespace std;
 

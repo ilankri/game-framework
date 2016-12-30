@@ -64,7 +64,7 @@ bool Game_2048::is_over() const
 	   fusionner avec la suivante */
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < lim_w; j++) {
-			if (board[i][j].is_mergeable(board[i][j+1]))
+			if (is_mergeable(board[i][j], board[i][j+1]))
 				return false;
 		}
 	}
@@ -72,7 +72,7 @@ bool Game_2048::is_over() const
 	/* pareil pour les colonnes */
 	for (int j = 0; j < width; j++) {
 		for (int i = 0; i < lim_h; i++) {
-			if (board[i][j].is_mergeable(board[i+1][j]))
+			if (is_mergeable(board[i][j], board[i+1][j]))
 				return false;
 		}
 	}
@@ -132,8 +132,8 @@ void Game_2048::merge_line_template(It begin, It end)
 	bool already_merged = false;
 
 	for (It it = begin; it != end; ++it) {
-		if (!already_merged && it[0].is_mergeable(it[1])) {
-			it[1] = it[0].merge(it[1]);
+		if (!already_merged && is_mergeable(it[0], it[1])) {
+			it[1] = merge(it[0], it[1]);
 			it[0] = Square_2048::empty;
 			already_merged = true;
 			score += it[1].get_value();
@@ -210,4 +210,49 @@ void Game_2048::move(Direction dir)
 	default:
 		break;
 	}
+}
+
+bool Game_2048::is_mergeable(const Square_2048& sq1,
+			     const Square_2048& sq2) const
+{
+	if (sq1 == sq2) {
+		if (sq2.get_action() == Action_2048::none)
+			return true;
+
+		if (sq2.get_action() == Action_2048::neg)
+			return true;
+	}
+
+	if (sq1.mult_possible(sq2))
+		return true;
+
+	if (sq1.is_opposite(sq2))
+		return true;
+
+	if (sq1.dest_possible(sq2))
+		return true;
+
+	return false;
+}
+
+Square_2048 Game_2048::merge(const Square_2048& sq1,
+			     const Square_2048& sq2) const
+{
+	if (sq1.is_opposite(sq2) || sq1.dest_possible(sq2))
+		return Square_2048::empty;
+
+	if (sq1.mult_possible(sq2)) {
+
+		unsigned long long res_val = sq1.get_value() * sq2.get_value();
+		Action_2048 res_action;
+
+		if (sq1.get_action() == Action_2048::mult)
+			res_action = sq2.get_action();
+		else
+			res_action = sq1.get_action();
+
+		return Square_2048(res_action,res_val);
+	}
+
+	return Square_2048(sq2.get_action(), sq2.get_value() << 1);
 }

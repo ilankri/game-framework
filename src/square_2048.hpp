@@ -6,12 +6,14 @@
 
 class Square_2048 : public Printable {
 public:
-	static Square_2048 empty;
-
 	Square_2048(Action_2048 action = Action_2048::empty,
 		    unsigned long long value = 0);
 
 	Square_2048(const Square_2048& sq);
+
+	Square_2048& operator=(const Square_2048& sq);
+
+	static Square_2048 empty;
 
 	bool operator==(const Square_2048& sq) const;
 
@@ -27,19 +29,15 @@ public:
 
 	bool same_value(const Square_2048& sq) const;
 
-	Square_2048& operator=(const Square_2048& sq);
-
 	void set_value(unsigned long long value);
 
 	unsigned long long get_value() const;
 
+	Action_2048 get_action() const;
+
 	void swap(Square_2048& sq);
 
 	bool is_empty() const;
-
-	virtual bool is_mergeable(Square_2048& sq) const;
-
-	virtual Square_2048 merge(Square_2048& sq);
 
 private:
 	Action_2048 action;

@@ -1,7 +1,7 @@
 #include "square_2048.hpp"
 
-Square_2048::Square_2048(Action_2048 a,
-			 unsigned long long v) : action(a), value(v) {}
+Square_2048::Square_2048(Action_2048 a, unsigned long long v) :
+	action(a), value(v) {}
 
 Square_2048::Square_2048(const Square_2048& sq)
 {
@@ -9,15 +9,14 @@ Square_2048::Square_2048(const Square_2048& sq)
 	value = sq.value;
 }
 
-
-Square_2048 Square_2048::empty(Action_2048::empty, 0);
-
 Square_2048& Square_2048::operator=(const Square_2048& sq)
 {
 	action = sq.action;
 	value = sq.value;
 	return *this;
 }
+
+Square_2048 Square_2048::empty;
 
 void Square_2048::set_value(unsigned long long v)
 {
@@ -39,52 +38,7 @@ void Square_2048::swap(Square_2048& sq)
 
 bool Square_2048::is_empty() const
 {
-	return *this == empty;
-}
-
-bool Square_2048::is_mergeable(Square_2048& sq) const
-{
-
-	if (*this == sq) {
-		if (sq.action == Action_2048::none)
-			return true;
-
-		if (sq.action == Action_2048::neg)
-			return true;
-	}
-
-	if (this -> mult_possible(sq)) return true;
-
-	if (this -> is_opposite(sq)) return true;
-
-	if (this -> dest_possible(sq)) return true;
-
-	return false;
-}
-
-Square_2048 Square_2048::merge(Square_2048& sq)
-{
-	if (this -> is_opposite(sq)
-	    || this -> dest_possible(sq))
-	{
-		return empty;
-	}
-
-	if (this -> mult_possible(sq)) {
-
-		int res_val = this -> value * sq.value;
-		Action_2048 res_action;
-
-		if (this -> action == Action_2048::mult) {
-			res_action = sq.action;
-		}
-
-		else res_action = this -> action;
-
-		return Square_2048(res_action,res_val);
-	}
-
-	return Square_2048(sq.action, sq.value << 1);
+	return same_action(empty);
 }
 
 bool Square_2048::same_action(const Square_2048& sq) const
@@ -99,7 +53,8 @@ bool Square_2048::same_value(const Square_2048& sq) const
 
 bool Square_2048::operator==(const Square_2048& sq) const
 {
-	return same_action(sq) && same_value(sq);
+	return (is_empty() && sq.is_empty()) ||
+		(same_action(sq) && same_value(sq));
 }
 
 bool Square_2048::operator!=(const Square_2048& sq) const
@@ -153,4 +108,9 @@ void Square_2048::print(ostream& out) const
 			out << value;
 		}
 	}
+}
+
+Action_2048 Square_2048::get_action() const
+{
+	return action;
 }

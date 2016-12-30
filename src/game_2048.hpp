@@ -43,6 +43,11 @@ private:
 	template<class It>
 	void merge_line_template(It begin, It end);
 
+	virtual bool is_mergeable(const Square_2048& sq1,
+				  const Square_2048& sq2) const;
+
+	virtual Square_2048 merge(const Square_2048& sq1,
+				  const Square_2048& sq2) const;
 };
 
 #endif /* not GAME_2048_HPP */
