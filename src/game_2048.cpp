@@ -11,12 +11,12 @@ void Game_2048::transpose_board()
 }
 
 
-unsigned long long Game_2048::random_value()
+unsigned long long Game_2048::random_value() const
 {
 	return (1 + rand() % 2) *2;
 }
 
-Square_2048 Game_2048::random_square()
+Square_2048 Game_2048::random_square() const
 {
 	Square_2048 res(Square_2048_action::none, random_value());
 	return res;

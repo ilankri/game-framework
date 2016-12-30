@@ -4,6 +4,6 @@ int main()
 {
 	Game_2048_Neg game(4);
 
-	game.demo();
+	game.play();
 	return 0;
 }

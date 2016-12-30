@@ -10,9 +10,9 @@ public:
 	Game_2048(int height);
 
 protected:
-	virtual Square_2048 random_square();
+	virtual Square_2048 random_square() const;
 
-	virtual unsigned long long random_value();
+	virtual unsigned long long random_value() const;
 
 private:
 	bool board_change;

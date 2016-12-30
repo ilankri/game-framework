@@ -9,7 +9,7 @@ public:
 	Game_2048_Neg(int height);
 
 protected:
-	virtual Square_2048 random_square();
+	virtual Square_2048 random_square() const;
 };
 
 #endif

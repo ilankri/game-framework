@@ -7,9 +7,9 @@ Game_2048_Neg::Game_2048_Neg(int height) :
 }
 
 
-Square_2048 Game_2048_Neg::random_square()
+Square_2048 Game_2048_Neg::random_square() const
 {
-	int val = random_value();
+	unsigned long long val = random_value();
 	Square_2048_action action;
 	int sgn= rand() % 2;
 	if (sgn)

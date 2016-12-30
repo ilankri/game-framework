@@ -13,9 +13,9 @@ public:
 	Game_2048_Num(int height, int base = 2);
 
 protected:
-	const long base;
+	const int base;
 	
-	virtual unsigned long long random_value();
+	virtual unsigned long long random_value() const;
 };
 
 
