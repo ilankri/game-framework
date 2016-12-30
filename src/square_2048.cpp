@@ -47,18 +47,26 @@ bool Square_2048::is_mergeable(Square_2048& sq) const
 	if ((sq.action == Square_2048_action::none
 	     || sq.action == Square_2048_action::neg)
 	    && *this == sq)
+	{
 		return true;
+	}
 
 	if (this -> mult_possible(sq)) return true;
 	
 	if (this -> is_opposite(sq)) return true;
+
+	if (this -> dest_possible(sq)) return true;
 	
 	return false;
 }
 
 Square_2048 Square_2048::merge(Square_2048& sq)
 {
-	if (this -> is_opposite(sq)) return empty;
+	if (this -> is_opposite(sq)
+	    || this -> dest_possible(sq))
+	{
+		return empty;
+	}
 
 	if (this -> mult_possible(sq)) {
 
@@ -97,9 +105,23 @@ bool Square_2048::operator!=(const Square_2048& sq) const
 	return !(*this == sq);
 }
 
+bool Square_2048::dest_possible(const Square_2048& sq) const
+{
+	if (this -> is_empty() || sq.is_empty()) return false;
+
+	return (this -> action == Square_2048_action::destroy
+		|| sq.action == Square_2048_action::destroy);
+}
+
 bool Square_2048::mult_possible(const Square_2048& sq) const
 {
 	if (this -> is_empty() || sq.is_empty()) return false;
+
+	if (this -> action == Square_2048_action::destroy
+	    || sq.action == Square_2048_action::destroy)
+	{
+		return false;
+	}
 	
 	return (this -> action == Square_2048_action::mult
 		|| sq.action == Square_2048_action::mult);
@@ -122,6 +144,10 @@ bool Square_2048::is_opposite(const Square_2048& sq) const
 
 void Square_2048::print(ostream& out) const
 {
-	if (!is_empty())
-		out << to_string(action) << value;
+	if (!is_empty()) {
+		out << to_string(action);
+		if (this -> action != Square_2048_action::destroy) {
+			out << value;
+		}
+	}
 }

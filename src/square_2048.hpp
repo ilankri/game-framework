@@ -17,6 +17,8 @@ public:
 
 	bool operator!=(const Square_2048& sq) const;
 
+	bool dest_possible(const Square_2048& sq) const;
+
 	bool mult_possible(const Square_2048& sq) const;
 
 	bool is_opposite(const Square_2048& sq) const;
