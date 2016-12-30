@@ -44,11 +44,13 @@ bool Square_2048::is_empty() const
 
 bool Square_2048::is_mergeable(Square_2048& sq) const
 {
-	if ((sq.action == Square_2048_action::none
-	     || sq.action == Square_2048_action::neg)
-	    && *this == sq)
-	{
-		return true;
+
+	if (*this == sq) {
+		if (sq.action == Square_2048_action::none)
+			return true;
+		
+		if (sq.action == Square_2048_action::neg)
+			return true;
 	}
 
 	if (this -> mult_possible(sq)) return true;
@@ -117,11 +119,12 @@ bool Square_2048::mult_possible(const Square_2048& sq) const
 {
 	if (this -> is_empty() || sq.is_empty()) return false;
 
-	if (this -> action == Square_2048_action::destroy
-	    || sq.action == Square_2048_action::destroy)
-	{
+	if (this -> action == Square_2048_action::destroy)
 		return false;
-	}
+
+	if (sq.action == Square_2048_action::destroy)
+		return false;
+	
 	
 	return (this -> action == Square_2048_action::mult
 		|| sq.action == Square_2048_action::mult);

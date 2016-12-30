@@ -5,7 +5,7 @@
 #include "square_taquin.hpp"
 #include <cstdlib>
 #include <ctime>
-
+#include <cmath>
 
 class Taquin : public Game<Square_Taquin> {
 public:
@@ -14,6 +14,10 @@ public:
 	virtual ~Taquin();
 
 private:
+	static const int min_height;
+
+	static const int min_width;
+	
 	static Square_Taquin empty;
 	
 	// coordonnées de la case vide

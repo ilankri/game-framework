@@ -2,7 +2,7 @@
 
 int main()
 {
-	Taquin game(4, 4);
+	Taquin game(2, 4);
 
 	game.play();
 	return 0;

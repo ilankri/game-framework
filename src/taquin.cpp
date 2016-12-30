@@ -2,7 +2,12 @@
 
 Square_Taquin Taquin::empty(0);
 
-Taquin::Taquin(int h, int w) : Game<Square_Taquin>(h, w)
+const int Taquin::min_width = 3;
+
+const int Taquin::min_height = 3;
+
+Taquin::Taquin(int h, int w) :
+	Game<Square_Taquin>(max(min_height,h), max(min_width,w))
 {
 }
 
