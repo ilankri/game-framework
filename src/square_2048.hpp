@@ -27,13 +27,13 @@ public:
 
 	void set_value(unsigned long long value);
 
-	unsigned long long get_value();
+	unsigned long long get_value() const;
 
 	void swap(Square_2048& sq);
 
 	bool is_empty() const;
 
-	virtual bool is_mergeable(Square_2048& sq);
+	virtual bool is_mergeable(Square_2048& sq) const;
 
 	virtual Square_2048 merge(Square_2048& sq);
 

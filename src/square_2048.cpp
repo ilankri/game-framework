@@ -24,7 +24,7 @@ void Square_2048::set_value(unsigned long long v)
 	value = v;
 }
 
-unsigned long long Square_2048::get_value()
+unsigned long long Square_2048::get_value() const
 {
 	return value;
 }
@@ -42,7 +42,7 @@ bool Square_2048::is_empty() const
 	return *this == empty;
 }
 
-bool Square_2048::is_mergeable(Square_2048& sq)
+bool Square_2048::is_mergeable(Square_2048& sq) const
 {
 	if (sq.action == Square_2048_action::none && *this == sq) return true;
 	if (sq.action == Square_2048_action::neg && *this == sq) return true;
