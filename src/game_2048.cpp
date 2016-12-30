@@ -100,7 +100,7 @@ int Game_2048::slide_line_template(It begin, It end)
 
 void Game_2048::add_empty_square(int i, int j)
 {
-	empty_squares.push_back(Ordered_pair<int, int>(i, j));
+	empty_squares.push_back(pair<int, int>(i, j));
 }
 
 void Game_2048::slide_line(int i, Direction dir)
@@ -163,11 +163,9 @@ void Game_2048::merge_line(int i, Direction dir)
 void Game_2048::pop_up_new_square()
 {
 	int k = rand() % empty_squares.size();
-	Ordered_pair<int, int> pos(empty_squares[k]);
-	int i = pos.get_first();
-	int j = pos.get_second();
+	pair<int, int> pos(empty_squares[k]);
 
-	board[i][j] = random_square();
+	board[pos.first][pos.second] = random_square();
 }
 
 void Game_2048::slide_board(Direction dir, bool transpose)

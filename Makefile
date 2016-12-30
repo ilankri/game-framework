@@ -7,8 +7,7 @@ CXXFLAGS = $(DEBUGFLAG) -Wall -Wextra -Wpedantic -std=c++11
 LDFLAGS = $(DEBUGFLAG)
 
 SRC_COMMON = printable.cpp game.cpp
-SRC_2048_COMMON = ordered_pair.cpp action_2048.cpp square_2048.cpp \
-	game_2048.cpp
+SRC_2048_COMMON = action_2048.cpp square_2048.cpp game_2048.cpp
 SRC_2048 = game_2048_main.cpp
 SRC_2048_NUM = game_2048_num.cpp game_2048_num_main.cpp
 SRC_2048_NEG = game_2048_neg.cpp game_2048_neg_main.cpp

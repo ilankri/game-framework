@@ -3,7 +3,7 @@
 
 #include "game.hpp"
 #include "square_2048.hpp"
-#include "ordered_pair.hpp"
+#include <utility>
 
 class Game_2048 : public Game<Square_2048> {
 public:
@@ -17,7 +17,7 @@ protected:
 private:
 	bool board_change;
 
-	vector<Ordered_pair<int, int> > empty_squares;
+	vector<pair<int, int> > empty_squares;
 
 	virtual void init();
 
