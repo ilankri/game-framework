@@ -2,7 +2,7 @@
 
 int main()
 {
-        Sokoban game(1,1);
+        Sokoban game(10,10,5);
 
 	game.play();
 	return 0;
