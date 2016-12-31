@@ -6,42 +6,69 @@
 
 using namespace std;
 
+/* Allowed movements.  */
 enum class Direction { up, down, left, right };
 
+/*
+ * Template abstract class representing a board game composed of
+ * printable squares with four possible movements (up, down, left and
+ * right).
+ */
 template<class Sq>
 class Game {
 public:
+	/*
+	 * A game is defined by the height and the width of its board.
+	 */
 	Game(int height, int width);
-
-	virtual void play();
-
-	virtual void demo();
 
 	virtual ~Game();
 
+	/* Start a Human playable game.  */
+	virtual void play();
+
+	/* Game demonstration.  */
+	virtual void demo();
 
 protected:
+	/* Height of the board.  */
 	const int height;
 
+	/* Width of the board.  */
 	const int width;
 
+	/* Board of the game, basically a matrix.  */
 	vector<Sq>* board;
 
+	/* Player's score.  */
 	long long score;
 
 private:
+	/* Whether the player ask to quit game.  */
 	bool quit;
 
+	/* Initialize game board. */
 	virtual void init() = 0;
 
-	virtual bool is_over() const = 0;
-
+	/*
+	 * Change the game configuration according to the given
+	 * movement.
+	 */
 	virtual void move(Direction) = 0;
 
-	virtual void print(ostream& o = cout) const;
+	/* Check if the game is over.  */
+	virtual bool is_over() const = 0;
+
+	/*
+	 * Check if the current game configuration is in a stuck state.
+	 */
+	virtual bool is_stuck() const;
+
+	/* Print current game configuration.  */
+	virtual void print_board(ostream& out = cout) const;
 
 	template<class S>
-	friend ostream& operator<<(ostream& o, const Game<S>& game);
+	friend ostream& operator<<(ostream& out, const Game<S>& game);
 
 	void move_up();
 
@@ -50,24 +77,30 @@ private:
 	void move_left();
 
 	void move_right();
-
-	virtual bool is_stuck() const;
-
-
 };
 
 template<class Sq>
-Game<Sq>::Game(int h, int w) : height(h), width(w), board(new vector<Sq>[h]),
-				 score(0), quit(false)
+Game<Sq>::Game(int h, int w) :
+	height(h),
+	width(w),
+	board(new vector<Sq>[h]),
+	score(0),
+	quit(false)
 {
 	for (int i = 0; i < h; i++)
 		board[i] = vector<Sq>(w);
 }
 
 template<class Sq>
+Game<Sq>::~Game()
+{
+	delete[] board;
+}
+
+
+template<class Sq>
 void Game<Sq>::play()
 {
-
 	int rep;
 
 	init();
@@ -79,8 +112,8 @@ void Game<Sq>::play()
 		cin >> rep;
 		cin.ignore();
 		switch (rep) {
-		case 6:
-			move_right();
+		case 8:
+			move_up();
 			break;
 		case 2:
 			move_down();
@@ -88,8 +121,8 @@ void Game<Sq>::play()
 		case 4:
 			move_left();
 			break;
-		case 8:
-			move_up();
+		case 6:
+			move_right();
 			break;
 		case 0:
 			quit = true;
@@ -103,19 +136,15 @@ void Game<Sq>::play()
 
 template<class Sq>
 void Game<Sq>::demo() {
-	/*
-	 * Ceci est une version naïve : essayer si possible de rendre le
-	 * robot plus intelligent.
-	 */
-
 	init();
 	srand(time(nullptr));
 	while (!is_over()) {
+		int dir = rand() % 4;
+
 		cout << *this;
-		int sens = rand() % 4;
-		switch(sens) {
+		switch(dir) {
 		case 0:
-			move_right();
+			move_up();
 			break;
 		case 1:
 			move_down();
@@ -124,7 +153,7 @@ void Game<Sq>::demo() {
 			move_left();
 			break;
 		case 3:
-			move_up();
+			move_right();
 			break;
 		default:
 			break;
@@ -133,46 +162,45 @@ void Game<Sq>::demo() {
 	cout << *this;
 }
 
+/* By default a game cannot get stuck.  */
 template<class Sq>
-ostream& operator<<(ostream& o, const Game<Sq>& j)
+bool Game<Sq>::is_stuck() const
 {
-	j.print();
-	o << "score : " << j.score << endl;
-	if (j.is_stuck())
-		o << "Game blocked !" << endl;
-	if (j.is_over())
-		o << "Game Over" << endl;
-	return o;
+	return false;
 }
 
 template<class Sq>
-Game<Sq>::~Game()
+void Game<Sq>::print_board(ostream& out) const
 {
-	/* for (int i = 0; i < height; i++) */
-	/*	delete[] board[i]; */
-	delete[] board;
-}
-
-template<class Sq>
-void Game<Sq>::print(ostream& o) const
-{
-	// longueur d'une ligne, en tenant compte des tabulations
+	/* Length of a line including tabulations.  */
 	int line_len_with_tabs = 8 * width + 2;
 
 	for (int j = 0; j < line_len_with_tabs; j++)
-		o << "-";
-	o << endl;
+		out << "-";
+	out << endl;
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			o << "| ";
-			o << board[i][j];
-			o << "\t";
+			out << "| ";
+			out << board[i][j];
+			out << "\t";
 		}
-		o << " |" << endl;
+		out << " |" << endl;
 		for (int j = 0; j < line_len_with_tabs; j++)
-			o << "-";
-		o << endl;
+			out << "-";
+		out << endl;
 	}
+}
+
+template<class Sq>
+ostream& operator<<(ostream& out, const Game<Sq>& game)
+{
+	game.print_board();
+	out << "score : " << game.score << endl;
+	if (game.is_stuck())
+		out << "Game blocked !" << endl;
+	if (game.is_over())
+		out << "Game Over" << endl;
+	return out;
 }
 
 template<class Sq>
@@ -197,12 +225,6 @@ template<class Sq>
 void Game<Sq>::move_right()
 {
 	move(Direction::right);
-}
-
-template<class Sq>
-bool Game<Sq>::is_stuck() const
-{
-	return false;
 }
 
 #endif	/* not GAME_HPP */
