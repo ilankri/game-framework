@@ -44,7 +44,7 @@ private:
 
 	int j_bottom_right;
 
-	virtual void print(ostream& o = cout) const;
+	virtual void print_board(ostream& o = cout) const;
 
 	virtual void init();
 

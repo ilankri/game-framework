@@ -47,7 +47,7 @@ Sokoban::Sokoban(int height, int width, int nb_crates) :
 
 Sokoban::~Sokoban() {}
 
-void Sokoban::print(ostream& o) const
+void Sokoban::print_board(ostream& o) const
 {
 
 	for (int i = 0; i < height; i++) {
@@ -57,10 +57,14 @@ void Sokoban::print(ostream& o) const
 		o << endl;
 	}
 
+	o << endl;
+	
 	o << "[Legend]" << endl;
+	
 	o << CaseSok::wall << " : wall" << endl;
 	
 	o << CaseSok::pers << " : character (" << pos_h << ",";
+	
 	o << pos_w << ")" << endl;
 	
 	o << CaseSok::crate << " : crate" << endl;
@@ -70,6 +74,8 @@ void Sokoban::print(ostream& o) const
 	o << CaseSok::crate_target << " : crate set on a target" << endl;
 
 	o << CaseSok::pers_target << " : character set on a target" << endl;
+
+	o << endl;
 }
 
 void Sokoban::init()
