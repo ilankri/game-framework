@@ -5,6 +5,10 @@
 
 #include "printable.hpp"
 
+/* Cette classe représente les cases du jeu Taquin :
+   on aimerait offrir au joueur la possibilité de jouer avec
+   le type d'objets de son choix (donc pas forcément des entiers) */
+
 template<class C>
 class Square_Taquin : public Printable {
 	
@@ -40,11 +44,14 @@ public:
 private:
 	virtual void print(ostream& o) const;
 
+	/* La valeur passé en argument au constructeur est convertie
+	   automatiquement vers le type C */
 	C value;
 
 	
 };
 
+/* Par convention, la case vide est représentée par la valeur 0 */
 template<class C>
 const Square_Taquin<C> Square_Taquin<C>::empty(0);
 

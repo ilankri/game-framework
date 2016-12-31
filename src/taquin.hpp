@@ -14,6 +14,7 @@ public:
 
 	virtual ~Taquin();
 
+	/* this value represents the empty square */
 	static const Square_Taquin<C> empty;
 
 private:
@@ -21,7 +22,7 @@ private:
 
 	static const int min_width;
 	
-	// coordonnées de la case vide
+	/* coordinates of empty square */
 	int pos_empty_w;
 
 	int pos_empty_h;
