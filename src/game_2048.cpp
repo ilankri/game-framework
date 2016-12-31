@@ -1,7 +1,7 @@
 #include "game_2048.hpp"
 
 Game_2048::Game_2048(int height) :
-	Game<Square_2048>(height, height), board_change(false) {}
+	Game<Square_2048>(max(4,height), max(4,height)), board_change(false) {}
 
 void Game_2048::transpose_board()
 {

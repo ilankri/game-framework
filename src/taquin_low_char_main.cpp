@@ -3,7 +3,7 @@
 
 int main()
 {
-	Taquin<Low_Char> game(5, 5);
+	Taquin<Low_Char> game(4, 4);
 
 	game.play();
 	return 0;

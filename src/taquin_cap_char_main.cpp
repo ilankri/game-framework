@@ -3,7 +3,7 @@
 
 int main()
 {
-	Taquin<Cap_Char> game(5, 5);
+	Taquin<Cap_Char> game(4, 4);
 
 	game.play();
 	return 0;

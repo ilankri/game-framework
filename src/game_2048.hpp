@@ -4,6 +4,7 @@
 #include "game.hpp"
 #include "square_2048.hpp"
 #include <utility>
+#include <cmath>
 
 class Game_2048 : public Game<Square_2048> {
 public:
