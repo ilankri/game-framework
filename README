@@ -1,0 +1,30 @@
+Projet C++ :
+============
+
+[Compilation]
+
+1°) Compiler avec la commande "make"
+2°) [optionnel] Taper "make clean" pour effacer les fichier .o et .d produits
+
+[Exécution]
+Exécuter le fichier correspondant au jeu auquel vous voulez jouer. Les exécutables se nomment :
+
+* Jeu 2048 :
+------------
+- game-2048		(Jeu original)
+- game-2048-dest	(Variante 1 : avec cases "destroy")
+- game-2048-mult 	(Variante 2 : avec cases "x2")
+- game-2048-neg  	(Variante 3 : avec nombres négatifs)
+- game-2048-num	 	(Variante 4 : avec choix d'une base)
+- game-2048-num2 	(Variante 5 : avec plusieurs bases mélangées)
+- game-2048-mix	 	(Combinaison des variantes 1, 2, 3, 5)
+
+* Sokoban :
+-----------
+- sokoban
+
+* Taquin :
+----------
+- taquin-int		(Avec des nombres entiers)
+- taquin-cap-char	(Avec des lettres majuscules)
+- taquin-low-char	(Avec des lettres minuscules)
