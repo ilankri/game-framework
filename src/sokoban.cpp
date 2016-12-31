@@ -56,19 +56,20 @@ void Sokoban::print(ostream& o) const
 		}
 		o << endl;
 	}
+
+	o << "[Legend]" << endl;
+	o << CaseSok::wall << " : wall" << endl;
 	
-	o << CaseSok::wall << " : mur" << endl;
-	
-	o << CaseSok::pers << " : personnage (" << pos_h << ",";
+	o << CaseSok::pers << " : character (" << pos_h << ",";
 	o << pos_w << ")" << endl;
 	
-	o << CaseSok::crate << " : caisse" << endl;
+	o << CaseSok::crate << " : crate" << endl;
 	
-	o << CaseSok::target << " : but" << endl;
+	o << CaseSok::target << " : target" << endl;
 	
-	o << CaseSok::crate_target << " : caisse placée sur un but" << endl;
+	o << CaseSok::crate_target << " : crate set on a target" << endl;
 
-	o << CaseSok::pers_target << " : personnage placé sur un but" << endl;
+	o << CaseSok::pers_target << " : character set on a target" << endl;
 }
 
 void Sokoban::init()
