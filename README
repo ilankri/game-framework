@@ -28,3 +28,12 @@ Exécuter le fichier correspondant au jeu auquel vous voulez jouer. Les exécuta
 - taquin-int		(Avec des nombres entiers)
 - taquin-cap-char	(Avec des lettres majuscules)
 - taquin-low-char	(Avec des lettres minuscules)
+
+[Options]
+Vous pouvez également passer des options en argument selon le jeu auquel vous souhaitez jouer
+
+-r   	    : mode robot (tous les jeux)
+-h <n> 	    : grille de hauteur n (tous les jeux)
+-w <n>	    : grille de largeur n (Taquin et Sokoban)
+-c <n>	    : jouer avec n caisses (Sokoban)
+-b <k>	    : jouer avec des nombres de la forme k*2^n (2048 Variante 4)
