@@ -107,7 +107,7 @@ void Game<Sq>::play()
 	while (!is_over() && !quit) {
 		cout << *this;
 		cout << "Input 2, 4, 8 or 6 to make a move ";
-		cout << "(resp. down, left, up, down), ";
+		cout << "(resp. down, left, up, right), ";
 		cout << "or 0 to exit : ";
 		cin >> rep;
 		cin.ignore();
