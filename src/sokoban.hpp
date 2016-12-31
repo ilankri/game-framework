@@ -17,7 +17,7 @@ public:
 
 	virtual ~Sokoban();
 
-private:
+protected:
 	static const int min_height;
 
 	static const int min_width;
