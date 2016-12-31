@@ -4,6 +4,7 @@
 int main(int argc, char **argv)
 {
 	int height, base;
+	bool robot = false;
 
 	for (int i = 0; i< argc-1; i++) {
 		if (strcmp(argv[i],"-h") == 0)
@@ -14,6 +15,16 @@ int main(int argc, char **argv)
 	
 	Game_2048_Num game(height,base);
 
-	game.play();
+	
+	for (int i = 0; i < argc; i++) {
+		if (strcmp(argv[i],"-r") == 0)
+			robot = true;
+	}
+
+	if (!robot)
+		game.play();
+
+	else game.demo();
+
 	return 0;
 }
