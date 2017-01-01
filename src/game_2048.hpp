@@ -8,6 +8,7 @@
 
 class Game_2048 : public Game<Square_2048> {
 public:
+	/* We suppose that the board is a square.  */
 	Game_2048(int height);
 
 protected:
@@ -16,9 +17,53 @@ protected:
 	virtual unsigned long long random_value() const;
 
 private:
+	/* Whether the last movement change game configuration.  */
 	bool board_change;
 
+	/*
+	 * Positions of empty squares.  Useful to pop up randomly a new
+	 * square after a movement.
+	 */
 	vector<pair<int, int> > empty_squares;
+
+	/* Test if sq1 and sq2 are mergeable.  */
+	virtual bool is_mergeable(const Square_2048& sq1,
+				  const Square_2048& sq2) const;
+
+	/*
+	 * Return the result of merging sq1 with sq2.  This function
+	 * doesn't check if sq1 and sq2 are mergeable.
+	 */
+	virtual Square_2048 merge(const Square_2048& sq1,
+				  const Square_2048& sq2) const;
+
+	/* Transpose the board like a square matrix.  */
+	void transpose_board();
+
+	/* Add (i, j) to empty_squares.  */
+	void add_empty_square(int i, int j);
+
+	/* Update the board by adding a new nonempty square.  */
+	void pop_up_new_square();
+
+	/*
+	 * Compute all the mergings for line i of the board without
+	 * sliding the line.
+	 */
+	void merge_line(int i, Direction dir);
+
+	/*
+	 * Slide all squares of line i of the board in the given
+	 * direction (left or right).
+	 */
+	void slide_line(int i, Direction dir);
+
+	/*
+	 * Slide the board in the given direction (left or right).  If
+	 * transpose is true, then the board is transposed before and
+	 * after the sliding operation.
+	 */
+	void slide_board(Direction dir, bool transpose);
 
 	virtual void init();
 
@@ -26,29 +71,11 @@ private:
 
 	virtual bool is_over() const;
 
-	void transpose_board();
-
-	void pop_up_new_square();
-
-	void slide_line(int i, Direction dir);
-
-	void merge_line(int i, Direction dir);
-
-	void add_empty_square(int i, int j);
-
-	template<class It>
-	int slide_line_template(It begin, It end);
-
-	void slide_board(Direction dir, bool transpose);
-
 	template<class It>
 	void merge_line_template(It begin, It end);
 
-	virtual bool is_mergeable(const Square_2048& sq1,
-				  const Square_2048& sq2) const;
-
-	virtual Square_2048 merge(const Square_2048& sq1,
-				  const Square_2048& sq2) const;
+	template<class It>
+	int slide_merged_line(It begin, It end);
 };
 
 #endif /* not GAME_2048_HPP */
