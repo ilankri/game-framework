@@ -30,7 +30,6 @@ void Game_2048::init()
 	int pos_h2;
 	int pos_l2;
 
-	srand(time(nullptr));
 	pos_h1 = rand() % height;
 	pos_l1 = rand() % height;
 	for (int i = 0; i < height; i++)

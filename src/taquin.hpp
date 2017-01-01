@@ -21,7 +21,7 @@ private:
 	static const int min_height;
 
 	static const int min_width;
-	
+
 	/* coordinates of empty square */
 	int pos_empty_w;
 
@@ -68,10 +68,9 @@ void Taquin<C>::fill()
 {
 	const int& height = this -> height;
 	const int& width = this -> width;
-	
+
 	Square_Taquin<C> tmp = 1;
 
-	srand(time(nullptr));
 	// On remplit les cases.
 	for (int i = 0; i < height -1; i++) {
 		for (int j = 0; j < width; j++) {
@@ -93,7 +92,7 @@ void Taquin<C>::mix()
 
 	const int& height = this -> height;
 	const int& width = this -> width;
-	
+
 	/*
 	 * La parité d'une permutation est celle du nombre d'échanges
 	 * successifs qu'il faut faire pour obtenir la grille finale.
@@ -165,7 +164,7 @@ bool Taquin<C>::is_over() const
 {
 	const int& height = this -> height;
 	const int& width = this -> width;
-	
+
 	if (this -> board[height - 1][width - 1] != empty) {
 		return false;
 	}

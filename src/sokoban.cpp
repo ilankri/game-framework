@@ -35,7 +35,7 @@ Sokoban::Sokoban(int height, int width, int nb_crates) :
 		      max(Sokoban::min_width,width))
 {
 	int nb_max = sqrt(this -> width * this -> height) /2;
-	
+
 	if (nb_crates == -1)
 		this -> nb_crates = nb_max;
 	else {
@@ -58,19 +58,19 @@ void Sokoban::print_board(ostream& o) const
 	}
 
 	o << endl;
-	
+
 	o << "[Legend]" << endl;
-	
+
 	o << CaseSok::wall << " : wall" << endl;
-	
+
 	o << CaseSok::pers << " : character (" << pos_h << ",";
-	
+
 	o << pos_w << ")" << endl;
-	
+
 	o << CaseSok::crate << " : crate" << endl;
-	
+
 	o << CaseSok::target << " : target" << endl;
-	
+
 	o << CaseSok::crate_target << " : crate set on a target" << endl;
 
 	o << CaseSok::pers_target << " : character set on a target" << endl;
@@ -84,14 +84,11 @@ void Sokoban::init()
 	set_walls();
 	set_targets_crates();
 	set_pers();
-	
+
 }
 
 void Sokoban::set_walls()
 {
-	//cout <<"placer_murs()" << endl;
-	srand(time(nullptr));
-
 	/*
 	 * Les coins des murs externes ne seront pas forcément au bord
 	 * du plateau, afin d'obtenir la disposition la plus aléatoire
