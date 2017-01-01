@@ -6,7 +6,7 @@
 
 using namespace std;
 
-/* Allowed movements.  */
+/* Possible movements.  */
 enum class Direction { up, down, left, right };
 
 /*
@@ -24,7 +24,7 @@ public:
 
 	virtual ~Game();
 
-	/* Start a Human playable game.  */
+	/* Start a human playable game.  */
 	virtual void play();
 
 	/* Game demonstration.  */
@@ -89,6 +89,7 @@ Game<Sq>::Game(int h, int w) :
 {
 	for (int i = 0; i < h; i++)
 		board[i] = vector<Sq>(w);
+	srand(time(nullptr));
 }
 
 template<class Sq>
@@ -101,30 +102,30 @@ Game<Sq>::~Game()
 template<class Sq>
 void Game<Sq>::play()
 {
-	int rep;
-
 	init();
 	while (!is_over() && !quit) {
-		cout << *this;
-		cout << "Input 2, 4, 8 or 6 to make a move ";
-		cout << "(resp. down, left, up, right), ";
-		cout << "or 0 to exit : ";
-		cin >> rep;
-		cin.ignore();
-		switch (rep) {
-		case 8:
+		char key;
+
+		cout << *this <<
+			"Input e, d, s or f to make a move "
+			"(resp. up, down, left, right), "
+			"or q to exit: ";
+		key = cin.get();
+		cin.ignore(256, '\n');
+		switch (key) {
+		case 'e':
 			move_up();
 			break;
-		case 2:
+		case 'd':
 			move_down();
 			break;
-		case 4:
+		case 's':
 			move_left();
 			break;
-		case 6:
+		case 'f':
 			move_right();
 			break;
-		case 0:
+		case 'q':
 			quit = true;
 			return;
 		default:
@@ -137,22 +138,25 @@ void Game<Sq>::play()
 template<class Sq>
 void Game<Sq>::demo() {
 	init();
-	srand(time(nullptr));
 	while (!is_over()) {
 		int dir = rand() % 4;
 
 		cout << *this;
 		switch(dir) {
 		case 0:
+			cout << "Move up." << endl;
 			move_up();
 			break;
 		case 1:
+			cout << "Move down." << endl;
 			move_down();
 			break;
 		case 2:
+			cout << "Move left." << endl;
 			move_left();
 			break;
 		case 3:
+			cout << "Move right." << endl;
 			move_right();
 			break;
 		default:
@@ -194,12 +198,13 @@ void Game<Sq>::print_board(ostream& out) const
 template<class Sq>
 ostream& operator<<(ostream& out, const Game<Sq>& game)
 {
+	out << endl;
 	game.print_board();
-	out << "score : " << game.score << endl;
+	out << "Score: " << game.score << endl;
 	if (game.is_stuck())
-		out << "Game blocked !" << endl;
+		out << "Game blocked!" << endl;
 	if (game.is_over())
-		out << "Game Over" << endl;
+		out << "Game over!" << endl;
 	return out;
 }
 
