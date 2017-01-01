@@ -11,7 +11,7 @@ EXEC_2048 = game-2048 game-2048-num game-2048-num2 game-2048-neg	\
 		game-2048-mult game-2048-dest game-2048-mix
 
 # Taquin executables
-EXEC_TAQUIN = taquin-int taquin-cap-char taquin-low-char
+EXEC_TAQUIN = taquin
 
 # All executables
 EXEC = $(EXEC_2048) $(EXEC_TAQUIN) sokoban
@@ -32,10 +32,8 @@ SRC_2048_MIX = game_2048_num2.cpp game_2048_neg.cpp game_2048_mult.cpp	\
 		game_2048_mix_main.cpp
 
 # Taquin sources
-SRC_TAQUIN_COMMON = square_taquin.cpp taquin.cpp
-SRC_TAQUIN_INT = taquin_int_main.cpp
-SRC_TAQUIN_CAP_CHAR = cap_char.cpp taquin_cap_char_main.cpp
-SRC_TAQUIN_LOW_CHAR = low_char.cpp taquin_low_char_main.cpp
+SRC_TAQUIN = cap_char.cpp low_char.cpp square_taquin.cpp taquin.cpp	\
+		taquin_main.cpp
 
 # Sokoban sources
 SRC_SOKOBAN = sokoban.cpp sokoban_main.cpp
@@ -54,10 +52,7 @@ OBJ_2048_DEST = $(SRC_2048_DEST:.cpp=.o)
 OBJ_2048_MIX = $(SRC_2048_MIX:.cpp=.o)
 
 # Taquin objects
-OBJ_TAQUIN_COMMON = $(SRC_TAQUIN_COMMON:.cpp=.o)
-OBJ_TAQUIN_INT = $(SRC_TAQUIN_INT:.cpp=.o)
-OBJ_TAQUIN_CAP_CHAR = $(SRC_TAQUIN_CAP_CHAR:.cpp=.o)
-OBJ_TAQUIN_LOW_CHAR = $(SRC_TAQUIN_LOW_CHAR:.cpp=.o)
+OBJ_TAQUIN = $(SRC_TAQUIN:.cpp=.o)
 
 # Sokoban objects
 OBJ_SOKOBAN = $(SRC_SOKOBAN:.cpp=.o)
@@ -65,9 +60,7 @@ OBJ_SOKOBAN = $(SRC_SOKOBAN:.cpp=.o)
 # All objects
 OBJ = $(OBJ_COMMON) $(OBJ_2048_COMMON) $(OBJ_2048) $(OBJ_2048_NUM)	\
 	$(OBJ_2048_NUM2) $(OBJ_2048_NEG) $(OBJ_2048_MULT)		\
-	$(OBJ_2048_DEST) $(OBJ_2048_MIX) $(OBJ_TAQUIN_COMMON)		\
-	$(OBJ_TAQUIN_INT) $(OBJ_TAQUIN_CAP_CHAR) $(OBJ_TAQUIN_LOW_CHAR)	\
-	$(OBJ_SOKOBAN)
+	$(OBJ_2048_DEST) $(OBJ_2048_MIX) $(OBJ_TAQUIN) $(OBJ_SOKOBAN)
 
 DEP = $(OBJ:.o=.d)
 
@@ -77,9 +70,9 @@ link = $(CXX) $(LDFLAGS)
 
 .SUFFIXES:
 .SUFFIXES: .o .cpp
-.PHONY: all game-2048-all taquin-all clean mrproper
+.PHONY: all game-2048-all taquin clean mrproper
 
-all: game-2048-all taquin-all sokoban
+all: game-2048-all taquin sokoban
 
 # 2048 rules
 game-2048-all: $(EXEC_2048)
@@ -101,15 +94,7 @@ game-2048-dest: $(OBJ_2048_DEST)
 game-2048-mix: $(OBJ_2048_MIX)
 
 # Taquin rules
-taquin-all: $(EXEC_TAQUIN)
-
-$(EXEC_TAQUIN): $(OBJ_TAQUIN_COMMON)
-
-taquin-int: $(OBJ_TAQUIN_INT)
-
-taquin-cap-char: $(OBJ_TAQUIN_CAP_CHAR)
-
-taquin-low-char: $(OBJ_TAQUIN_LOW_CHAR)
+taquin: $(OBJ_TAQUIN)
 
 # Sokoban rule
 sokoban: $(OBJ_SOKOBAN)

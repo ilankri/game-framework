@@ -7,7 +7,7 @@
 #include <ctime>
 #include <cmath>
 
-template<class C = int>
+template<class C>
 class Taquin : public Game<Square_Taquin<C>> {
 public:
 	Taquin(int h, int w);

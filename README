@@ -47,3 +47,5 @@ vous souhaitez jouer
 -w <n>	    : grille de largeur n (Taquin et Sokoban)
 -c <n>	    : jouer avec n caisses (Sokoban)
 -b <k>	    : jouer avec des nombres de la forme k*2^n (2048 Variante 4)
+-capchar    : jouer avec des lettres majuscules (Taquin)
+-lowchar    : jouer avec des lettres minuscules (Taquin)

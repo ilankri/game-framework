@@ -1,8 +1,6 @@
 *.d
 *.o
-taquin-int
-taquin-cap-char
-taquin-low-char
+taquin
 sokoban
 game-2048
 game-2048-num
