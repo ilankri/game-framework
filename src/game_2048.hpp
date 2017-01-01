@@ -75,6 +75,9 @@ private:
 	void merge_line_template(It begin, It end);
 
 	template<class It>
+	int slide_line_template(It begin, It end);
+
+	template<class It>
 	int slide_merged_line(It begin, It end);
 };
 
