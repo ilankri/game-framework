@@ -3,16 +3,16 @@
 const char Cap_Char::min_value = 'A';
 const char Cap_Char::max_value = 'Z';
 
-void Cap_Char::set_value(int c)
+void Cap_Char::set_value(unsigned int c)
 {
-	if (c < 0)
+	if (c == 0)
 		value = '\0';
 	else if (c >= 26)
 		value = max_value;
 	else value = (min_value) + (c - 1);
 }
 
-Cap_Char::Cap_Char(int c)
+Cap_Char::Cap_Char(unsigned int c)
 {
 	set_value(c);
 }
@@ -21,7 +21,7 @@ Cap_Char::Cap_Char(const Cap_Char & c_ref) : value(c_ref.value)
 {
 }
 
-Cap_Char& Cap_Char::operator=(Cap_Char ch)
+Cap_Char& Cap_Char::operator=(const Cap_Char& ch)
 {
 	value = ch.value;
 	return *this;

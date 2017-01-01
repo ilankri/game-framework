@@ -13,18 +13,18 @@ class Low_Char {
 private:
 	char value;
 
-	void set_value(int);
+	void set_value(unsigned int);
 
 public:
 	static const char min_value;
 
 	static const char max_value;
 	
-	Low_Char(int c = 1);
+	Low_Char(unsigned int c = 1);
 
 	Low_Char(const Low_Char &);
 
-	Low_Char& operator=(Low_Char);
+	Low_Char& operator=(const Low_Char &);
 	
 	Low_Char& operator++();
 

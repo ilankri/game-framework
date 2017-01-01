@@ -13,7 +13,7 @@ template<class C>
 class Square_Taquin : public Printable {
 	
 public:
-	Square_Taquin(int val = 1);
+	Square_Taquin(unsigned int val = 1);
 
 	Square_Taquin(const Square_Taquin<C>&);
 
@@ -31,7 +31,7 @@ public:
 
 	bool operator>=(const Square_Taquin<C> &) const;
 
-	Square_Taquin<C>& operator=(Square_Taquin<C>);
+	Square_Taquin<C>& operator=(const Square_Taquin<C>&);
 
 	Square_Taquin<C>& operator++();
 
@@ -56,7 +56,7 @@ template<class C>
 const Square_Taquin<C> Square_Taquin<C>::empty(0);
 
 template<class C>
-Square_Taquin<C>::Square_Taquin(int val) : value(val) {}
+Square_Taquin<C>::Square_Taquin(unsigned int val) : value(val) {}
 
 template<class C>
 Square_Taquin<C>::Square_Taquin(const Square_Taquin<C>& sq) : value(sq.value) {}
@@ -98,7 +98,7 @@ bool Square_Taquin<C>::operator>=(const Square_Taquin<C> & sq) const
 }
 
 template<class C>
-Square_Taquin<C>& Square_Taquin<C>::operator=(Square_Taquin<C> sq)
+Square_Taquin<C>& Square_Taquin<C>::operator=(const Square_Taquin<C>& sq)
 {
 	value = sq.value;
 	return *this;

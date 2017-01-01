@@ -15,18 +15,18 @@ class Cap_Char {
 private:
 	char value;
 
-	void set_value(int);
+	void set_value(unsigned int);
 
 public:
 	static const char min_value;
 
 	static const char max_value;
 	
-	Cap_Char(int c = 1);
+	Cap_Char(unsigned int c = 1);
 
 	Cap_Char(const Cap_Char &);
 
-	Cap_Char& operator=(Cap_Char);
+	Cap_Char& operator=(const Cap_Char &);
 	
 	Cap_Char& operator++();
 
