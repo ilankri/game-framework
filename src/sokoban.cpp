@@ -3,27 +3,27 @@
 const int Sokoban::min_width = 10;
 const int Sokoban::min_height = 10;
 
-ostream& operator<<(ostream& o, CaseSok const& c) {
+ostream& operator<<(ostream& o, Square_Sokoban const& c) {
 	switch (c) {
-	case CaseSok::empty:
+	case Square_Sokoban::empty:
 		o << " ";
 		break;
-	case CaseSok::wall:
+	case Square_Sokoban::wall:
 		o << "=";
 		break;
-	case CaseSok::pers:
+	case Square_Sokoban::pers:
 		o << "*";
 		break;
-	case CaseSok::crate:
+	case Square_Sokoban::crate:
 		o << "x";
 		break;
-	case CaseSok::target:
+	case Square_Sokoban::target:
 		o << "o";
 		break;
-	case CaseSok::crate_target:
+	case Square_Sokoban::crate_target:
 		o << "ø";
 		break;
-	case CaseSok::pers_target:
+	case Square_Sokoban::pers_target:
 		o << "@";
 		break;
 	}
@@ -31,7 +31,7 @@ ostream& operator<<(ostream& o, CaseSok const& c) {
 }
 
 Sokoban::Sokoban(int height, int width, int nb_crates) :
-	Game<CaseSok>(max(Sokoban::min_height,height),
+	Game<Square_Sokoban>(max(Sokoban::min_height,height),
 		      max(Sokoban::min_width,width))
 {
 	int nb_max = sqrt(this -> width * this -> height) /2;
@@ -61,19 +61,19 @@ void Sokoban::print_board(ostream& o) const
 
 	o << "[Legend]" << endl;
 
-	o << CaseSok::wall << " : wall" << endl;
+	o << Square_Sokoban::wall << " : wall" << endl;
 
-	o << CaseSok::pers << " : character (" << pos_h << ",";
+	o << Square_Sokoban::pers << " : character (" << pos_h << ",";
 
 	o << pos_w << ")" << endl;
 
-	o << CaseSok::crate << " : crate" << endl;
+	o << Square_Sokoban::crate << " : crate" << endl;
 
-	o << CaseSok::target << " : target" << endl;
+	o << Square_Sokoban::target << " : target" << endl;
 
-	o << CaseSok::crate_target << " : crate set on a target" << endl;
+	o << Square_Sokoban::crate_target << " : crate set on a target" << endl;
 
-	o << CaseSok::pers_target << " : character set on a target" << endl;
+	o << Square_Sokoban::pers_target << " : character set on a target" << endl;
 
 	o << endl;
 }
@@ -111,34 +111,34 @@ void Sokoban::set_walls()
 	 * plateau.
 	 */
 	for (int i = i_top_left; i >= 0; i--) {
-		board[i][j_top_left] = CaseSok::wall;
+		board[i][j_top_left] = Square_Sokoban::wall;
 	}
 	for (int j = j_top_left; j >= 0; j--) {
-		board[i_top_left][j] = CaseSok::wall;
+		board[i_top_left][j] = Square_Sokoban::wall;
 	}
 
 	/* Coin haut-droite */
 	for (int i = i_top_right; i >= 0; i--) {
-		board[i][j_top_right] = CaseSok::wall;
+		board[i][j_top_right] = Square_Sokoban::wall;
 	}
 	for (int j = j_top_right; j < width; j++) {
-		board[i_top_right][j] = CaseSok::wall;
+		board[i_top_right][j] = Square_Sokoban::wall;
 	}
 
 	/* Coin bas-gauche */
 	for (int i = i_bottom_left; i < height; i++) {
-		board[i][j_bottom_left] = CaseSok::wall;
+		board[i][j_bottom_left] = Square_Sokoban::wall;
 	}
 	for (int j = j_bottom_left; j >= 0; j--) {
-		board[i_bottom_left][j] = CaseSok::wall;
+		board[i_bottom_left][j] = Square_Sokoban::wall;
 	}
 
 	/* Coin bas-droite */
 	for (int i = i_bottom_right; i < height; i++) {
-		board[i][j_bottom_right] = CaseSok::wall;
+		board[i][j_bottom_right] = Square_Sokoban::wall;
 	}
 	for (int j = j_bottom_right; j < width; j++) {
-		board[i_bottom_right][j] = CaseSok::wall;
+		board[i_bottom_right][j] = Square_Sokoban::wall;
 	}
 	setExternalWalls();
 	setInternalWalls();
@@ -149,19 +149,19 @@ void Sokoban::setExternalWalls()
 
 	/* On termine de placer les murs externes.  */
 	for (int i = i_top_left; i < i_bottom_left; i++) {
-		board[i][0] = CaseSok::wall;
+		board[i][0] = Square_Sokoban::wall;
 	}
 
 	for (int j = j_top_left; j < j_top_right; j++) {
-		board[0][j] = CaseSok::wall;
+		board[0][j] = Square_Sokoban::wall;
 	}
 
 	for (int j = j_bottom_left; j < j_bottom_right; j++) {
-		board[height - 1][j] = CaseSok::wall;
+		board[height - 1][j] = Square_Sokoban::wall;
 	}
 
 	for (int i = i_top_right; i < i_bottom_right; i++) {
-		board[i][width - 1] = CaseSok::wall;
+		board[i][width - 1] = Square_Sokoban::wall;
 	}
 
 }
@@ -183,16 +183,16 @@ void Sokoban::setInternalWalls()
 	int lim_mid_d = 1 + rand() % (width / 4);
 
 	for (int i = 0; i < lim_h_mid; i++)
-		board[i][j_h_mid] = CaseSok::wall;
+		board[i][j_h_mid] = Square_Sokoban::wall;
 
 	for (int i = height - 1; i > height - 1 - lim_b_mid; i--)
-		board[i][j_b_mid] = CaseSok::wall;
+		board[i][j_b_mid] = Square_Sokoban::wall;
 
 	for (int j = 0; j < lim_mid_g; j++)
-		board[i_mid_g][j] = CaseSok::wall;
+		board[i_mid_g][j] = Square_Sokoban::wall;
 
 	for(int j = width - 1; j > width - 1 -lim_mid_d; j--)
-		board[i_mid_d][j] = CaseSok::wall;
+		board[i_mid_d][j] = Square_Sokoban::wall;
 }
 
 void Sokoban::set_targets_crates()
@@ -209,9 +209,9 @@ void Sokoban::set_targets_crates()
 		do {
 			l_c = rand() % width;
 			h_c = rand() % height;
-		} while (board[h_c][l_c] != CaseSok::empty ||
+		} while (board[h_c][l_c] != Square_Sokoban::empty ||
 			 outsideOfWalls(h_c, l_c));
-		board[h_c][l_c] = CaseSok::target;
+		board[h_c][l_c] = Square_Sokoban::target;
 
 		/*
 		 * On place autant de caisses que de buts, en vérifiant
@@ -226,7 +226,7 @@ void Sokoban::set_targets_crates()
 			l_c = rand() % width;
 			h_c = rand() % height;
 		} while (!freeZone(h_c, l_c));
-		board[h_c][l_c] = CaseSok::crate;
+		board[h_c][l_c] = Square_Sokoban::crate;
 	}
 }
 
@@ -235,15 +235,15 @@ bool Sokoban::freeZone(int h_c, int l_c) const
 
 	if (outsideOfWalls(h_c,l_c))
 		return false;
-	if (board[h_c][l_c] != CaseSok::empty)
+	if (board[h_c][l_c] != Square_Sokoban::empty)
 		return false;
-	if (board[h_c + 1][l_c] != CaseSok::empty)
+	if (board[h_c + 1][l_c] != Square_Sokoban::empty)
 		return false;
-	if (board[h_c - 1][l_c] != CaseSok::empty)
+	if (board[h_c - 1][l_c] != Square_Sokoban::empty)
 		return false;
-	if (board[h_c][l_c - 1] != CaseSok::empty)
+	if (board[h_c][l_c - 1] != Square_Sokoban::empty)
 		return false;
-	if (board[h_c][l_c + 1] != CaseSok::empty)
+	if (board[h_c][l_c + 1] != Square_Sokoban::empty)
 		return false;
 
 	return true;
@@ -274,7 +274,7 @@ void Sokoban::set_pers()
 	/* on vérifie s'il n'y a pas déjà un pesonnage sur le plateau */
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			if (board[i][j] == CaseSok::pers)
+			if (board[i][j] == Square_Sokoban::pers)
 				return;
 		}
 	}
@@ -293,7 +293,7 @@ void Sokoban::set_pers()
 		pos_h = 1 + rand() % (height - 2);
 	}
 	while (!freeZone(pos_h, pos_w));
-	board[pos_h][pos_w] = CaseSok::pers;
+	board[pos_h][pos_w] = Square_Sokoban::pers;
 }
 
 void Sokoban::move(Direction s)
@@ -304,7 +304,7 @@ void Sokoban::move(Direction s)
 	int sens_h = 0;
 	int sens_l = 0;
 
-	CaseSok& source = board[pos_h][pos_w];
+	Square_Sokoban& source = board[pos_h][pos_w];
 	switch(s) {
 	case Direction::up:
 		new_pos_h -= 1;
@@ -326,21 +326,21 @@ void Sokoban::move(Direction s)
 		break;
 	}
 
-	CaseSok& dest = board[new_pos_h][new_pos_w];
-	CaseSok& derriere =
+	Square_Sokoban& dest = board[new_pos_h][new_pos_w];
+	Square_Sokoban& derriere =
 		board[new_pos_h + sens_h][new_pos_w + sens_l];
 
 	/*
 	 * Si la case juste au-dessus est vide, le personnage peut s'y
 	 * déplacer sans condition.
 	 */
-	if (dest == CaseSok::empty || dest == CaseSok::target) {
-		dest = (dest == CaseSok::empty) ?
-			CaseSok::pers : CaseSok::pers_target;
-		if (source == CaseSok::pers)
-			source = CaseSok::empty;
-		else if (source == CaseSok::pers_target)
-			source = CaseSok::target;
+	if (dest == Square_Sokoban::empty || dest == Square_Sokoban::target) {
+		dest = (dest == Square_Sokoban::empty) ?
+			Square_Sokoban::pers : Square_Sokoban::pers_target;
+		if (source == Square_Sokoban::pers)
+			source = Square_Sokoban::empty;
+		else if (source == Square_Sokoban::pers_target)
+			source = Square_Sokoban::target;
 		pos_h = new_pos_h;
 		pos_w = new_pos_w;
 		score++;
@@ -351,26 +351,26 @@ void Sokoban::move(Direction s)
 	 * être poussée que si la case située derrière est vide ou
 	 * contient un but.
 	 */
-	else if (dest == CaseSok::crate) {
+	else if (dest == Square_Sokoban::crate) {
 		/* déplacement d'une caisse sur une case vide */
-		if (derriere == CaseSok::empty) {
-			derriere = CaseSok::crate;
-			dest = CaseSok::pers;
-			if (source == CaseSok::pers)
-				source = CaseSok::empty;
-			else if (source == CaseSok::pers_target)
-				source = CaseSok::target;
+		if (derriere == Square_Sokoban::empty) {
+			derriere = Square_Sokoban::crate;
+			dest = Square_Sokoban::pers;
+			if (source == Square_Sokoban::pers)
+				source = Square_Sokoban::empty;
+			else if (source == Square_Sokoban::pers_target)
+				source = Square_Sokoban::target;
 			pos_h = new_pos_h;
 			pos_w = new_pos_w;
 			score++;
-		} else if (derriere == CaseSok::target) {
+		} else if (derriere == Square_Sokoban::target) {
 			/* déplacement d'une caisse sur un but */
-			derriere = CaseSok::crate_target;
-			dest = CaseSok::pers;
-			if (source == CaseSok::pers)
-				source = CaseSok::empty;
-			else if (source == CaseSok::pers_target)
-				source = CaseSok::target;
+			derriere = Square_Sokoban::crate_target;
+			dest = Square_Sokoban::pers;
+			if (source == Square_Sokoban::pers)
+				source = Square_Sokoban::empty;
+			else if (source == Square_Sokoban::pers_target)
+				source = Square_Sokoban::target;
 			pos_h = new_pos_h;
 			pos_w = new_pos_w;
 			score++;
@@ -382,29 +382,29 @@ void Sokoban::move(Direction s)
 	 * cette dernière peut être poussée s'il y a un autre but ou une
 	 * case vide derrière.
 	 */
-	else if (dest == CaseSok::crate_target) {
+	else if (dest == Square_Sokoban::crate_target) {
 
 		/* d'un but vers un autre */
-		if (derriere == CaseSok::target) {
-			derriere = CaseSok::crate_target;
-			dest = CaseSok::pers_target;
-			if (source == CaseSok::pers)
-				source = CaseSok::empty;
-			else if (source == CaseSok::pers_target)
-				source = CaseSok::target;
+		if (derriere == Square_Sokoban::target) {
+			derriere = Square_Sokoban::crate_target;
+			dest = Square_Sokoban::pers_target;
+			if (source == Square_Sokoban::pers)
+				source = Square_Sokoban::empty;
+			else if (source == Square_Sokoban::pers_target)
+				source = Square_Sokoban::target;
 			pos_h = new_pos_h;
 			pos_w = new_pos_w;
 			score++;
 		}
 
 		/* d'un but vers une case vide */
-		else if (derriere == CaseSok::empty) {
-			derriere = CaseSok::crate;
-			dest = CaseSok::pers_target;
-			if (source == CaseSok::pers)
-				source = CaseSok::empty;
-			else if (source == CaseSok::pers_target)
-				source = CaseSok::target;
+		else if (derriere == Square_Sokoban::empty) {
+			derriere = Square_Sokoban::crate;
+			dest = Square_Sokoban::pers_target;
+			if (source == Square_Sokoban::pers)
+				source = Square_Sokoban::empty;
+			else if (source == Square_Sokoban::pers_target)
+				source = Square_Sokoban::target;
 			pos_h = new_pos_h;
 			pos_w = new_pos_w;
 			score++;
@@ -419,8 +419,8 @@ bool Sokoban::is_over() const
 		return true;
 	for (int i = 0; i < height; i++) {
 		for (int j = 0; j < width; j++) {
-			if (board[i][j] == CaseSok::target ||
-			    board[i][j] == CaseSok::crate)
+			if (board[i][j] == Square_Sokoban::target ||
+			    board[i][j] == Square_Sokoban::crate)
 				return false;
 		}
 	}
@@ -436,11 +436,11 @@ bool Sokoban::is_stuck() const
 	 */
 	for (int i = 1; i < height - 1; i++) {
 		for (int j = 1; j < width - 1; j++) {
-			if (board[i][j] == CaseSok::crate &&
-			    (board[i - 1][j] == CaseSok::wall ||
-			     board[i + 1][j] == CaseSok::wall) &&
-			    (board[i][j - 1] == CaseSok::wall ||
-			     board[i][j + 1] == CaseSok::wall)) {
+			if (board[i][j] == Square_Sokoban::crate &&
+			    (board[i - 1][j] == Square_Sokoban::wall ||
+			     board[i + 1][j] == Square_Sokoban::wall) &&
+			    (board[i][j - 1] == Square_Sokoban::wall ||
+			     board[i][j + 1] == Square_Sokoban::wall)) {
 				return true;
 			}
 		}

@@ -18,6 +18,7 @@ public:
 	static const Square_Taquin<C> empty;
 
 private:
+	/* minimal size of board */
 	static const int min_height;
 
 	static const int min_width;
@@ -120,7 +121,8 @@ void Taquin<C>::mix()
 		do {
 			i2 = rand() % height;
 			j2 = rand() % width;
-		} while (i1 == i2 && j1 == j2);
+		}
+		while (i1 == i2 && j1 == j2);
 
 		Square_Taquin<C> tmp = this -> board[i1][j1];
 		this -> board[i1][j1] = this -> board[i2][j2];
