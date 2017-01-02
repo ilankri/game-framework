@@ -24,13 +24,13 @@ public:
 
 	Cap_Char& operator=(const Cap_Char &);
 	
-	Cap_Char& operator++();
+	Cap_Char& operator++() throw (CharOutOfBoundsException);
 
-	Cap_Char& operator--();
+	Cap_Char& operator--() throw (CharOutOfBoundsException);
 
-	Cap_Char operator++(int);
+	Cap_Char operator++(int) throw (CharOutOfBoundsException);
 
-	Cap_Char operator--(int);
+	Cap_Char operator--(int) throw (CharOutOfBoundsException);
 
 	bool operator==(const Cap_Char &) const;
 

@@ -24,13 +24,13 @@ public:
 
 	Low_Char& operator=(const Low_Char &);
 	
-	Low_Char& operator++();
+	Low_Char& operator++() throw (CharOutOfBoundsException);
 
-	Low_Char& operator--();
+	Low_Char& operator--() throw (CharOutOfBoundsException);
 
-	Low_Char operator++(int);
+	Low_Char operator++(int) throw (CharOutOfBoundsException);
 
-	Low_Char operator--(int);
+	Low_Char operator--(int) throw (CharOutOfBoundsException);
 
 	bool operator==(const Low_Char &) const;
 
