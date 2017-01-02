@@ -32,7 +32,7 @@ SRC_2048_MIX = game_2048_num2.cpp game_2048_neg.cpp game_2048_mult.cpp	\
 		game_2048_mix_main.cpp
 
 # Taquin sources
-SRC_TAQUIN = cap_char.cpp low_char.cpp square_taquin.cpp taquin.cpp	\
+SRC_TAQUIN = char_exception.cpp cap_char.cpp low_char.cpp square_taquin.cpp taquin.cpp	\
 		taquin_main.cpp
 
 # Sokoban sources

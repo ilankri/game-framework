@@ -29,21 +29,24 @@ Cap_Char& Cap_Char::operator=(const Cap_Char& ch)
 
 Cap_Char& Cap_Char::operator++()
 {
-	if (value > max_value) throw CapCharOutOfBoundsException();
+	if (value > max_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::increment_z);
 	++value;
 	return *this;
 }
 
 Cap_Char& Cap_Char::operator--()
 {
-	if (value < min_value) throw CapCharOutOfBoundsException();
+	if (value < min_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::decrement_a);
 	--value;
 	return *this;
 }
 
 Cap_Char Cap_Char::operator++(int)
 {
-	if (value > max_value) throw CapCharOutOfBoundsException();
+	if (value > max_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::increment_z);
 	Cap_Char res(*this);
 	++value;
 	return res;
@@ -51,7 +54,8 @@ Cap_Char Cap_Char::operator++(int)
 
 Cap_Char Cap_Char::operator--(int)
 {
-	if (value < min_value) throw CapCharOutOfBoundsException();
+	if (value < min_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::decrement_a);
 	Cap_Char res(*this);
 	--value;
 	return res;

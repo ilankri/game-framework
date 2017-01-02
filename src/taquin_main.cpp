@@ -32,28 +32,47 @@ int main(int argc, char **argv)
 			robot = true;
 	}
 
-	Taquin<int> game1(height, width);
-	Taquin<Cap_Char> game2(height, width);
-	Taquin<Low_Char> game3(height, width);
+
 
 	switch(version) {
 	case cap_char_version:
-		if (!robot)
-			game2.play();
-		else
-			game2.demo();
+		Game<Square_Taquin<Cap_Char>> *game1;
+		try {
+			game1 = new Taquin<Cap_Char>(height, width);
+
+			if (!robot)
+				game1 -> play();
+			else
+				game1 -> demo();
+		}
+		catch (CharOutOfBoundsException& e) {
+			cerr << e.getMessage() << endl;
+			delete game1;
+		}
 		break;
 	case low_char_version:
+		Game<Square_Taquin<Low_Char>> *game2;
+		try {
+			game2 = new Taquin<Low_Char>(height, width);
+			
+			if (!robot)
+				game2 -> play();
+			else
+				game2 -> demo();
+		}
+		catch (CharOutOfBoundsException& e) {
+			cerr << e.getMessage() << endl;
+			delete game2;
+		}
+		break;
+	default:
+		Taquin<int> game3(height, width);
+
 		if (!robot)
 			game3.play();
 		else
 			game3.demo();
-		break;
-	default:
-		if (!robot)
-			game1.play();
-		else
-			game1.demo();
+			
 		break;
 	}
 	

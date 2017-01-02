@@ -2,13 +2,9 @@
 #define CAP_CHAR_HPP
 
 #include <iostream>
-using namespace std;
+#include "char_exception.hpp"
 
-class CapCharOutOfBoundsException {
-	/* il n'y a que 26 lettres dans l'alphabet, donc
-	   cette exception sera levée si on essaye d'incrémenter Z
-	   ou de décrémenter A */
-};
+using namespace std;
 
 class Cap_Char {
 

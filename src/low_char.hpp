@@ -2,11 +2,9 @@
 #define LOW_CHAR_HPP
 
 #include <iostream>
-using namespace std;
+#include "char_exception.hpp"
 
-class LowCharOutOfBoundsException {
-	/* Exception levée si on tente de sortir de l'espace a-z */
-};
+using namespace std;
 
 class Low_Char {
 

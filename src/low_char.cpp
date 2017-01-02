@@ -29,21 +29,24 @@ Low_Char& Low_Char::operator=(const Low_Char& ch)
 
 Low_Char& Low_Char::operator++()
 {
-	if (value > max_value) throw LowCharOutOfBoundsException();
+	if (value > max_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::increment_z);
 	++value;
 	return *this;
 }
 
 Low_Char& Low_Char::operator--()
 {
-	if (value < min_value) throw LowCharOutOfBoundsException();
+	if (value < min_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::decrement_a);
 	--value;
 	return *this;
 }
 
 Low_Char Low_Char::operator++(int)
 {
-	if (value > max_value) throw LowCharOutOfBoundsException();
+	if (value > max_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::increment_z);
 	Low_Char res(*this);
 	++value;
 	return res;
@@ -51,7 +54,8 @@ Low_Char Low_Char::operator++(int)
 
 Low_Char Low_Char::operator--(int)
 {
-	if (value < min_value) throw LowCharOutOfBoundsException();
+	if (value < min_value)
+		throw CharOutOfBoundsException(CharOutOfBoundsException::decrement_a);
 	Low_Char res(*this);
 	--value;
 	return res;
