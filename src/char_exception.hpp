@@ -5,7 +5,7 @@
 using namespace std;
 
 class CharOutOfBoundsException {
-	/* Exception levée si on tente de sortir des espaces [a-z] et [A-Z] */
+	/* This exception is thrown when you try to get outside of intervals [a-z] and [A-Z] */
 private:
 	string message;
 public:
@@ -15,6 +15,7 @@ public:
 	static const string increment_z;
 	
 	CharOutOfBoundsException(string message);
+	
 	string getMessage();
 };
 
