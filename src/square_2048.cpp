@@ -38,7 +38,11 @@ long long Square_2048::random_value(vector<long long> values)
 Square_2048 Square_2048::random(vector<Action_2048> actions,
 				vector<long long> values)
 {
-	return Square_2048(random_action(actions), random_value(values));
+	Action_2048 action = random_action(actions);
+
+	if (action == Action_2048::mult)
+		return Square_2048(action, 2 << (rand() & 1));
+	return Square_2048(action, random_value(values));
 }
 
 Square_2048& Square_2048::operator=(const Square_2048& sq)
