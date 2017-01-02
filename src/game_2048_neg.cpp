@@ -1,21 +1,16 @@
 #include "game_2048_neg.hpp"
 
-Game_2048_Neg::Game_2048_Neg(int height) :
+Game_2048_neg::Game_2048_neg(int height) :
 	Game_2048(height)
 {
+	auto end = values.end();
 
+	for (auto it = values.begin(); it != end; ++it)
+		values.push_back(-(*it));
 }
 
-
-Square_2048 Game_2048_Neg::random_square() const
+bool Game_2048_neg::mergeable(const Square_2048& sq1,
+			      const Square_2048& sq2) const
 {
-	unsigned long long val = random_value();
-	Action_2048 action;
-	int sgn= rand() % 2;
-	if (sgn)
-		action = Action_2048::none;
-	else action = Action_2048::neg;
-
-	Square_2048 res(action, val);
-	return res;
+	return sq1.is_opposite(sq2);
 }

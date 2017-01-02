@@ -13,9 +13,21 @@ public:
 	Game_2048(int height);
 
 protected:
-	virtual Square_2048 random_square() const;
+	/* Possible values for squares.  */
+	vector<long long> values;
 
-	virtual unsigned long long random_value() const;
+	/* Possible actions for squares.  */
+	vector<Action_2048> actions;
+
+	/*
+	 * Test if sq1 and sq2 are mergeable even if there are not
+	 * equal.  By default, mergeable(sq1, sq2) returns false: two
+	 * squares can only merge by equality.  When (re)defining this
+	 * function, don't care about empty squares: an empty square
+	 * cannot be merged with another.
+	 */
+	virtual bool mergeable(const Square_2048& sq1,
+			       const Square_2048& sq2) const;
 
 private:
 	/* Whether the last movement change game configuration.  */
@@ -29,17 +41,6 @@ private:
 	 * square after a movement.
 	 */
 	list<pair<int, int> > empty_squares;
-
-	/* Test if sq1 and sq2 are mergeable.  */
-	virtual bool mergeable(const Square_2048& sq1,
-			       const Square_2048& sq2) const;
-
-	/*
-	 * Return the result of merging sq1 with sq2.  This function
-	 * doesn't check if sq1 and sq2 are mergeable.
-	 */
-	virtual Square_2048 merge(const Square_2048& sq1,
-				  const Square_2048& sq2) const;
 
 	/* Transpose the board like a square matrix.  */
 	void transpose_board();
@@ -68,6 +69,20 @@ private:
 	 * after the sliding operation.
 	 */
 	void slide_board(Direction dir, bool transpose);
+
+	/*
+	 * Return the result of merging sq1 with sq2.  This function
+	 * doesn't check if sq1 and sq2 are mergeable.
+	 */
+	Square_2048 merge(const Square_2048& sq1,
+			  const Square_2048& sq2) const;
+
+	/*
+	 * Return true if and only if sq1 and sq2 are mergeable and both
+	 * nonempty.
+	 */
+	bool mergeable_and_nonempty(const Square_2048& sq1,
+				    const Square_2048& sq2) const;
 
 	/*
 	 * Compute all the mergings for a single line from position

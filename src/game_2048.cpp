@@ -2,6 +2,8 @@
 
 Game_2048::Game_2048(int height) :
 	Game<Square_2048>(height, height),
+	values(1, 2),
+	actions(1, Action_2048::none),
 	board_change(false),
 	full(false) {}
 
@@ -10,16 +12,6 @@ void Game_2048::transpose_board()
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < i; j++)
 			board[i][j].swap(board[j][i]);
-}
-
-unsigned long long Game_2048::random_value() const
-{
-	return (1 + (rand() & 1)) << 1;
-}
-
-Square_2048 Game_2048::random_square() const
-{
-	return Square_2048(Action_2048::none, random_value());
 }
 
 void Game_2048::init()
@@ -45,8 +37,10 @@ bool Game_2048::is_over() const
 		/* Search for a mergeable pair of squares.  */
 		for (int i = 0; i < height; i++)
 			for (int j = 0; j < height_minus_one; j++)
-				if (mergeable(board[i][j], board[i][j + 1]) ||
-				    mergeable(board[j][i], board[j + 1][i]))
+				if (mergeable_and_nonempty(board[i][j],
+							   board[i][j + 1]) ||
+				    mergeable_and_nonempty(board[j][i],
+							   board[j + 1][i]))
 					return false;
 
 		return true;
@@ -138,11 +132,14 @@ void Game_2048::merge_line_template(It begin, It end)
 	bool already_merged = false;
 
 	for (It it = begin; it != end; ++it) {
-		if (!already_merged && mergeable(it[0], it[1])) {
+		if (!already_merged && mergeable_and_nonempty(it[0], it[1])) {
+			long long v;
+
 			it[1] = merge(it[0], it[1]);
 			it[0] = Square_2048::empty;
 			already_merged = true;
-			score += it[1].get_value();
+			v = it[1].get_value();
+			score += (0 < v) ? v : 0;
 		} else {
 			if (it[1].is_empty())
 				it[0].swap(it[1]);
@@ -173,7 +170,8 @@ void Game_2048::pop_up_new_square()
 
 	for (; k > 0; ++pos)
 		k--;
-	board[pos->first][pos->second] = random_square();
+	board[pos->first][pos->second] =
+		Square_2048::random(actions, values);
 	empty_squares.erase(pos);
 	full = empty_squares.size() == 0;
 }
@@ -232,47 +230,26 @@ void Game_2048::move(Direction dir)
 	empty_squares.clear();
 }
 
-bool Game_2048::mergeable(const Square_2048& sq1,
-			  const Square_2048& sq2) const
+bool Game_2048::mergeable(const Square_2048& sq1, const Square_2048& sq2) const
 {
-	if (sq1 == sq2) {
-		if (sq2.get_action() == Action_2048::none)
-			return true;
-
-		if (sq2.get_action() == Action_2048::neg)
-			return true;
-	}
-
-	if (sq1.mult_possible(sq2))
-		return true;
-
-	if (sq1.is_opposite(sq2))
-		return true;
-
-	if (sq1.dest_possible(sq2))
-		return true;
-
 	return false;
+}
+
+bool Game_2048::mergeable_and_nonempty(const Square_2048& sq1,
+				       const Square_2048& sq2) const
+{
+	return !sq1.is_empty() && !sq2.is_empty() &&
+		(sq1 == sq2 || mergeable(sq1, sq2));
 }
 
 Square_2048 Game_2048::merge(const Square_2048& sq1,
 			     const Square_2048& sq2) const
 {
-	if (sq1.is_opposite(sq2) || sq1.dest_possible(sq2))
+	if (sq1.is_destroy() || sq2.is_destroy())
 		return Square_2048::empty;
-
-	if (sq1.mult_possible(sq2)) {
-
-		unsigned long long res_val = sq1.get_value() * sq2.get_value();
-		Action_2048 res_action;
-
-		if (sq1.get_action() == Action_2048::mult)
-			res_action = sq2.get_action();
-		else
-			res_action = sq1.get_action();
-
-		return Square_2048(res_action,res_val);
-	}
-
-	return Square_2048(sq2.get_action(), sq2.get_value() << 1);
+	if (sq1 == sq2 || sq1.is_opposite(sq2))
+		return Square_2048(sq1.get_action(),
+				   sq1.get_value() + sq2.get_value());
+	return Square_2048(Action_2048::none,
+			   sq1.get_value() * sq2.get_value());
 }

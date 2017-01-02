@@ -1,43 +1,16 @@
 #include "game_2048_mix.hpp"
 
-Game_2048_Mix::Game_2048_Mix(int height) :
-	Game_2048(height) ,
-	Game_2048_Num2(height),
-	Game_2048_Neg(height),
-	Game_2048_Mult(height),
-	Game_2048_Dest(height)
+Game_2048_mix::Game_2048_mix(int height, vector<long long> values,
+			     vector<Action_2048> actions) :
+	Game_2048(height),
+	Game_2048_num(height, values),
+	Game_2048_neg(height),
+	Game_2048_fancy(height, actions) {}
+
+bool Game_2048_mix::mergeable(const Square_2048& sq1,
+			      const Square_2048& sq2) const
 {
-
-}
-
-Square_2048 Game_2048_Mix::random_square() const
-{
-	Action_2048 action;
-	unsigned long long val;
-
-	int random_action = rand() % 7;
-
-	/* on réduit la probabilité des cases destroy pour éviter
-	   qu'elles tombent trop souvent */
-	if (random_action == 0) {
-		action = Action_2048::destroy;
-		val = 0;
-	}
-
-	else if (random_action <= 2) {
-		action = Action_2048::mult;
-		val = 2;
-	}
-	else {
-		if (random_action <= 4)
-			action = Action_2048::neg;
-
-		else
-			action = Action_2048::none;
-
-		val = random_value();
-	}
-
-	return Square_2048(action, val);
-
+	return Game_2048_num::mergeable(sq1, sq2) ||
+		Game_2048_neg::mergeable(sq1, sq2) ||
+		Game_2048_fancy::mergeable(sq1, sq2);
 }

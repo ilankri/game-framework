@@ -3,13 +3,14 @@
 
 #include "game_2048.hpp"
 
-class Game_2048_Neg : public virtual Game_2048 {
-	/* Variant with negative numbers */
+/* Variant with negative numbers.  */
+class Game_2048_neg : public virtual Game_2048 {
 public:
-	Game_2048_Neg(int height);
+	Game_2048_neg(int height);
 
 protected:
-	virtual Square_2048 random_square() const;
+	virtual bool mergeable(const Square_2048& sq1,
+			       const Square_2048& sq2) const;
 };
 
 #endif

@@ -1,27 +1,21 @@
 #ifndef GAME_2048_MIX_HPP
 #define GAME_2048_MIX_HPP
 
-#include "game_2048_num2.hpp"
+#include "game_2048_num.hpp"
 #include "game_2048_neg.hpp"
-#include "game_2048_mult.hpp"
-#include "game_2048_dest.hpp"
-#include <cmath>
+#include "game_2048_fancy.hpp"
 
-class Game_2048_Mix : public Game_2048_Num2,
-		      public Game_2048_Neg,
-		      public Game_2048_Mult,
-		      public Game_2048_Dest
-{
-	/* Mix of variants
-	 */
+/* Mix of variants.  */
+class Game_2048_mix : public Game_2048_num,
+		      public Game_2048_neg,
+		      public Game_2048_fancy {
+public:
+	Game_2048_mix(int height, vector<long long> values,
+		      vector<Action_2048> actions);
 
 protected:
-	virtual Square_2048 random_square() const;
-	
-public:
-	Game_2048_Mix(int height);
-
+	virtual bool mergeable(const Square_2048& sq1,
+			       const Square_2048& sq2) const;
 };
-
 
 #endif
