@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 	const int cap_char_version = 2;
 	const int low_char_version = 3;
 	
-	int height, width, version = int_version;
+	int height = 0, width = 0, version = int_version;
 	bool robot = false;
 
 	for (int i = 0; i< argc-1; i++) {
@@ -44,6 +44,8 @@ int main(int argc, char **argv)
 				game1 -> play();
 			else
 				game1 -> demo();
+			
+			delete game1;
 		}
 		catch (CharOutOfBoundsException& e) {
 			cerr << "Taquin<Cap_Char>" << endl;
@@ -60,6 +62,8 @@ int main(int argc, char **argv)
 				game2 -> play();
 			else
 				game2 -> demo();
+			
+			delete game2;
 		}
 		catch (CharOutOfBoundsException& e) {
 			cerr << "Taquin<Low_Char>" << endl;
