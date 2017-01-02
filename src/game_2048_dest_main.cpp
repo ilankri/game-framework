@@ -3,14 +3,14 @@
 
 int main(int argc, char **argv)
 {
-	int height;
+	int height = 4;
 	bool robot = false;
 
 	for (int i = 0; i< argc-1; i++) {
 		if (strcmp(argv[i],"-h") == 0)
 			height = atoi(argv[i+1]);
 	}
-	
+
 	Game_2048_Dest game(height);
 
 	for (int i = 0; i < argc; i++) {
@@ -22,6 +22,6 @@ int main(int argc, char **argv)
 		game.play();
 
 	else game.demo();
-	
+
 	return 0;
 }

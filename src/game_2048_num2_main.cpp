@@ -3,17 +3,17 @@
 
 int main(int argc, char **argv)
 {
-	int height;
+	int height = 4;
 	bool robot = false;
 
 	for (int i = 0; i< argc-1; i++) {
 		if (strcmp(argv[i],"-h") == 0)
 			height = atoi(argv[i+1]);
 	}
-	
+
 	Game_2048_Num2 game(height);
 
-	
+
 	for (int i = 0; i < argc; i++) {
 		if (strcmp(argv[i],"-r") == 0)
 			robot = true;

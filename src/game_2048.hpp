@@ -1,6 +1,7 @@
 #ifndef GAME_2048_HPP
 #define GAME_2048_HPP
 
+#include <list>
 #include <utility>
 
 #include "game.hpp"
@@ -20,15 +21,18 @@ private:
 	/* Whether the last movement change game configuration.  */
 	bool board_change;
 
+	/* Whether the board is full.  */
+	bool full;
+
 	/*
 	 * Positions of empty squares.  Useful to pop up randomly a new
 	 * square after a movement.
 	 */
-	vector<pair<int, int> > empty_squares;
+	list<pair<int, int> > empty_squares;
 
 	/* Test if sq1 and sq2 are mergeable.  */
-	virtual bool is_mergeable(const Square_2048& sq1,
-				  const Square_2048& sq2) const;
+	virtual bool mergeable(const Square_2048& sq1,
+			       const Square_2048& sq2) const;
 
 	/*
 	 * Return the result of merging sq1 with sq2.  This function
@@ -65,20 +69,26 @@ private:
 	 */
 	void slide_board(Direction dir, bool transpose);
 
+	/*
+	 * Compute all the mergings for a single line from position
+	 * begin to position end.
+	 */
+	template<class It>
+	void merge_line_template(It begin, It end);
+
+	/*
+	 * Slide the squares of a merged line and return the index of
+	 * the first empty square on the current line beginning from the
+	 * edge of the board.
+	 */
+	template<class It>
+	int slide_merged_line(It begin, It end);
+
 	virtual void init();
 
 	virtual void move(Direction dir);
 
 	virtual bool is_over() const;
-
-	template<class It>
-	void merge_line_template(It begin, It end);
-
-	template<class It>
-	int slide_line_template(It begin, It end);
-
-	template<class It>
-	int slide_merged_line(It begin, It end);
 };
 
 #endif /* not GAME_2048_HPP */

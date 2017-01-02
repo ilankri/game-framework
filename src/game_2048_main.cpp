@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv)
 {
-	int height;
+	int height = 4;
 	bool robot = false;
 
 	for (int i = 0; i< argc-1; i++) {
@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 		if (strcmp(argv[i],"-r") == 0)
 			robot = true;
 	}
-	
+
 	Game_2048 game(height);
 
 	if (!robot)
@@ -22,6 +22,6 @@ int main(int argc, char **argv)
 
 	else
 		game.demo();
-	
+
 	return 0;
 }
