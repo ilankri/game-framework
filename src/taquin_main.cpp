@@ -46,6 +46,7 @@ int main(int argc, char **argv)
 				game1 -> demo();
 		}
 		catch (CharOutOfBoundsException& e) {
+			cerr << "Taquin<Cap_Char>" << endl;
 			cerr << e.getMessage() << endl;
 			delete game1;
 		}
@@ -61,6 +62,7 @@ int main(int argc, char **argv)
 				game2 -> demo();
 		}
 		catch (CharOutOfBoundsException& e) {
+			cerr << "Taquin<Low_Char>" << endl;
 			cerr << e.getMessage() << endl;
 			delete game2;
 		}
