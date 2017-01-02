@@ -42,6 +42,13 @@ private:
 	 */
 	list<pair<int, int> > empty_squares;
 
+	/*
+	 * Return the result of merging sq1 with sq2.  This function
+	 * doesn't check if sq1 and sq2 are mergeable.
+	 */
+	virtual Square_2048 merge(const Square_2048& sq1,
+				  const Square_2048& sq2) const;
+
 	/* Transpose the board like a square matrix.  */
 	void transpose_board();
 
@@ -69,13 +76,6 @@ private:
 	 * after the sliding operation.
 	 */
 	void slide_board(Direction dir, bool transpose);
-
-	/*
-	 * Return the result of merging sq1 with sq2.  This function
-	 * doesn't check if sq1 and sq2 are mergeable.
-	 */
-	Square_2048 merge(const Square_2048& sq1,
-			  const Square_2048& sq2) const;
 
 	/*
 	 * Return true if and only if sq1 and sq2 are mergeable and both
