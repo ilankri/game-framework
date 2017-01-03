@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv)
 {
-	int height, width, nb_crates = -1;
+	int height = 0, width = 0, nb_crates = -1;
 	bool robot = false;
 
 	for (int i = 0; i< argc-1; i++) {
