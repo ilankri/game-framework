@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	const int int_version = 1;
 	const int cap_char_version = 2;
 	const int low_char_version = 3;
-	
+
 	int height = 0, width = 0, version = int_version;
 	bool robot = false;
 
@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 		if (strcmp(argv[i],"-w") == 0)
 			width = atoi(argv[i + 1]);
 	}
-	
+
 
 
 	for (int i = 0; i < argc; i++) {
@@ -27,8 +27,8 @@ int main(int argc, char **argv)
 
 		if (strcmp(argv[i],"-lowchar") == 0)
 			version = low_char_version;
-		
-		if (strcmp(argv[i],"-r") == 0)
+
+		if (strcmp(argv[i],"-D") == 0)
 			robot = true;
 	}
 
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 				game1 -> play();
 			else
 				game1 -> demo();
-			
+
 			delete game1;
 		}
 		catch (CharOutOfBoundsException& e) {
@@ -57,12 +57,12 @@ int main(int argc, char **argv)
 		Game<Square_Taquin<Low_Char>> *game2;
 		try {
 			game2 = new Taquin<Low_Char>(height, width);
-			
+
 			if (!robot)
 				game2 -> play();
 			else
 				game2 -> demo();
-			
+
 			delete game2;
 		}
 		catch (CharOutOfBoundsException& e) {
@@ -78,9 +78,9 @@ int main(int argc, char **argv)
 			game3.play();
 		else
 			game3.demo();
-			
+
 		break;
 	}
-	
+
 	return 0;
 }

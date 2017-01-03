@@ -14,12 +14,12 @@ int main(int argc, char **argv)
 		if (strcmp(argv[i],"-c") == 0)
 			nb_crates = atoi(argv[i+1]);
 	}
-	
+
 	Sokoban game(height, width, nb_crates);
 
-	
+
 	for (int i = 0; i < argc; i++) {
-		if (strcmp(argv[i],"-r") == 0)
+		if (strcmp(argv[i],"-D") == 0)
 			robot = true;
 	}
 
@@ -30,4 +30,3 @@ int main(int argc, char **argv)
 
 	return 0;
 }
-

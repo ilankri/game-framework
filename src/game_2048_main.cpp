@@ -29,8 +29,8 @@ void print_usage(ostream& out, string prgm_name)
 		"-h Display this help" << endl <<
 		"-m Enable multiply squares" << endl <<
 		"-n Enable negative numbers" << endl <<
-		"-s <height> Set board's height to <height>" << endl <<
-		"-v <number> Add <number> to possible numbers" << endl;
+		"-s <size> Set board's height and width to <size>" << endl <<
+		"-v <value> Add <value> to possible values for squares" << endl;
 }
 
 int main(int argc, char **argv)

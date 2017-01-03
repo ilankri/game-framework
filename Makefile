@@ -1,5 +1,6 @@
 SHELL = /bin/sh
 RM = rm -f
+TAR = tar
 CXX = g++
 CPPFLAGS = -MMD -MP # To generate automatically dependencies for make.
 DEBUGFLAG = -g3
@@ -66,6 +67,11 @@ $(EXEC): $(OBJ_COMMON)
 	$(compile) $<
 
 -include $(DEP)
+
+# Export to a tar archive.
+tarball:
+	$(TAR) -cf amrioui-lankri.tar Makefile README doc/* $(srcdir)/*	\
+		--exclude-backups --exclude=*.odt --exclude=TAGS -X .gitignore
 
 # Cleaning rules
 clean:
