@@ -13,7 +13,7 @@ template<class C>
 class Square_Taquin : public Printable {
 	
 public:
-	Square_Taquin(unsigned int val = 1);
+	Square_Taquin(unsigned long long val = 1);
 
 	Square_Taquin(const Square_Taquin<C>&);
 
@@ -56,7 +56,7 @@ template<class C>
 const Square_Taquin<C> Square_Taquin<C>::empty(0);
 
 template<class C>
-Square_Taquin<C>::Square_Taquin(unsigned int val) : value(val) {}
+Square_Taquin<C>::Square_Taquin(unsigned long long val) : value(val) {}
 
 template<class C>
 Square_Taquin<C>::Square_Taquin(const Square_Taquin<C>& sq) : value(sq.value) {}
