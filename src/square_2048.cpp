@@ -48,7 +48,7 @@ Square_2048& Square_2048::operator=(const Square_2048& sq)
 	return *this;
 }
 
-Square_2048 Square_2048::empty(Action_2048::none, 0);
+const Square_2048 Square_2048::empty(Action_2048::none, 0);
 
 long long Square_2048::get_value() const
 {

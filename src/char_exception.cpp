@@ -8,7 +8,7 @@ CharOutOfBoundsException::CharOutOfBoundsException(string message) : message(mes
 {
 }
 
-string CharOutOfBoundsException::getMessage()
+string CharOutOfBoundsException::getMessage() const
 {
 	return message;
 }

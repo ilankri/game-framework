@@ -18,7 +18,7 @@ public:
 	Square_2048& operator=(const Square_2048& sq);
 
 	/* The empty square.  */
-	static Square_2048 empty;
+	static const Square_2048 empty;
 
 	/* Test if two squares are equal.  */
 	bool operator==(const Square_2048& sq) const;

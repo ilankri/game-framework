@@ -16,7 +16,7 @@ public:
 	
 	CharOutOfBoundsException(string message);
 	
-	string getMessage();
+	string getMessage() const;
 };
 
 

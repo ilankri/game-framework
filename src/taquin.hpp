@@ -17,7 +17,7 @@ public:
 	/* this value represents the empty square */
 	static const Square_Taquin<C> empty;
 
-private:
+protected:
 	/* minimal size of board */
 	static const int min_height;
 
