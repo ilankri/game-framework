@@ -71,7 +71,7 @@ $(EXEC): $(OBJ_COMMON)
 # Export to a tar archive.
 tarball:
 	$(TAR) -cf amrioui-lankri.tar Makefile README doc/* $(srcdir)/*	\
-		--exclude-backups --exclude=*.odt --exclude=TAGS -X .gitignore
+		--exclude-backups --exclude=*.odt --exclude=TAGS
 
 # Cleaning rules
 clean:

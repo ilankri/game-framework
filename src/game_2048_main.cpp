@@ -91,16 +91,20 @@ int main(int argc, char **argv)
 		values.push_back(2);
 
 	/* Interpret the command-line arguments.  */
-	if (at_least_two(neg, num, fancy))
+	if (neg && (num || fancy)) {
 		game = new Game_2048_mix(height, values, actions);
-	else if (neg)
+	} else if (num && fancy) {
+		cerr << "Not available." << endl;
+		return 1;
+	} else if (neg) {
 		game = new Game_2048_neg(height);
-	else if (num)
+	} else if (num) {
 		game = new Game_2048_num(height, values);
-	else if (fancy)
+	} else if (fancy) {
 		game = new Game_2048_fancy(height, actions);
-	else
+	} else {
 		game = new Game_2048(height);
+	}
 	if (demo)
 		game->demo();
 	else
