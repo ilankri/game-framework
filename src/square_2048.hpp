@@ -20,10 +20,7 @@ public:
 	/* The empty square.  */
 	static Square_2048 empty;
 
-	/*
-	 * Two squares are equal if and only if they have the same
-	 * action and the same value.
-	 */
+	/* Test if two squares are equal.  */
 	bool operator==(const Square_2048& sq) const;
 
 	bool operator!=(const Square_2048& sq) const;
@@ -36,6 +33,9 @@ public:
 
 	/* Check if square action is destroy.  */
 	bool is_destroy() const;
+
+	/* Check if square action is mult.  */
+	bool is_mult() const;
 
 	/* Test if a square has the same action as sq.  */
 	bool same_action(const Square_2048& sq) const;

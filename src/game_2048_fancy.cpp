@@ -11,6 +11,5 @@ bool Game_2048_fancy::mergeable(const Square_2048& sq1,
 				const Square_2048& sq2) const
 {
 	return sq1.is_destroy() || sq2.is_destroy() ||
-		(sq1.get_action() == Action_2048::mult) ^
-		(sq2.get_action() == Action_2048::mult);
+		(sq1.is_mult() ^ sq2.is_mult());
 }

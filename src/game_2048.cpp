@@ -239,6 +239,7 @@ bool Game_2048::mergeable_and_nonempty(const Square_2048& sq1,
 				       const Square_2048& sq2) const
 {
 	return !sq1.is_empty() && !sq2.is_empty() &&
+		!(sq1.is_mult() && sq2.is_mult()) &&
 		(sq1 == sq2 || mergeable(sq1, sq2));
 }
 
@@ -247,9 +248,10 @@ Square_2048 Game_2048::merge(const Square_2048& sq1,
 {
 	if (sq1.is_destroy() || sq2.is_destroy())
 		return Square_2048::empty;
-	if (sq1 == sq2 || sq1.is_opposite(sq2))
-		return Square_2048(sq1.get_action(),
-				   sq1.get_value() + sq2.get_value());
-	return Square_2048(Action_2048::none,
-			   sq1.get_value() * sq2.get_value());
+	if (sq1.is_mult())
+		return Square_2048(Action_2048::none, sq2.get_value() << 1);
+	if (sq2.is_mult())
+		return Square_2048(Action_2048::none, sq1.get_value() << 1);
+	return Square_2048(sq1.get_action(),
+			   sq1.get_value() + sq2.get_value());
 }

@@ -11,6 +11,15 @@
 
 using namespace std;
 
+/*
+ * Return true if and only if at least two of the three conditions are
+ * true.
+ */
+bool at_least_two(bool b1, bool b2, bool b3)
+{
+	return (b1 && b2) || (b1 && b3) || (b2 && b3);
+}
+
 void print_usage(ostream& out, string prgm_name)
 {
 	out << "Usage: " << prgm_name << " [options]" << endl <<
@@ -33,11 +42,12 @@ int main(int argc, char **argv)
 	bool num = false;
 	vector<long long> values;
 	vector<Action_2048> actions;
-	int opt;
+	const char* shortopts = "dDhmns:v:";
+	int opt = getopt(argc, argv, shortopts);
 	Game_2048 *game;
 
 	/* Command-line arguments parsing.  */
-	while ((opt = getopt(argc, argv, "dDhmns:v:")) != -1) {
+	while (opt != -1) {
 		switch (opt) {
 		case 'd':
 			actions.push_back(Action_2048::destroy);
@@ -73,10 +83,15 @@ int main(int argc, char **argv)
 			print_usage(cerr, argv[0]);
 			return 1;
 		}
+		opt = getopt(argc, argv, shortopts);
 	}
 
+	/* Ensure that the set of values is nonempty.  */
+	if (values.empty())
+		values.push_back(2);
+
 	/* Interpret the command-line arguments.  */
-	if (neg && num && fancy)
+	if (at_least_two(neg, num, fancy))
 		game = new Game_2048_mix(height, values, actions);
 	else if (neg)
 		game = new Game_2048_neg(height);
@@ -91,5 +106,6 @@ int main(int argc, char **argv)
 	else
 		game->play();
 
+	delete game;
 	return 0;
 }

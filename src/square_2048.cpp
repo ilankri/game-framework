@@ -84,7 +84,9 @@ bool Square_2048::same_value(const Square_2048& sq) const
 
 bool Square_2048::operator==(const Square_2048& sq) const
 {
-	return same_action(sq) && same_value(sq);
+	if (action == Action_2048::none)
+		return same_action(sq) && same_value(sq);
+	return same_action(sq);
 }
 
 bool Square_2048::operator!=(const Square_2048& sq) const
@@ -102,8 +104,8 @@ void Square_2048::print(ostream& out) const
 {
 	if (!is_empty()) {
 		out << to_string(action);
-		if (!is_destroy())
-			out << " " << value;
+		if (get_action() == Action_2048::none)
+			out << value;
 	}
 }
 
@@ -115,4 +117,9 @@ Action_2048 Square_2048::get_action() const
 bool Square_2048::is_destroy() const
 {
 	return action == Action_2048::destroy;
+}
+
+bool Square_2048::is_mult() const
+{
+	return action == Action_2048::mult;
 }

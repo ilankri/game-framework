@@ -4,7 +4,7 @@ std::string to_string(Action_2048 action)
 {
 	switch (action) {
 	case Action_2048::mult:
-		return "x";
+		return "x2";
 	case Action_2048::destroy:
 		return "X";
 	default:
